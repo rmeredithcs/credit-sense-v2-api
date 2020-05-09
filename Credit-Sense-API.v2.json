@@ -6853,12 +6853,11 @@
                       "example": true
                     },
                     "Response": {
-                      "example": 1234567,
-                      "description": "Our unique identifier for the newly created application.",
+                      "type": "object",
+                      "description": "",
                       "required": [
                         "App_ID"
                       ],
-                      "type": "object",
                       "properties": {
                         "App_ID": {
                           "type": "integer",
