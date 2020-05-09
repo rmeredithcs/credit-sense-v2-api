@@ -1,0 +1,4438 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Credit Sense API",
+    "version": "2.0",
+    "description": "The Credit Sense API allows you to:\n- View and manage blacklisted applications.\n- Retrieve existing Credit Sense reports.\n- Provide transaction data that we'll use to generate Credit Sense reports.\n- Create, manage, and send quick links.\n- Manage refresh authorities and trigger refreshes on existing applications.\n- Retrieve statuses and metadata for applications.\n- Retrieve statistics on the number of completed applications.\n- Grant access permissions for applications to another Store.",
+    "contact": {
+      "name": "Credit Sense Support",
+      "url": "https://creditsense.com.au/contact",
+      "email": "support@creditsense.com.au"
+    }
+  },
+  "servers": [
+    {
+      "url": "{protocol}api.creditsense.com.au/v2/{api-key}",
+      "description": "Credit Sense API",
+      "variables": {
+        "protocol": {
+          "enum": [
+            "https://"
+          ],
+          "default": "https://",
+          "description": "HTTP over TLS"
+        },
+        "api-key": {
+          "default": "your-api-key-goes-here",
+          "description": "The unique key that identifies your account."
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/refresh": {
+      "post": {
+        "summary": "Refresh apps",
+        "operationId": "post-refresh",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Response": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "App_ID": {
+                            "type": "integer",
+                            "example": 2345678,
+                            "description": "Our unique identifier for the new refresh application."
+                          },
+                          "App_Ref": {
+                            "type": "string",
+                            "example": "B123 2020/04/20 10:33:01",
+                            "description": "Your reference assigned to the new refresh application. \nIf your reference is not unique within the Store, we will append the refresh date and time to make the reference unique."
+                          },
+                          "Client_App_Ref": {
+                            "type": "string",
+                            "example": "B123",
+                            "description": "Your reference assigned to the new refresh application.\nIf your reference is unique within the Store, this will match the `App_Ref`."
+                          },
+                          "Is_New_App": {
+                            "type": "boolean",
+                            "example": true,
+                            "description": "Denotes whether the refresh was processed as a priority."
+                          },
+                          "Existing_App_ID": {
+                            "type": "integer",
+                            "example": 1234567,
+                            "description": "Our unique identifier for the existing application that was refreshed."
+                          },
+                          "Refresh_Date": {
+                            "type": "string",
+                            "example": "2020/04/20 10:33:01",
+                            "description": "The date and time the new refresh application was created."
+                          }
+                        },
+                        "required": [
+                          "App_ID",
+                          "App_Ref",
+                          "Client_App_Ref",
+                          "Is_New_App",
+                          "Existing_App_ID",
+                          "Refresh_Date"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "Response"
+                  ]
+                }
+              }
+            }
+          },
+          "207": {
+            "description": "Multi-Status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Response": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "App_ID": {
+                            "type": "integer",
+                            "description": "Our unique identifier for the new refresh application.",
+                            "example": 2345678
+                          },
+                          "App_Ref": {
+                            "type": "string",
+                            "description": "Your reference assigned to the new refresh application. \nIf your reference is not unique within the Store, we will append the refresh date and time to make the reference unique.",
+                            "example": "B123"
+                          },
+                          "Is_New_App": {
+                            "type": "boolean",
+                            "example": true,
+                            "description": "Denotes whether the refresh was processed as a priority."
+                          },
+                          "Existing_App_ID": {
+                            "type": "integer",
+                            "example": 1234567,
+                            "description": "Our unique identifier for the existing application that was refreshed."
+                          },
+                          "Refresh_Date": {
+                            "type": "string",
+                            "example": "2020/04/20 10:33:01",
+                            "description": "The date and time the new refresh application was created."
+                          }
+                        },
+                        "required": [
+                          "App_ID",
+                          "App_Ref",
+                          "Is_New_App",
+                          "Existing_App_ID",
+                          "Refresh_Date"
+                        ]
+                      }
+                    },
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description",
+                        "Apps"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "integer",
+                          "description": "The code that identifies the error.",
+                          "example": 207
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "example": "Multi-Status",
+                          "description": "Denotes the type of error encountered."
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "The message body can contain a number of separate response codes, depending on how many sub-requests were made."
+                        },
+                        "Apps": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "App_ID": {
+                                "type": "integer",
+                                "example": 1234567,
+                                "description": "Our unique identifier for the application this error relates to."
+                              },
+                              "Error_Code": {
+                                "type": "number",
+                                "example": 207.1,
+                                "description": "The code that identifies the error."
+                              },
+                              "Error_Type": {
+                                "type": "string",
+                                "example": "Invalid Post",
+                                "description": "Describes the type of error."
+                              },
+                              "Error_Description": {
+                                "type": "string",
+                                "example": "Invalid AppID.",
+                                "description": "Describes the error."
+                              }
+                            },
+                            "required": [
+                              "App_ID",
+                              "Error_Code",
+                              "Error_Type",
+                              "Error_Description"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Response",
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 400
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Bad Request"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "The server cannot or will not process the request due to an apparent client error."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 401.1
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Unauthorized"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 403
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Forbidden"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Access denied."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 422
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Unprocessable Entity"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "The request was well-formed but was unable to be followed due to semantic errors."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 429
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Too Many Requests"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "API calls exceed a maximum of calls per minute limit."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 500
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Internal Server Error"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Internal server error."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 501
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Not Implemented"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Invalid command."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 503
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Service Unavailable"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Unable to service your request at this time. Please try again later."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Trigger a refresh for one or more existing applications.\n\nIn order to refresh the application successfully, the following requirements must be met:\n\n1. Valid API key and Token.\n2. Valid application ID provided.\n3. The Store of the refresh application needs to have a refresh Store assigned.\n4. The application needs a valid and active refresh authority.\n5. The Client of the refresh application needs to have a valid provider (e.g. Yodlee v12).\n6. The credential of the refresh application doesn't require MFA verification.\n\nWhen an application is refreshed as a priority, it will be processed first in the queue. Each Client has a certain number of applications which can be set as priority. If the number of priority applications reaches the limit, the system will ignore the \"priority\" settings and refresh the application as normal priority. The refresh limit can be defined at a Store level.\n\nIf the refresh is triggered on a completed application, the system will create a new application, otherwise, it will refresh the existing application.\n\nOnce a refresh is completed, an email and/or webhook call may be made, dependent on the Client and Store settings.\n\nFor code snippets to assist with your implementation, check out our [help docs](https://docs.creditsense.com.au).",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Settings": {
+                    "type": "object",
+                    "required": [
+                      "API_Token"
+                    ],
+                    "properties": {
+                      "API_Token": {
+                        "type": "string",
+                        "example": "c738346c-755d-4565-994c-5706ae69ee92",
+                        "description": "The unique token that identifies your API access privileges."
+                      },
+                      "Raise_Error": {
+                        "type": "integer",
+                        "example": 501,
+                        "description": "The error code you specify will be returned in the response. \nThis is used for testing purposes only."
+                      }
+                    }
+                  },
+                  "Payload": {
+                    "type": "object",
+                    "required": [
+                      "Apps"
+                    ],
+                    "properties": {
+                      "Apps": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "App_ID": {
+                              "type": "integer",
+                              "example": 1234567,
+                              "description": "Our unique identifier for the application to be refreshed."
+                            },
+                            "New_App_Ref": {
+                              "type": "string",
+                              "example": "B123",
+                              "description": "Your reference assigned to the new application. If not provided, your reference from the  original application will be used with \"\\_refresh\" appended to it."
+                            },
+                            "Is_priority": {
+                              "type": "boolean",
+                              "default": false,
+                              "description": "If set to true, the refresh will be processed as a priority.\nEach Store has a limit of priority applications in the queue. By default, the Store queue limit is set to 10."
+                            },
+                            "Copy_Existing_Data": {
+                              "type": "boolean",
+                              "default": false,
+                              "description": "If set to true, the existing application will be copied to the Refresh store *without* triggering an actual refresh (i.e. no new bank pull will occur). \nThis is usually only used in specific circumstances."
+                            },
+                            "No_Delivery": {
+                              "type": "boolean",
+                              "default": false,
+                              "description": "If set to true, the configured delivery methods (e.g. email, webhook, etc.) on the store will be ignored for the refresh. \nThis can be useful if you intend to poll the `/app/search` endpoint to monitor the status of the application. \nThis is usually only used in specific circumstances and may be used in conjunction with `Copy_Existing_Data`."
+                            }
+                          },
+                          "required": [
+                            "App_ID"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "Settings",
+                  "Payload"
+                ]
+              }
+            }
+          },
+          "description": ""
+        },
+        "tags": [
+          "Refresh"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            },
+            "in": "header",
+            "name": "Content-Type",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/refresh/cancel": {
+      "post": {
+        "summary": "Cancel refreshes",
+        "operationId": "post-refresh-cancel",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Response": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "App_ID": {
+                            "type": "string",
+                            "description": "Our unique identifier for the cancelled refresh application.",
+                            "example": "1234567"
+                          }
+                        },
+                        "required": [
+                          "App_ID"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "Response"
+                  ]
+                }
+              }
+            }
+          },
+          "207": {
+            "description": "Multi-Status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Response": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "App_ID": {
+                            "type": "integer",
+                            "description": "Our unique identifier for the cancelled refresh application.",
+                            "example": 2345678
+                          }
+                        },
+                        "required": [
+                          "App_ID"
+                        ]
+                      }
+                    },
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description",
+                        "Apps"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "integer",
+                          "description": "The code that identifies the error.",
+                          "example": 207
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "example": "Multi-Status",
+                          "description": "Denotes the type of error encountered."
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "The message body can contain a number of separate response codes, depending on how many sub-requests were made."
+                        },
+                        "Apps": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "App_ID": {
+                                "type": "integer",
+                                "example": 1234567,
+                                "description": "Our unique identifier for the application this error relates to."
+                              },
+                              "Error_Code": {
+                                "type": "number",
+                                "example": 207.1,
+                                "description": "The code that identifies the error."
+                              },
+                              "Error_Type": {
+                                "type": "string",
+                                "example": "Invalid Post",
+                                "description": "Describes the type of error."
+                              },
+                              "Error_Description": {
+                                "type": "string",
+                                "example": "Invalid AppID.",
+                                "description": "Describes the error."
+                              }
+                            },
+                            "required": [
+                              "App_ID",
+                              "Error_Code",
+                              "Error_Type",
+                              "Error_Description"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Response",
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 400
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Bad Request"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "The server cannot or will not process the request due to an apparent client error."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 401.1
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Unauthorized"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 403
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Forbidden"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Access denied."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 422
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Unprocessable Entity"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "The request was well-formed but was unable to be followed due to semantic errors."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 429
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Too Many Requests"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "API calls exceed a maximum of calls per minute limit."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 500
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Internal Server Error"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Internal server error."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 501
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Not Implemented"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Invalid command."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 503
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Service Unavailable"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Unable to service your request at this time. Please try again later."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Trigger a cancellation on one or more refresh applications.",
+        "tags": [
+          "Refresh"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Settings": {
+                    "type": "object",
+                    "required": [
+                      "API_Token"
+                    ],
+                    "properties": {
+                      "API_Token": {
+                        "type": "string",
+                        "example": "c738346c-755d-4565-994c-5706ae69ee92",
+                        "description": "The unique token that identifies your API access privileges."
+                      },
+                      "Raise_Error": {
+                        "type": "integer",
+                        "example": 403,
+                        "description": "The error code you specify will be returned in the response. \nThis is used for testing purposes only."
+                      }
+                    }
+                  },
+                  "Payload": {
+                    "type": "object",
+                    "required": [
+                      "Apps"
+                    ],
+                    "properties": {
+                      "Apps": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "App_ID": {
+                              "type": "integer",
+                              "description": "Our unique identifier for the application to cancel the refresh for.",
+                              "example": 1234567
+                            }
+                          },
+                          "required": [
+                            "App_ID"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "Settings",
+                  "Payload"
+                ]
+              }
+            }
+          },
+          "description": ""
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            },
+            "in": "header",
+            "name": "Content-Type",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/refresh/deleteAuthority": {
+      "post": {
+        "summary": "Delete refresh authority",
+        "operationId": "post-refresh-deleteAuthority",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Response": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "App_ID": {
+                            "type": "string",
+                            "description": "Our unique identifier for the application that the refresh authority was deleted for.",
+                            "example": "1234567"
+                          }
+                        },
+                        "required": [
+                          "App_ID"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "Response"
+                  ]
+                }
+              }
+            }
+          },
+          "207": {
+            "description": "Multi-Status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Response": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "App_ID": {
+                            "type": "integer",
+                            "description": "Our unique identifier for the application that the refresh authority was deleted for.",
+                            "example": 2345678
+                          }
+                        },
+                        "required": [
+                          "App_ID"
+                        ]
+                      }
+                    },
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description",
+                        "Apps"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "integer",
+                          "description": "The code that identifies the error.",
+                          "example": 207
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "example": "Multi-Status",
+                          "description": "Denotes the type of error encountered."
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "The message body can contain a number of separate response codes, depending on how many sub-requests were made."
+                        },
+                        "Apps": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "App_ID": {
+                                "type": "integer",
+                                "example": 1234567,
+                                "description": "Our unique identifier for the application this error relates to."
+                              },
+                              "Error_Code": {
+                                "type": "number",
+                                "example": 207.1,
+                                "description": "The code that identifies the error."
+                              },
+                              "Error_Type": {
+                                "type": "string",
+                                "example": "Invalid Post",
+                                "description": "Describes the type of error."
+                              },
+                              "Error_Description": {
+                                "type": "string",
+                                "example": "Invalid AppID.",
+                                "description": "Describes the error."
+                              }
+                            },
+                            "required": [
+                              "App_ID",
+                              "Error_Code",
+                              "Error_Type",
+                              "Error_Description"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Response",
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 400
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Bad Request"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "The server cannot or will not process the request due to an apparent client error."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 401.1
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Unauthorized"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 403
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Forbidden"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Access denied."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 422
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Unprocessable Entity"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "The request was well-formed but was unable to be followed due to semantic errors."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 429
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Too Many Requests"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "API calls exceed a maximum of calls per minute limit."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 500
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Internal Server Error"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Internal server error."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 501
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Not Implemented"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Invalid command."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 503
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Service Unavailable"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Unable to service your request at this time. Please try again later."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Set the active refresh authority on one or more applications as inactive and cancel the refresh on the applications.",
+        "tags": [
+          "Refresh"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Settings": {
+                    "type": "object",
+                    "required": [
+                      "API_Token"
+                    ],
+                    "properties": {
+                      "API_Token": {
+                        "type": "string",
+                        "example": "c738346c-755d-4565-994c-5706ae69ee92",
+                        "description": "The unique token that identifies your API access privileges."
+                      },
+                      "Raise_Error": {
+                        "type": "integer",
+                        "example": 403,
+                        "description": "The error code you specify will be returned in the response. \nThis is used for testing purposes only."
+                      }
+                    }
+                  },
+                  "Payload": {
+                    "type": "object",
+                    "required": [
+                      "Apps"
+                    ],
+                    "properties": {
+                      "Apps": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "App_ID": {
+                              "type": "integer",
+                              "description": "Our unique identifier for the application to delete the refresh authority for.",
+                              "example": 1234567
+                            }
+                          },
+                          "required": [
+                            "App_ID"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "Settings",
+                  "Payload"
+                ]
+              }
+            }
+          },
+          "description": ""
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            },
+            "in": "header",
+            "name": "Content-Type",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/refresh/renewAuthority": {
+      "post": {
+        "summary": "Renew refresh authority",
+        "operationId": "post-refresh-renewAuthority",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Response": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "App_ID": {
+                            "type": "string",
+                            "description": "Our unique identifier for the application that the refresh authority was renewed for.",
+                            "example": "1234567"
+                          }
+                        },
+                        "required": [
+                          "App_ID"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "Response"
+                  ]
+                }
+              }
+            }
+          },
+          "207": {
+            "description": "Multi-Status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Response": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "App_ID": {
+                            "type": "integer",
+                            "description": "Our unique identifier for the application that the refresh authority was renewed for.",
+                            "example": 2345678
+                          }
+                        },
+                        "required": [
+                          "App_ID"
+                        ]
+                      }
+                    },
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description",
+                        "Apps"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "integer",
+                          "description": "The code that identifies the error.",
+                          "example": 207
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "example": "Multi-Status",
+                          "description": "Denotes the type of error encountered."
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "The message body can contain a number of separate response codes, depending on how many sub-requests were made."
+                        },
+                        "Apps": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "App_ID": {
+                                "type": "integer",
+                                "example": 1234567,
+                                "description": "Our unique identifier for the application this error relates to."
+                              },
+                              "Error_Code": {
+                                "type": "number",
+                                "example": 207.1,
+                                "description": "The code that identifies the error."
+                              },
+                              "Error_Type": {
+                                "type": "string",
+                                "example": "Invalid Post",
+                                "description": "Describes the type of error."
+                              },
+                              "Error_Description": {
+                                "type": "string",
+                                "example": "Invalid AppID.",
+                                "description": "Describes the error."
+                              }
+                            },
+                            "required": [
+                              "App_ID",
+                              "Error_Code",
+                              "Error_Type",
+                              "Error_Description"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Response",
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 400
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Bad Request"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "The server cannot or will not process the request due to an apparent client error."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 401.1
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Unauthorized"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 403
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Forbidden"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Access denied."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 422
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Unprocessable Entity"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "The request was well-formed but was unable to be followed due to semantic errors."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 429
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Too Many Requests"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "API calls exceed a maximum of calls per minute limit."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 500
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Internal Server Error"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Internal server error."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 501
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Not Implemented"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Invalid command."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 503
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Service Unavailable"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Unable to service your request at this time. Please try again later."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Trigger a renewal on the authority of the applications provided.\n\n**This endpoint is disabled by default. [Contact us](mailto:support@creditsense.com.au) for more information.**",
+        "tags": [
+          "Refresh"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Settings": {
+                    "type": "object",
+                    "required": [
+                      "API_Token"
+                    ],
+                    "properties": {
+                      "API_Token": {
+                        "type": "string",
+                        "example": "c738346c-755d-4565-994c-5706ae69ee92",
+                        "description": "The unique token that identifies your API access privileges."
+                      },
+                      "Raise_Error": {
+                        "type": "integer",
+                        "example": 403,
+                        "description": "The error code you specify will be returned in the response. \nThis is used for testing purposes only."
+                      }
+                    }
+                  },
+                  "Payload": {
+                    "type": "object",
+                    "required": [
+                      "Apps"
+                    ],
+                    "properties": {
+                      "Apps": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "App_ID": {
+                              "type": "integer",
+                              "description": "Our unique identifier for the application to renew the refresh authority for.",
+                              "example": 1234567
+                            }
+                          },
+                          "required": [
+                            "App_ID"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "Settings",
+                  "Payload"
+                ]
+              }
+            }
+          },
+          "description": ""
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            },
+            "in": "header",
+            "name": "Content-Type",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/report/download": {
+      "post": {
+        "summary": "Download report",
+        "operationId": "post-report-download",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Success": {
+                      "type": "boolean",
+                      "example": true,
+                      "description": "Denotes whether the report was successfully retrieved."
+                    },
+                    "Response": {
+                      "type": "object",
+                      "properties": {
+                        "postVersion": {
+                          "type": "number",
+                          "example": 2,
+                          "description": "Denotes the version of the response as configured on the Client object."
+                        },
+                        "appId": {
+                          "type": "integer",
+                          "example": 1234567,
+                          "description": "Our unique identifier for the retrieved application."
+                        },
+                        "appReference": {
+                          "type": "string",
+                          "example": "B123",
+                          "description": "Your reference assigned to the application."
+                        },
+                        "createDate": {
+                          "type": "string",
+                          "example": "2020-04-03 16:18:19.8466667",
+                          "description": "The date and time the application was created."
+                        },
+                        "clientName": {
+                          "type": "string",
+                          "example": "Pickle Finance",
+                          "description": "Denotes the Client object for the retrieved report."
+                        },
+                        "storeName": {
+                          "type": "string",
+                          "example": "Dev",
+                          "description": "Denotes the Store object for the retrieved report."
+                        },
+                        "attachments": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "example": "Credit Sense Report",
+                                "description": "Denotes the type of content retrieved."
+                              },
+                              "name": {
+                                "type": "string",
+                                "example": "Categorised",
+                                "description": "Denotes the report or document name."
+                              },
+                              "contentType": {
+                                "type": "string",
+                                "enum": [
+                                  "json",
+                                  "pdf",
+                                  "xml",
+                                  "html"
+                                ],
+                                "description": "Denotes the format of the retrieved report or document."
+                              },
+                              "content": {
+                                "type": "string",
+                                "description": "The retrieved report or document as a base64-encoded string.",
+                                "example": "eyJBcHBsaWNhdGlvbnMiOnsiQXBwbGljYXRpb24iOnsiQXBwSUQiOj...[truncated]"
+                              }
+                            },
+                            "required": [
+                              "type",
+                              "name",
+                              "contentType",
+                              "content"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "postVersion",
+                        "appId",
+                        "appReference",
+                        "createDate",
+                        "clientName",
+                        "storeName",
+                        "attachments"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "Success"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "470": {
+            "description": "Invalid Post",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Success": {
+                      "type": "boolean",
+                      "example": false,
+                      "description": "Denotes whether the report was successfully retrieved."
+                    },
+                    "Error_Response": {
+                      "type": "object",
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 101
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Invalid Post"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Missing Post Variables: App_ID"
+                        }
+                      },
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "Success"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Settings": {
+                    "type": "object",
+                    "required": [
+                      "API_Token"
+                    ],
+                    "properties": {
+                      "API_Token": {
+                        "type": "string",
+                        "example": "c738346c-755d-4565-994c-5706ae69ee92",
+                        "description": "The unique token that identifies your API access privileges."
+                      },
+                      "Raise_Error": {
+                        "type": "integer",
+                        "description": "The error code you specify will be returned in the response. \nThis is used for testing purposes only.",
+                        "example": 101
+                      }
+                    }
+                  },
+                  "Payload": {
+                    "type": "object",
+                    "required": [
+                      "App_ID"
+                    ],
+                    "properties": {
+                      "App_ID": {
+                        "type": "integer",
+                        "example": 1234567,
+                        "description": "Our unique identifier for the application to be downloaded."
+                      },
+                      "CS_Report_Template_ID": {
+                        "type": "integer",
+                        "example": 16,
+                        "description": "Denotes the report template the application will be retrieved in."
+                      },
+                      "Bank_Statements": {
+                        "type": "array",
+                        "items": {
+                          "anyOf": [
+                            {
+                              "enum": [
+                                "all"
+                              ],
+                              "example": "all",
+                              "description": "Indicates whether bank statements are to be returned in the response."
+                            }
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "Supporting_Documents": {
+                        "type": "array",
+                        "description": "",
+                        "items": {
+                          "anyOf": [
+                            {
+                              "enum": [
+                                "centrelink",
+                                "ato",
+                                "medicare",
+                                "winz"
+                              ],
+                              "example": "centrelink",
+                              "description": "Denotes the supporting documents to be returned in the response."
+                            }
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "CS_Report_Formats": {
+                        "type": "array",
+                        "description": "",
+                        "items": {
+                          "anyOf": [
+                            {
+                              "description": "Denotes the formats of the reports to be returned in the response.",
+                              "enum": [
+                                "json",
+                                "pdf",
+                                "xml",
+                                "html"
+                              ],
+                              "example": "json"
+                            }
+                          ],
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "Settings",
+                  "Payload"
+                ]
+              }
+            }
+          },
+          "description": ""
+        },
+        "description": "Retrieve reports in the requested formats for a specified application.",
+        "tags": [
+          "Download"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            },
+            "in": "header",
+            "name": "Content-Type",
+            "required": true
+          }
+        ]
+      },
+      "parameters": []
+    },
+    "/getAppStatus": {
+      "post": {
+        "summary": "Get app status",
+        "operationId": "post-getAppStatus",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Success": {
+                      "type": "boolean",
+                      "example": true,
+                      "description": "Denotes whether the report was successfully retrieved."
+                    },
+                    "Response": {
+                      "type": "object",
+                      "required": [
+                        "App_ID",
+                        "App_Ref",
+                        "App_Status",
+                        "App_Status_DateTime"
+                      ],
+                      "properties": {
+                        "App_ID": {
+                          "type": "integer",
+                          "description": "Our unique identifier for the application.",
+                          "example": 1234567
+                        },
+                        "App_Ref": {
+                          "type": "string",
+                          "example": "B123",
+                          "description": "Your reference for the application."
+                        },
+                        "App_Status": {
+                          "type": "string",
+                          "example": "Error",
+                          "description": "Denotes the status for the application."
+                        },
+                        "App_Status_DateTime": {
+                          "type": "string",
+                          "description": "The date the application was created.",
+                          "example": "2020-03-14"
+                        },
+                        "Error_Code": {
+                          "type": "string",
+                          "description": "The code that identifies the error.",
+                          "example": "402"
+                        },
+                        "Error_Message": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "402 - Incorrect internet banking username or password"
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Success",
+                    "Response"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "470": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Success": {
+                      "type": "boolean",
+                      "example": false,
+                      "description": "Denotes whether the search was successfully executed."
+                    },
+                    "Error_Response": {
+                      "type": "object",
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 101
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Invalid Post"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Missing Post Variables App_ID or App_Ref is required"
+                        }
+                      },
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "Success"
+                  ]
+                }
+              }
+            },
+            "description": "Invalid Post"
+          }
+        },
+        "deprecated": true,
+        "tags": [
+          "Search"
+        ],
+        "description": "**This endpoint has been deprecated. Use `/app/search` instead.**",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Settings": {
+                    "type": "object",
+                    "required": [
+                      "API_Token"
+                    ],
+                    "properties": {
+                      "API_Token": {
+                        "type": "string",
+                        "example": "c738346c-755d-4565-994c-5706ae69ee92",
+                        "description": "The unique token that identifies your API access privileges."
+                      },
+                      "Raise_Error": {
+                        "type": "integer",
+                        "description": "The error code you specify will be returned in the response. \nThis is used for testing purposes only.",
+                        "example": 101
+                      }
+                    }
+                  },
+                  "Payload": {
+                    "type": "object",
+                    "properties": {
+                      "App_ID": {
+                        "type": "integer",
+                        "description": "Our unique identifier for the application.",
+                        "example": 1234567
+                      },
+                      "App_Ref": {
+                        "type": "string",
+                        "description": "Your identifier for the application.",
+                        "example": "B123"
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "Settings",
+                  "Payload"
+                ]
+              }
+            }
+          },
+          "description": ""
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            },
+            "in": "header",
+            "name": "Content-Type",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/app/search": {
+      "post": {
+        "summary": "App search",
+        "operationId": "post-app-search",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Success": {
+                      "type": "boolean",
+                      "example": true,
+                      "description": "Denotes whether the report was successfully retrieved."
+                    },
+                    "Response": {
+                      "type": "object",
+                      "required": [
+                        "Applications",
+                        "Current_Dt",
+                        "Last_App_Dt",
+                        "Count",
+                        "Total"
+                      ],
+                      "properties": {
+                        "Applications": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "App_ID": {
+                                "type": "integer",
+                                "description": "Our unique identifier for the application.",
+                                "example": 1234567
+                              },
+                              "App_Ref": {
+                                "type": "string",
+                                "example": "B123",
+                                "description": "Your reference for the application."
+                              },
+                              "Status": {
+                                "type": "string",
+                                "example": "Error",
+                                "description": "Denotes the status for the application."
+                              },
+                              "Error_Code": {
+                                "type": "string",
+                                "example": "402",
+                                "description": "The code that identifies the error."
+                              },
+                              "Error_Message": {
+                                "type": "string",
+                                "example": "402 - Incorrect internet banking username or password",
+                                "description": "Describes the error."
+                              },
+                              "Create_Dt": {
+                                "type": "string",
+                                "example": "2020-03-12 01:43:31.223 +00:00",
+                                "description": "The date and time the application was created."
+                              },
+                              "Modify_Dt": {
+                                "type": "string",
+                                "example": "2020-03-12 01:44:14.467 +00:00",
+                                "description": "The date and time the application was modified."
+                              },
+                              "Client_Name": {
+                                "type": "string",
+                                "example": "Dev",
+                                "description": "Denotes the Store object for the retrieved report."
+                              },
+                              "Client_Code": {
+                                "type": "string",
+                                "example": "PICK01",
+                                "description": "The unique code to identify the Store."
+                              },
+                              "Centrelink_Status": {
+                                "type": "string",
+                                "example": "Complete",
+                                "description": "Denotes the status for myGov or WINZ supporting documents."
+                              },
+                              "Refresh_Authority": {
+                                "type": "object",
+                                "nullable": true,
+                                "properties": {
+                                  "Is_Active": {
+                                    "type": "boolean",
+                                    "description": "Denotes whether the refresh authority is active for the application.",
+                                    "example": true
+                                  },
+                                  "Is_Revoke_By_Customer": {
+                                    "type": "boolean",
+                                    "example": false,
+                                    "description": "Denotes whether the customer has revoked the refresh authority for the application."
+                                  },
+                                  "Revoke_Dt": {
+                                    "type": "string",
+                                    "example": "2020-04-07 14:22:38.244 +00:00",
+                                    "description": "Denotes the date and time the customer revoked the refresh authority."
+                                  },
+                                  "Create_Dt": {
+                                    "type": "string",
+                                    "example": "2020-04-06 22:50:35.867 +00:00",
+                                    "description": "Denotes the creation date and time of the refresh authority."
+                                  },
+                                  "End_Dt": {
+                                    "type": "string",
+                                    "example": "2020-10-03 14:00:00.000 +00:00",
+                                    "description": "Denotes the expiration date and time of the refresh authority."
+                                  }
+                                }
+                              }
+                            },
+                            "required": [
+                              "App_ID",
+                              "App_Ref",
+                              "Status",
+                              "Create_Dt",
+                              "Modify_Dt",
+                              "Client_Name",
+                              "Client_Code",
+                              "Centrelink_Status"
+                            ]
+                          }
+                        },
+                        "Current_Dt": {
+                          "type": "string",
+                          "description": "Denotes the current date and time for the server when the response was generated.",
+                          "example": "2020-04-26 20:37:44.530 +00:00"
+                        },
+                        "Last_App_Dt": {
+                          "type": "string",
+                          "example": "2020-04-14 22:10:53.253 +00:00",
+                          "description": "Denotes the modification date and time of the most recent application that matches the search criteria."
+                        },
+                        "Count": {
+                          "type": "integer",
+                          "description": "Denotes the number of applications included in the response.",
+                          "example": 15,
+                          "maximum": 500
+                        },
+                        "Total": {
+                          "type": "integer",
+                          "example": 15,
+                          "description": "Denotes the total number of applications that match the search criteria."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Success",
+                    "Response"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "470": {
+            "description": "Invalid Post",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Success": {
+                      "type": "boolean",
+                      "example": false,
+                      "description": "Denotes whether the search was successfully executed."
+                    },
+                    "Error_Response": {
+                      "type": "object",
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 101
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Invalid Post"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Missing Post Variables: App_ID"
+                        }
+                      },
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "Success"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Search"
+        ],
+        "description": "Retrieve applications that match the specified search criteria. \n\nCommon reasons to use this endpoint:\n- Monitor for completed applications via periodic polling (as an alternative to or in conjunction with asynchronous Webhooks).\n- Check the status of an in-progress application based on the application id or reference.\n- Check for failed/errored applications.\n\nThis endpoint is synchronous and will always return an immediate response.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Settings": {
+                    "type": "object",
+                    "required": [
+                      "API_Token"
+                    ],
+                    "properties": {
+                      "API_Token": {
+                        "type": "string",
+                        "example": "c738346c-755d-4565-994c-5706ae69ee92",
+                        "description": "The unique token that identifies your API access privileges."
+                      },
+                      "Raise_Error": {
+                        "type": "integer",
+                        "description": "The error code you specify will be returned in the response. \nThis is used for testing purposes only.",
+                        "example": 101
+                      }
+                    }
+                  },
+                  "Payload": {
+                    "type": "object",
+                    "properties": {
+                      "App_ID": {
+                        "type": "array",
+                        "example": [
+                          1234567
+                        ],
+                        "description": "Our unique identifiers for the applications.",
+                        "items": {
+                          "type": "integer"
+                        }
+                      },
+                      "App_Ref": {
+                        "type": "array",
+                        "example": [
+                          "B123"
+                        ],
+                        "description": "Your references for the applications.",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "Status": {
+                        "type": "array",
+                        "example": [
+                          "Complete"
+                        ],
+                        "description": "The statuses to filter the applications by.",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "Client_Code": {
+                        "type": "array",
+                        "example": [
+                          "PICK01"
+                        ],
+                        "description": "Allows limiting of results by Store codes.",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "Date_Range": {
+                        "type": "object",
+                        "properties": {
+                          "From": {
+                            "type": "string",
+                            "example": "2020-04-19 15:24:05.000000 +10:00",
+                            "description": "Allows limiting of results to those applications modified after this date."
+                          },
+                          "To": {
+                            "type": "string",
+                            "example": "2020-04-26 15:24:05.000000 +10:00",
+                            "description": "Allows limiting of results to those applications modified before this date."
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "Settings"
+                ]
+              }
+            }
+          },
+          "description": ""
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            },
+            "in": "header",
+            "name": "Content-Type",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/statistics": {
+      "post": {
+        "summary": "Statistics",
+        "operationId": "post-statistics",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Response": {
+                      "type": "object",
+                      "properties": {
+                        "ThisDay": {
+                          "type": "integer",
+                          "description": "Denotes the number of applications today.",
+                          "example": 12
+                        },
+                        "PrevDay": {
+                          "type": "integer",
+                          "description": "Denotes the number of applications yesterday.",
+                          "example": 40
+                        },
+                        "ThisWeek": {
+                          "type": "integer",
+                          "description": "Denotes the number of applications from Monday until now.",
+                          "example": 103
+                        },
+                        "PrevWeek": {
+                          "type": "integer",
+                          "description": "Denotes the number of applications Monday and Sunday last week.",
+                          "example": 707
+                        },
+                        "ThisMonth": {
+                          "type": "integer",
+                          "description": "Denotes the number of applications this calendar month so far.",
+                          "example": 1440
+                        },
+                        "PrevMonth": {
+                          "type": "integer",
+                          "description": "Denotes the number of applications last calendar month.",
+                          "example": 8502
+                        },
+                        "Total": {
+                          "type": "integer",
+                          "description": "Denotes the total number of applications for all time.",
+                          "example": 400358
+                        },
+                        "FirstDate": {
+                          "type": "string",
+                          "description": "Denotes the date of the oldest application.",
+                          "example": "2019-09-14"
+                        },
+                        "LastDate": {
+                          "type": "string",
+                          "description": "Denotes the date of the most recent application.",
+                          "example": "2020-04-27"
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Response"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "470": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Success": {
+                      "type": "boolean",
+                      "example": false,
+                      "description": "Denotes whether statistics were successfully retrieved."
+                    },
+                    "Error_Response": {
+                      "type": "object",
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 102
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Authentication failure"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Invalid API_Key or API_Token"
+                        }
+                      },
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "Success"
+                  ]
+                }
+              }
+            },
+            "description": "Invalid Post"
+          }
+        },
+        "description": "Retrieve statistics on the number of completed applications.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Settings": {
+                    "type": "object",
+                    "required": [
+                      "API_Token"
+                    ],
+                    "properties": {
+                      "API_Token": {
+                        "type": "string",
+                        "example": "c738346c-755d-4565-994c-5706ae69ee92",
+                        "description": "The unique token that identifies your API access privileges."
+                      },
+                      "Raise_Error": {
+                        "type": "integer",
+                        "description": "The error code you specify will be returned in the response. \nThis is used for testing purposes only.",
+                        "example": 101
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "Settings"
+                ]
+              }
+            }
+          },
+          "description": ""
+        },
+        "tags": [
+          "Stats"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            },
+            "in": "header",
+            "name": "Content-Type",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/transferAppOwner": {
+      "post": {
+        "summary": "Transfer app ownership",
+        "operationId": "post-transferAppOwner",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Success": {
+                      "type": "boolean",
+                      "example": true,
+                      "description": "Denotes whether the report was successfully retrieved."
+                    },
+                    "Response": {
+                      "type": "string",
+                      "example": "Transfer Successful",
+                      "description": "Indicates the successful transfer of the application."
+                    }
+                  },
+                  "required": [
+                    "Success",
+                    "Response"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "470": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Success": {
+                      "type": "boolean",
+                      "example": false,
+                      "description": "Denotes whether the search was successfully executed."
+                    },
+                    "Error_Response": {
+                      "type": "object",
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 101
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Invalid Post"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Missing Post Variables App_ID or App_Ref is required, Dest_Client_ID or Dest_Client_Code is required"
+                        }
+                      },
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "Success"
+                  ]
+                }
+              }
+            },
+            "description": "Invalid Post"
+          }
+        },
+        "description": "Grant access permissions for applications to another Store.\nTransfers are only permitted to Stores within the same Client Group.",
+        "tags": [
+          "Transfer"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Settings": {
+                    "type": "object",
+                    "required": [
+                      "API_Token"
+                    ],
+                    "properties": {
+                      "API_Token": {
+                        "type": "string",
+                        "example": "c738346c-755d-4565-994c-5706ae69ee92",
+                        "description": "The unique token that identifies your API access privileges."
+                      },
+                      "Raise_Error": {
+                        "type": "integer",
+                        "description": "The error code you specify will be returned in the response. \nThis is used for testing purposes only.",
+                        "example": 101
+                      }
+                    }
+                  },
+                  "Payload": {
+                    "type": "object",
+                    "properties": {
+                      "App_ID": {
+                        "type": "integer",
+                        "example": 1234567,
+                        "description": "Our unique identifier for the application."
+                      },
+                      "App_Ref": {
+                        "example": "B123",
+                        "description": "Your reference for the application.",
+                        "type": "string"
+                      },
+                      "Dest_Client_ID": {
+                        "type": "string",
+                        "description": "Denotes the destination Store ID.",
+                        "example": "1707"
+                      },
+                      "Dest_Client_Code": {
+                        "type": "string",
+                        "description": "Denotes the destination Store code.",
+                        "example": "PICK02"
+                      },
+                      "Dest_App_Ref": {
+                        "type": "string",
+                        "description": "Your reference for the new application in the destination Store.",
+                        "example": "C123"
+                      },
+                      "Dest_Use_Existing_Ref": {
+                        "type": "boolean",
+                        "default": "true",
+                        "description": "Denotes whether your existing identifier will be used on the new application in the destination Store if a new identifier isn't provided.",
+                        "example": true
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "Settings"
+                ]
+              }
+            }
+          },
+          "description": ""
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            },
+            "in": "header",
+            "name": "Content-Type",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/blacklist/add": {
+      "post": {
+        "summary": "Blacklist add",
+        "operationId": "post-blacklist-add",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Success": {
+                      "type": "boolean",
+                      "example": true,
+                      "description": "Denotes whether the application was successfully added to the blacklist."
+                    },
+                    "Response": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "App_ID": {
+                            "type": "integer",
+                            "example": 1234567,
+                            "description": "Our unique identifier for the application."
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Success",
+                    "Response"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "470": {
+            "description": "Invalid Post",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Success": {
+                      "type": "boolean",
+                      "example": false,
+                      "description": "Denotes whether the application was successfully added to the blacklist."
+                    },
+                    "Error_Response": {
+                      "type": "object",
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 2
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Data Error"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Invalid Blacklist Code or not authorised for Blacklist"
+                        }
+                      },
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "Success"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Settings": {
+                    "type": "object",
+                    "required": [
+                      "API_Token"
+                    ],
+                    "properties": {
+                      "API_Token": {
+                        "type": "string",
+                        "example": "c738346c-755d-4565-994c-5706ae69ee92",
+                        "description": "The unique token that identifies your API access privileges."
+                      },
+                      "Raise_Error": {
+                        "type": "integer",
+                        "description": "The error code you specify will be returned in the response. \nThis is used for testing purposes only.",
+                        "example": 100
+                      }
+                    }
+                  },
+                  "Payload": {
+                    "type": "object",
+                    "required": [
+                      "Blacklist_Code",
+                      "App_ID",
+                      "Blacklist_Reason_Code",
+                      "Expiry_DT"
+                    ],
+                    "properties": {
+                      "Blacklist_Code": {
+                        "type": "string",
+                        "description": "Our unique identifier for the blacklist.",
+                        "example": "PICKLIST"
+                      },
+                      "App_ID": {
+                        "type": "integer",
+                        "description": "Our unique identifier for the application.",
+                        "example": 1234567
+                      },
+                      "Blacklist_Reason_Code": {
+                        "type": "string",
+                        "description": "The reason you're adding the application to the blacklist.",
+                        "enum": [
+                          "BADDEBT",
+                          "FRAUD"
+                        ]
+                      },
+                      "Expiry_DT": {
+                        "type": "string",
+                        "example": "2020-05-04",
+                        "description": "The date this blacklist entry will expire and the application will be removed from the blacklist."
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "Settings",
+                  "Payload"
+                ]
+              }
+            }
+          },
+          "description": ""
+        },
+        "tags": [
+          "Blacklist"
+        ],
+        "description": "Add applications to your blacklist.\n\n**In order to use this API endpoint we need to create a blacklist for you and enable access to it for your environment. Please contact us to have this feature configured.**",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            },
+            "in": "header",
+            "name": "Content-Type",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/blacklist/delete": {
+      "post": {
+        "summary": "Blacklist delete",
+        "operationId": "post-blacklist-delete",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Success": {
+                      "type": "boolean",
+                      "example": true,
+                      "description": "Denotes whether the application was successfully added to the blacklist."
+                    },
+                    "Response": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "App_ID": {
+                            "type": "integer",
+                            "example": 1234567,
+                            "description": "Our unique identifier for the application."
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Success",
+                    "Response"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "470": {
+            "description": "Invalid Post",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Success": {
+                      "type": "boolean",
+                      "example": false,
+                      "description": "Denotes whether the application was successfully added to the blacklist."
+                    },
+                    "Error_Response": {
+                      "type": "object",
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 2
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Data Error"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Invalid Blacklist Code or not authorised for Blacklist"
+                        }
+                      },
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "Success"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Settings": {
+                    "type": "object",
+                    "required": [
+                      "API_Token"
+                    ],
+                    "properties": {
+                      "API_Token": {
+                        "type": "string",
+                        "example": "c738346c-755d-4565-994c-5706ae69ee92",
+                        "description": "The unique token that identifies your API access privileges."
+                      },
+                      "Raise_Error": {
+                        "type": "integer",
+                        "description": "The error code you specify will be returned in the response. \nThis is used for testing purposes only.",
+                        "example": 100
+                      }
+                    }
+                  },
+                  "Payload": {
+                    "type": "object",
+                    "required": [
+                      "Blacklist_Code",
+                      "App_ID",
+                      "Remove_Reason_Code"
+                    ],
+                    "properties": {
+                      "Blacklist_Code": {
+                        "type": "string",
+                        "description": "Our unique identifier for the blacklist.",
+                        "example": "PICKLIST"
+                      },
+                      "App_ID": {
+                        "type": "integer",
+                        "description": "Our unique identifier for the application.",
+                        "example": 1234567
+                      },
+                      "Remove_Reason_Code": {
+                        "type": "string",
+                        "description": "The reason you're removing the application from the blacklist.",
+                        "enum": [
+                          "EXPIRED",
+                          "MISTAKE",
+                          "PAID"
+                        ]
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "Settings",
+                  "Payload"
+                ]
+              }
+            }
+          },
+          "description": ""
+        },
+        "tags": [
+          "Blacklist"
+        ],
+        "description": "Remove applications to your blacklist.\n\n**In order to use this API endpoint we need to create a blacklist for you and enable access to it for your environment. Please contact us to have this feature configured.**",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            },
+            "in": "header",
+            "name": "Content-Type",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/blacklist/view": {
+      "post": {
+        "summary": "Blacklist view",
+        "operationId": "post-blacklist-view",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Success": {
+                      "type": "boolean",
+                      "example": true,
+                      "description": "Denotes whether the application was successfully added to the blacklist."
+                    },
+                    "Response": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "App_ID": {
+                            "type": "integer",
+                            "example": 1234567,
+                            "description": "Our unique identifier for the application."
+                          },
+                          "Expiry_DT": {
+                            "type": "string",
+                            "example": "2020-08-04",
+                            "description": "The date this blacklist entry will expire and the application will be removed from the blacklist."
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Success",
+                    "Response"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "470": {
+            "description": "Invalid Post",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Success": {
+                      "type": "boolean",
+                      "example": false,
+                      "description": "Denotes whether the application was successfully added to the blacklist."
+                    },
+                    "Error_Response": {
+                      "type": "object",
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 2
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Data Error"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Invalid Blacklist Code or not authorised for Blacklist"
+                        }
+                      },
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "Success"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Settings": {
+                    "type": "object",
+                    "required": [
+                      "API_Token"
+                    ],
+                    "properties": {
+                      "API_Token": {
+                        "type": "string",
+                        "example": "c738346c-755d-4565-994c-5706ae69ee92",
+                        "description": "The unique token that identifies your API access privileges."
+                      },
+                      "Raise_Error": {
+                        "type": "integer",
+                        "description": "The error code you specify will be returned in the response. \nThis is used for testing purposes only.",
+                        "example": 100
+                      }
+                    }
+                  },
+                  "Payload": {
+                    "type": "object",
+                    "required": [
+                      "Blacklist_Code"
+                    ],
+                    "properties": {
+                      "Blacklist_Code": {
+                        "type": "string",
+                        "description": "Our unique identifier for the blacklist.",
+                        "example": "PICKLIST"
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "Settings",
+                  "Payload"
+                ]
+              }
+            }
+          },
+          "description": ""
+        },
+        "tags": [
+          "Blacklist"
+        ],
+        "description": "View applications on your blacklist.\n\n**In order to use this API endpoint we need to create a blacklist for you and enable access to it for your environment. Please contact us to have this feature configured.**",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            },
+            "in": "header",
+            "name": "Content-Type",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/quicklinks": {
+      "post": {
+        "summary": "",
+        "operationId": "post-quicklinks",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Response": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "Token": {
+                            "type": "string",
+                            "example": "1nrr",
+                            "description": "Our token that identifies the quick link."
+                          },
+                          "Message": {
+                            "type": "string",
+                            "example": "apply/PICK01/?method=standard&applicationID=1234567&appRef=B123&uniqueAppRef=true",
+                            "description": "The portion of the URL following \"https://creditsense.com.au/\" once the quick link is expanded."
+                          },
+                          "Create_Date": {
+                            "type": "string",
+                            "example": "2020-04-03 16:18:19.8466667",
+                            "description": "The date and time the quick link was created."
+                          },
+                          "Expire_Date": {
+                            "type": "string",
+                            "example": "2020-04-10 16:18:19.8466667",
+                            "description": "The date and time the quick link is scheduled to expire."
+                          },
+                          "Is_Expired": {
+                            "type": "boolean",
+                            "example": false,
+                            "description": "Denotes whether the quick link has expired."
+                          },
+                          "Is_Emailed": {
+                            "type": "boolean",
+                            "example": false,
+                            "description": "Denotes whether the quick link has been emailed."
+                          },
+                          "Is_Clicked": {
+                            "type": "boolean",
+                            "example": false,
+                            "description": "Denotes whether the quick link has been clicked."
+                          },
+                          "Store_Code": {
+                            "type": "string",
+                            "example": "PICK01",
+                            "description": "The unique code to identify the Store."
+                          },
+                          "Store": {
+                            "type": "string",
+                            "description": "The name of the Store.",
+                            "example": "PickFin - Dev"
+                          },
+                          "App_ID": {
+                            "type": "integer",
+                            "example": 1234567,
+                            "description": "Our unique identifier for the application."
+                          },
+                          "Client_App_Reference": {
+                            "type": "string",
+                            "example": "B123",
+                            "description": "Your reference for the application."
+                          },
+                          "Notify_Name": {
+                            "type": "string",
+                            "example": "Buzz Lightyear",
+                            "description": "The name provided when the quick link was created."
+                          },
+                          "Notify_Email": {
+                            "type": "string",
+                            "example": "buzz@beyondinfinity.com",
+                            "description": "The email address provided when the quick link was created."
+                          },
+                          "Notify_Mobile": {
+                            "type": "string",
+                            "example": "+61488853631",
+                            "description": "The mobile/cell number provided when the quick link was created."
+                          },
+                          "Notify_Email_Status": {
+                            "type": "string",
+                            "example": "Not Sent",
+                            "description": "Indicates the current status of the quick link email."
+                          },
+                          "Notify_Mobile_Status": {
+                            "type": "string",
+                            "example": "Not Sent",
+                            "description": "Indicates the current status of the quick link SMS."
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Response"
+                  ]
+                }
+              }
+            }
+          },
+          "207": {
+            "description": "Multi-Status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Response": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "App_ID": {
+                            "type": "integer",
+                            "description": "Our unique identifier for the cancelled refresh application.",
+                            "example": 2345678
+                          }
+                        },
+                        "required": [
+                          "App_ID"
+                        ]
+                      }
+                    },
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description",
+                        "Apps"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "integer",
+                          "description": "The code that identifies the error.",
+                          "example": 207
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "example": "Multi-Status",
+                          "description": "Denotes the type of error encountered."
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "The message body can contain a number of separate response codes, depending on how many sub-requests were made."
+                        },
+                        "Apps": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "App_ID": {
+                                "type": "integer",
+                                "example": 1234567,
+                                "description": "Our unique identifier for the application this error relates to."
+                              },
+                              "Error_Code": {
+                                "type": "number",
+                                "example": 207.1,
+                                "description": "The code that identifies the error."
+                              },
+                              "Error_Type": {
+                                "type": "string",
+                                "example": "Invalid Post",
+                                "description": "Describes the type of error."
+                              },
+                              "Error_Description": {
+                                "type": "string",
+                                "example": "Invalid AppID.",
+                                "description": "Describes the error."
+                              }
+                            },
+                            "required": [
+                              "App_ID",
+                              "Error_Code",
+                              "Error_Type",
+                              "Error_Description"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Response",
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 400
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Bad Request"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "The server cannot or will not process the request due to an apparent client error."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 401.1
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Unauthorized"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 422
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Unprocessable Entity"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "The request was well-formed but was unable to be followed due to semantic errors."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 429
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Too Many Requests"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "API calls exceed a maximum of calls per minute limit."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 500
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Internal Server Error"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Internal server error."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 501
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Not Implemented"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Invalid command."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 503
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Service Unavailable"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Unable to service your request at this time. Please try again later."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieve a list of quicklinks that match your search criteria.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            },
+            "in": "header",
+            "name": "Content-Type",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Settings": {
+                    "type": "object",
+                    "required": [
+                      "API_Token"
+                    ],
+                    "properties": {
+                      "API_Token": {
+                        "type": "string",
+                        "example": "c738346c-755d-4565-994c-5706ae69ee92",
+                        "description": "The unique token that identifies your API access privileges."
+                      },
+                      "Raise_Error": {
+                        "type": "string",
+                        "description": "The error code you specify will be returned in the response. \nThis is used for testing purposes only.",
+                        "example": "401.1"
+                      }
+                    }
+                  },
+                  "Payload": {
+                    "type": "object",
+                    "properties": {
+                      "Store_ID": {
+                        "type": "integer",
+                        "description": "The unique ID to identify the Cli.",
+                        "example": 123
+                      },
+                      "Search_Keyword": {
+                        "type": "string",
+                        "example": "Pickle",
+                        "description": "A keyword that will be matched against the application reference, quick link token, or App ID."
+                      },
+                      "Is_Emailed": {
+                        "type": "boolean",
+                        "example": false,
+                        "description": "Denotes whether to filter results by quick links that have been emailed."
+                      },
+                      "Is_Clicked": {
+                        "type": "boolean",
+                        "example": false,
+                        "description": "Denotes whether to filter results by quick links that have been clicked."
+                      },
+                      "Sort_By_Expiry_Date_Asc": {
+                        "type": "integer",
+                        "default": 0,
+                        "enum": [
+                          0,
+                          1
+                        ],
+                        "description": "Denotes whether to sort results by the expiry date, with oldest results displayed first."
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "Settings",
+                  "Payload"
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "Quick links"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  },
+  "externalDocs": {
+    "description": "Help docs",
+    "url": "https://docs.creditsense.com.au"
+  },
+  "tags": [
+    {
+      "name": "Blacklist",
+      "description": "View and manage blacklisted applications."
+    },
+    {
+      "name": "Download",
+      "description": "Retrieve existing Credit Sense reports."
+    },
+    {
+      "name": "Process",
+      "description": "Provide transaction data that we'll use to generate Credit Sense reports."
+    },
+    {
+      "name": "Quick links",
+      "description": "Create, manage, and send quick links."
+    },
+    {
+      "name": "Refresh",
+      "description": "Manage refresh authorities and trigger refreshes on existing applications."
+    },
+    {
+      "name": "Search",
+      "description": "Retrieve statuses and metadata for applications."
+    },
+    {
+      "name": "Stats",
+      "description": "Retrieve statistics on the number of completed applications."
+    },
+    {
+      "name": "Transfer",
+      "description": "Grant access permissions for applications to another Store."
+    }
+  ]
+}
