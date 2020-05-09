@@ -5032,8 +5032,7 @@
           {
             "schema": {
               "type": "string",
-              "default": "application/json",
-              "enum": []
+              "default": "application/json"
             },
             "in": "header",
             "name": "Content-Type",
@@ -5425,8 +5424,7 @@
           {
             "schema": {
               "type": "string",
-              "default": "application/json",
-              "enum": []
+              "default": "application/json"
             },
             "in": "header",
             "name": "Content-Type",
@@ -5818,8 +5816,7 @@
           {
             "schema": {
               "type": "string",
-              "default": "application/json",
-              "enum": []
+              "default": "application/json"
             },
             "in": "header",
             "name": "Content-Type",
@@ -6199,8 +6196,7 @@
           {
             "schema": {
               "type": "string",
-              "default": "application/json",
-              "enum": []
+              "default": "application/json"
             },
             "in": "header",
             "name": "Content-Type",
