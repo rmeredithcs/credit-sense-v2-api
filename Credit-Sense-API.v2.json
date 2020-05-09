@@ -3933,93 +3933,403 @@
               }
             }
           },
-          "207": {
-            "description": "Multi-Status",
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 400
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Bad Request"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "The server cannot or will not process the request due to an apparent client error."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 401.1
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Unauthorized"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 422
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Unprocessable Entity"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "The request was well-formed but was unable to be followed due to semantic errors."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 429
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Too Many Requests"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "API calls exceed a maximum of calls per minute limit."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 500
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Internal Server Error"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Internal server error."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 501
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Not Implemented"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Invalid command."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 503
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Service Unavailable"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Unable to service your request at this time. Please try again later."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieve a list of quick links that match your search criteria.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "default": "application/json",
+              "enum": []
+            },
+            "in": "header",
+            "name": "Content-Type",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Settings": {
+                    "type": "object",
+                    "required": [
+                      "API_Token"
+                    ],
+                    "properties": {
+                      "API_Token": {
+                        "type": "string",
+                        "example": "c738346c-755d-4565-994c-5706ae69ee92",
+                        "description": "The unique token that identifies your API access privileges."
+                      },
+                      "Raise_Error": {
+                        "type": "string",
+                        "description": "The error code you specify will be returned in the response. \nThis is used for testing purposes only.",
+                        "example": "401.1"
+                      }
+                    }
+                  },
+                  "Payload": {
+                    "type": "object",
+                    "properties": {
+                      "Store_ID": {
+                        "type": "integer",
+                        "description": "The unique ID to identify the Cli.",
+                        "example": 123
+                      },
+                      "Search_Keyword": {
+                        "type": "string",
+                        "example": "Pickle",
+                        "description": "A keyword that will be matched against the application reference, quick link token, or App ID."
+                      },
+                      "Is_Emailed": {
+                        "type": "boolean",
+                        "example": false,
+                        "description": "Denotes whether to filter results by quick links that have been emailed."
+                      },
+                      "Is_Clicked": {
+                        "type": "boolean",
+                        "example": false,
+                        "description": "Denotes whether to filter results by quick links that have been clicked."
+                      },
+                      "Sort_By_Expiry_Date_Asc": {
+                        "type": "integer",
+                        "default": 0,
+                        "enum": [
+                          0,
+                          1
+                        ],
+                        "description": "Denotes whether to sort results by the expiry date, with oldest results displayed first."
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "Settings",
+                  "Payload"
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "Quick links"
+        ]
+      }
+    },
+    "/quicklinks/create": {
+      "post": {
+        "summary": "",
+        "operationId": "post-quicklinks-create",
+        "responses": {
+          "200": {
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "Response": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "App_ID": {
-                            "type": "integer",
-                            "description": "Our unique identifier for the cancelled refresh application.",
-                            "example": 2345678
-                          }
-                        },
-                        "required": [
-                          "App_ID"
-                        ]
-                      }
-                    },
-                    "Error_Response": {
                       "type": "object",
                       "required": [
-                        "Error_Code",
-                        "Error_Type",
-                        "Error_Description",
-                        "Apps"
+                        "Token"
                       ],
                       "properties": {
-                        "Error_Code": {
-                          "type": "integer",
-                          "description": "The code that identifies the error.",
-                          "example": 207
-                        },
-                        "Error_Type": {
+                        "Token": {
                           "type": "string",
-                          "example": "Multi-Status",
-                          "description": "Denotes the type of error encountered."
-                        },
-                        "Error_Description": {
-                          "type": "string",
-                          "description": "Describes the error.",
-                          "example": "The message body can contain a number of separate response codes, depending on how many sub-requests were made."
-                        },
-                        "Apps": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "App_ID": {
-                                "type": "integer",
-                                "example": 1234567,
-                                "description": "Our unique identifier for the application this error relates to."
-                              },
-                              "Error_Code": {
-                                "type": "number",
-                                "example": 207.1,
-                                "description": "The code that identifies the error."
-                              },
-                              "Error_Type": {
-                                "type": "string",
-                                "example": "Invalid Post",
-                                "description": "Describes the type of error."
-                              },
-                              "Error_Description": {
-                                "type": "string",
-                                "example": "Invalid AppID.",
-                                "description": "Describes the error."
-                              }
-                            },
-                            "required": [
-                              "App_ID",
-                              "Error_Code",
-                              "Error_Type",
-                              "Error_Description"
-                            ]
-                          }
+                          "example": "fun6",
+                          "description": "Denotes whether the SMS was successfully sent to the provided cell/mobile number."
                         }
                       }
                     }
                   },
                   "required": [
-                    "Response",
-                    "Error_Response"
+                    "Response"
                   ]
                 }
               }
@@ -4309,12 +4619,13 @@
             }
           }
         },
-        "description": "Retrieve a list of quicklinks that match your search criteria.",
+        "description": "Create a quick link.",
         "parameters": [
           {
             "schema": {
               "type": "string",
-              "default": "application/json"
+              "default": "application/json",
+              "enum": []
             },
             "in": "header",
             "name": "Content-Type",
@@ -4347,35 +4658,435 @@
                   },
                   "Payload": {
                     "type": "object",
+                    "required": [
+                      "Store_Code"
+                    ],
                     "properties": {
-                      "Store_ID": {
-                        "type": "integer",
-                        "description": "The unique ID to identify the Cli.",
-                        "example": 123
-                      },
-                      "Search_Keyword": {
+                      "App_reference": {
                         "type": "string",
-                        "example": "Pickle",
-                        "description": "A keyword that will be matched against the application reference, quick link token, or App ID."
+                        "description": "Your reference for the quick link.",
+                        "example": "B123"
                       },
-                      "Is_Emailed": {
-                        "type": "boolean",
-                        "example": false,
-                        "description": "Denotes whether to filter results by quick links that have been emailed."
+                      "Store_Code": {
+                        "type": "string",
+                        "description": "Denotes the Store the quick link will be generated in.",
+                        "example": "PICK01"
                       },
-                      "Is_Clicked": {
-                        "type": "boolean",
-                        "example": false,
-                        "description": "Denotes whether to filter results by quick links that have been clicked."
-                      },
-                      "Sort_By_Expiry_Date_Asc": {
+                      "Bank_ID": {
                         "type": "integer",
-                        "default": 0,
+                        "description": "Denotes the default bank for the quick link.",
+                        "example": 30
+                      },
+                      "Is_Centrelink_Required": {
+                        "type": "string",
+                        "description": "Denotes whether to the customer will be required to provide myGov or WINZ credentials to retrieve supporting docs.",
                         "enum": [
-                          0,
-                          1
-                        ],
-                        "description": "Denotes whether to sort results by the expiry date, with oldest results displayed first."
+                          "skip",
+                          "force"
+                        ]
+                      },
+                      "Is_Unique_Reference": {
+                        "type": "boolean",
+                        "description": "Denotes whether your reference for the quick link is unique.\nIf set to false, your reference will be used with the date and time of the application appended to it.",
+                        "example": "false"
+                      },
+                      "Is_Link_To_Existing_App": {
+                        "type": "boolean",
+                        "example": "false",
+                        "description": "Denotes that an application with your reference already exists in an incomplete state, and this quick link is related to that existing application."
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "Settings",
+                  "Payload"
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "Quick links"
+        ]
+      }
+    },
+    "/quicklinks/sms": {
+      "post": {
+        "summary": "",
+        "operationId": "post-quicklinks-sms",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Response": {
+                      "type": "object",
+                      "required": [
+                        "Success"
+                      ],
+                      "properties": {
+                        "Success": {
+                          "type": "boolean",
+                          "description": "Our unique reference for the quick link.",
+                          "example": "true"
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Response"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 400
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Bad Request"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "The server cannot or will not process the request due to an apparent client error."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 401.1
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Unauthorized"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 422
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Unprocessable Entity"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "The request was well-formed but was unable to be followed due to semantic errors."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 429
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Too Many Requests"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "API calls exceed a maximum of calls per minute limit."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 500
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Internal Server Error"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Internal server error."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 501
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Not Implemented"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Invalid command."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error_Response": {
+                      "type": "object",
+                      "required": [
+                        "Error_Code",
+                        "Error_Type",
+                        "Error_Description"
+                      ],
+                      "properties": {
+                        "Error_Code": {
+                          "type": "number",
+                          "description": "The code that identifies the error.",
+                          "example": 503
+                        },
+                        "Error_Type": {
+                          "type": "string",
+                          "description": "Denotes the type of error encountered.",
+                          "example": "Service Unavailable"
+                        },
+                        "Error_Description": {
+                          "type": "string",
+                          "description": "Describes the error.",
+                          "example": "Unable to service your request at this time. Please try again later."
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "Error_Response"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Request an SMS including the specified quick link be sent to the provided cell/mobile number.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "default": "application/json",
+              "enum": []
+            },
+            "in": "header",
+            "name": "Content-Type",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Settings": {
+                    "type": "object",
+                    "required": [
+                      "API_Token"
+                    ],
+                    "properties": {
+                      "API_Token": {
+                        "type": "string",
+                        "example": "c738346c-755d-4565-994c-5706ae69ee92",
+                        "description": "The unique token that identifies your API access privileges."
+                      },
+                      "Raise_Error": {
+                        "type": "string",
+                        "description": "The error code you specify will be returned in the response. \nThis is used for testing purposes only.",
+                        "example": "401.1"
+                      }
+                    }
+                  },
+                  "Payload": {
+                    "type": "object",
+                    "required": [
+                      "Token",
+                      "Name",
+                      "Mobile"
+                    ],
+                    "properties": {
+                      "Mobile": {
+                        "type": "string",
+                        "description": "The cell/mobile number the quick link will be sent to.",
+                        "example": "+61488853631"
+                      },
+                      "Name": {
+                        "type": "string",
+                        "description": "The name of the customer you want the quick link sent to. Their name will be displayed in the SMS content.",
+                        "example": "Arthur Dexter Bradley"
+                      },
+                      "Token": {
+                        "type": "string",
+                        "description": "Our unique reference for the quick link.",
+                        "example": "fun6"
                       }
                     }
                   }
