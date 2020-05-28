@@ -633,7 +633,7 @@
     },
     "/refresh/cancel": {
       "post": {
-        "summary": "Cancel refreshes",
+        "summary": "Cancel pending refreshes",
         "operationId": "post-refresh-cancel",
         "responses": {
           "200": {
@@ -1160,7 +1160,7 @@
     },
     "/refresh/deleteAuthority": {
       "post": {
-        "summary": "Delete refresh authority",
+        "summary": "Revoke refresh authorities",
         "operationId": "post-refresh-deleteAuthority",
         "responses": {
           "200": {
@@ -1687,7 +1687,7 @@
     },
     "/refresh/renewAuthority": {
       "post": {
-        "summary": "Renew refresh authority",
+        "summary": "Renew refresh authorities",
         "operationId": "post-refresh-renewAuthority",
         "responses": {
           "200": {
@@ -2214,7 +2214,7 @@
     },
     "/report/download": {
       "post": {
-        "summary": "Download report",
+        "summary": "Download reports",
         "operationId": "post-report-download",
         "responses": {
           "200": {
@@ -2494,7 +2494,7 @@
     },
     "/getAppStatus": {
       "post": {
-        "summary": "Get app status",
+        "summary": "Get the status of an app",
         "operationId": "post-getAppStatus",
         "responses": {
           "200": {
@@ -2678,7 +2678,7 @@
     },
     "/app/search": {
       "post": {
-        "summary": "App search",
+        "summary": "Search for apps",
         "operationId": "post-app-search",
         "responses": {
           "200": {
@@ -2995,7 +2995,7 @@
     },
     "/statistics": {
       "post": {
-        "summary": "Statistics",
+        "summary": "Get statistics",
         "operationId": "post-statistics",
         "responses": {
           "200": {
@@ -3164,7 +3164,7 @@
     },
     "/transferAppOwner": {
       "post": {
-        "summary": "Transfer app ownership",
+        "summary": "Grant access permissions for an app",
         "operationId": "post-transferAppOwner",
         "responses": {
           "200": {
@@ -3330,7 +3330,7 @@
     },
     "/blacklist/add": {
       "post": {
-        "summary": "Blacklist add",
+        "summary": "Add applicant to a blacklist",
         "operationId": "post-blacklist-add",
         "responses": {
           "200": {
@@ -3503,7 +3503,7 @@
     },
     "/blacklist/delete": {
       "post": {
-        "summary": "Blacklist delete",
+        "summary": "Remove applicant from a blacklist",
         "operationId": "post-blacklist-delete",
         "responses": {
           "200": {
@@ -3671,7 +3671,7 @@
     },
     "/blacklist/view": {
       "post": {
-        "summary": "Blacklist view",
+        "summary": "View applicants on a blacklist",
         "operationId": "post-blacklist-view",
         "responses": {
           "200": {
@@ -3828,7 +3828,7 @@
     },
     "/quicklinks": {
       "post": {
-        "summary": "Quicklinks search",
+        "summary": "Search for quick links",
         "operationId": "post-quicklinks",
         "responses": {
           "200": {
@@ -4712,7 +4712,7 @@
     },
     "/quicklinks/sms": {
       "post": {
-        "summary": "SMS a quick link",
+        "summary": "Send a quick link via SMS",
         "operationId": "post-quicklinks-sms",
         "responses": {
           "200": {
@@ -5104,7 +5104,7 @@
     },
     "/quicklinks/email": {
       "post": {
-        "summary": "Email a quick link",
+        "summary": "Send a quick link via email",
         "operationId": "post-quicklinks-email",
         "responses": {
           "200": {
@@ -5496,7 +5496,7 @@
     },
     "/quicklinks/refresh": {
       "post": {
-        "summary": "Refresh a quick link",
+        "summary": "Extend the expiry for a quick link",
         "operationId": "post-quicklinks-refresh",
         "responses": {
           "200": {
@@ -6258,7 +6258,7 @@
     },
     "/quicklinks/get": {
       "post": {
-        "summary": "Get a quick link",
+        "summary": "Get details for a quick link",
         "operationId": "post-quicklinks-get",
         "responses": {
           "200": {
@@ -6645,7 +6645,7 @@
             }
           }
         },
-        "description": "Retrieve a list of quick links that match your search criteria.",
+        "description": "Retrieve details for a quick link that matches your search criteria.",
         "parameters": [
           {
             "schema": {
