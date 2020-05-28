@@ -2476,7 +2476,7 @@
         },
         "description": "Retrieve reports in the requested formats for a specified application.",
         "tags": [
-          "Download"
+          "General"
         ],
         "parameters": [
           {
@@ -2610,7 +2610,7 @@
         },
         "deprecated": true,
         "tags": [
-          "Search"
+          "General"
         ],
         "description": "**This endpoint has been deprecated. Use `/app/search` instead.**",
         "requestBody": {
@@ -2884,7 +2884,7 @@
           }
         },
         "tags": [
-          "Search"
+          "General"
         ],
         "description": "Retrieve applications that match the specified search criteria. \n\nCommon reasons to use this endpoint:\n- Monitor for completed applications via periodic polling (as an alternative to or in conjunction with asynchronous Webhooks).\n- Check the status of an in-progress application based on the application id or reference.\n- Check for failed/errored applications.\n\nThis endpoint is synchronous and will always return an immediate response.",
         "requestBody": {
@@ -3147,7 +3147,7 @@
           "description": ""
         },
         "tags": [
-          "Stats"
+          "General"
         ],
         "parameters": [
           {
@@ -3244,7 +3244,7 @@
         },
         "description": "Grant access permissions for applications to another Store.\nTransfers are only permitted to Stores within the same Client Group.",
         "tags": [
-          "Transfer"
+          "General"
         ],
         "requestBody": {
           "content": {
@@ -3485,7 +3485,7 @@
           "description": ""
         },
         "tags": [
-          "Blacklist"
+          "Blacklist applicants"
         ],
         "description": "Add applications to your blacklist.\n\n**In order to use this API endpoint we need to create a blacklist for you and enable access to it for your environment. Please contact us to have this feature configured.**",
         "parameters": [
@@ -3653,7 +3653,7 @@
           "description": ""
         },
         "tags": [
-          "Blacklist"
+          "Blacklist applicants"
         ],
         "description": "Remove applications to your blacklist.\n\n**In order to use this API endpoint we need to create a blacklist for you and enable access to it for your environment. Please contact us to have this feature configured.**",
         "parameters": [
@@ -3810,7 +3810,7 @@
           "description": ""
         },
         "tags": [
-          "Blacklist"
+          "Blacklist applicants"
         ],
         "description": "View applications on your blacklist.\n\n**In order to use this API endpoint we need to create a blacklist for you and enable access to it for your environment. Please contact us to have this feature configured.**",
         "parameters": [
@@ -6778,7 +6778,7 @@
         },
         "description": "Create an application for a supported financial institution by passing in the required account data, transaction data, and metadata.",
         "tags": [
-          "Process"
+          "Credit Sense Analysis Service (CSAS)"
         ],
         "parameters": [
           {
@@ -6946,7 +6946,7 @@
         },
         "description": "Create an application using data from a supported third-party.",
         "tags": [
-          "Process"
+          "Credit Sense Analysis Service (CSAS)"
         ],
         "parameters": [
           {
@@ -7042,16 +7042,8 @@
   },
   "tags": [
     {
-      "name": "Blacklist",
-      "description": "View and manage blacklisted applications."
-    },
-    {
-      "name": "Download",
-      "description": "Retrieve existing Credit Sense reports."
-    },
-    {
-      "name": "Process",
-      "description": "Provide transaction data that we'll use to generate Credit Sense reports."
+      "name": "General",
+      "description": "Search for applications, download reports, get stats, and transfer ownership of an app."
     },
     {
       "name": "Quick links",
@@ -7062,16 +7054,16 @@
       "description": "Manage refresh authorities and trigger refreshes on existing applications."
     },
     {
-      "name": "Search",
-      "description": "Retrieve statuses and metadata for applications."
+      "name": "Credit Sense Analysis Service (CSAS)",
+      "description": "Provide transaction data that we'll use to generate Credit Sense reports."
     },
     {
-      "name": "Stats",
-      "description": "Retrieve statistics on the number of completed applications."
+      "name": "Blacklist applicants",
+      "description": "View and manage blacklisted applicants."
     },
     {
-      "name": "Transfer",
-      "description": "Grant access permissions for applications to another Store."
+      "name": "Webhooks",
+      "description": "Automatically receive reports as soon as they're generated."
     }
   ]
 }
