@@ -2973,7 +2973,8 @@
                   }
                 },
                 "required": [
-                  "Settings"
+                  "Settings",
+                  "Payload"
                 ]
               }
             }
@@ -3308,7 +3309,8 @@
                   }
                 },
                 "required": [
-                  "Settings"
+                  "Settings",
+                  "Payload"
                 ]
               }
             }
@@ -6800,6 +6802,9 @@
                 "properties": {
                   "Settings": {
                     "type": "object",
+                    "required": [
+                      "API_Token"
+                    ],
                     "properties": {
                       "API_Token": {
                         "type": "string",
@@ -6811,10 +6816,7 @@
                         "example": 4,
                         "description": "The error code you specify will be returned in the response. \nThis is used for testing purposes only."
                       }
-                    },
-                    "required": [
-                      "API_Token"
-                    ]
+                    }
                   },
                   "Payload": {
                     "type": "string",
@@ -6822,6 +6824,7 @@
                   }
                 },
                 "required": [
+                  "Settings",
                   "Payload"
                 ]
               }
