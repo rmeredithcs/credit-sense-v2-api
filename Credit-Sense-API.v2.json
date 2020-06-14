@@ -536,7 +536,7 @@
             }
           }
         },
-        "description": "Trigger a refresh for one or more existing applications.\n\nIn order to refresh the application successfully, the following requirements must be met:\n\n1. Valid API key and Token.\n2. Valid application ID provided.\n3. The Store of the refresh application needs to have a refresh Store assigned.\n4. The application needs a valid and active refresh authority.\n5. The Client of the refresh application needs to have a valid provider (e.g. Yodlee v12).\n6. The credential of the refresh application doesn't require MFA verification.\n\nWhen an application is refreshed as a priority, it will be processed first in the queue. Each Client has a certain number of applications which can be set as priority. If the number of priority applications reaches the limit, the system will ignore the \"priority\" settings and refresh the application as normal priority. The refresh limit can be defined at a Store level.\n\nIf the refresh is triggered on a completed application, the system will create a new application, otherwise, it will refresh the existing application.\n\nOnce a refresh is completed, an email and/or webhook call may be made, dependent on the Client and Store settings.\n\nFor code snippets to assist with your implementation, check out our [help docs](https://docs.creditsense.com.au).",
+        "description": "### Overview\nTrigger a refresh for one or more existing applications.\n\nIn order to refresh the application successfully, the following requirements must be met:\n\n1. Valid API key and Token.\n2. Valid application ID provided.\n3. The Store of the refresh application needs to have a refresh Store assigned.\n4. The application needs a valid and active refresh authority.\n5. The Client of the refresh application needs to have a valid provider (e.g. Yodlee v12).\n6. The credential of the refresh application doesn't require MFA verification.\n\nWhen an application is refreshed as a priority, it will be processed first in the queue. Each Client has a certain number of applications which can be set as priority. If the number of priority applications reaches the limit, the system will ignore the \"priority\" settings and refresh the application as normal priority. The refresh limit can be defined at a Store level.\n\nIf the refresh is triggered on a completed application, the system will create a new application, otherwise, it will refresh the existing application.\n\nOnce a refresh is completed, an email and/or webhook call may be made, dependent on the Client and Store settings.\n\nFor code snippets to assist with your implementation, check out our [help docs](https://docs.creditsense.com.au).",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1083,7 +1083,7 @@
             }
           }
         },
-        "description": "Trigger a cancellation on one or more refresh applications.",
+        "description": "### Overview\nTrigger a cancellation on one or more refresh applications.",
         "tags": [
           "Refresh"
         ],
@@ -1610,7 +1610,7 @@
             }
           }
         },
-        "description": "Set the active refresh authority on one or more applications as inactive and cancel the refresh on the applications.",
+        "description": "### Overview\nSet the active refresh authority on one or more applications as inactive and cancel the refresh on the applications.",
         "tags": [
           "Refresh"
         ],
@@ -2137,7 +2137,7 @@
             }
           }
         },
-        "description": "Trigger a renewal on the authority of the applications provided.\n\n**This endpoint is disabled by default. [Contact us](mailto:support@creditsense.com.au) for more information.**",
+        "description": "### Overview\nTrigger a renewal on the authority of the applications provided.\n\n**This endpoint is disabled by default. [Contact us](mailto:support@creditsense.com.au) for more information.**",
         "tags": [
           "Refresh"
         ],
@@ -2474,7 +2474,7 @@
           },
           "description": ""
         },
-        "description": "Retrieve reports in the requested formats for a specified application.",
+        "description": "### Overview\nRetrieve reports in the requested formats for a specified application.",
         "tags": [
           "General"
         ],
@@ -2990,7 +2990,7 @@
         "tags": [
           "General"
         ],
-        "description": "Retrieve applications that match the specified search criteria. \n\nCommon reasons to use this endpoint:\n- Monitor for completed applications via periodic polling (as an alternative to or in conjunction with asynchronous Webhooks).\n- Check the status of an in-progress application based on the application ID or reference.\n- Check for failed/errored applications.\n\nThis endpoint is synchronous and will always return an immediate response.\n\n### Date format\nDates included in your request for this endpoint are expected in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. i.e. `yyyy-MM-dd hh:mm:ss.fff T`\n\n| Portion | Example | Description                                                |\n|---------|---------|------------------------------------------------------------|\n| yyyy    | 2016    | The full year                                              |\n| MM      | 04      | The month, with leading zeros                              |\n| dd      | 08      | The day, with leading zeros                                |\n| hh      | 16      | Hours (24 hour time), with leading zeros                   |\n| mm      | 45      | Minutes, with leading zeros                                |\n| ss      | 53      | Seconds, with leading zeros                                |\n| .fff    | .654300 | Factions of a second, 6 decimal places with trailing zeros |\n| T       | +10:00  | The timezone offset                                        |\n\n**Notes:**\n- If you provide your local time, make sure you include your timezone offset.\n- Dates will be returned in UTC.\n- Although ISO standard dates support providing only the date portion, to avoid confusion it is recommended you always pass full date and time for the `Date_Range.To` object. If no time is provided, the default `00:00:00.000000` time is assumed.\n\n### Pagination\nA maximum of 500 results will be returned for calls to this endpoint. If you receive a `Total` that is larger than the `Count`, you should repeat the call but with `Date_Range.From` set to the returned `Last_App_Dt`, to get the rest of the applications. You may need to do this multiple times to get all of the available applications.\n\n### Duplicate applications\nIt is possible to receive the same application in different date ranges. It's important that you handle this accordingly.\n\nThere are two reasons this happens: \n1. When applications are changed in some way, their `Modify_Dt` will change, making them applicable for different date ranges. \n2. If your search returns more than the maximum number of results, when the results are returned paginated you may have the last application of your _first_ call appear as the first of your _second_ call. See the example below.\n\n#### Example\n| App | Modify_Dt | Returned in    |\n|-----|-----------|----------------|\n| A   | 1         | Call 1         |\n| B   | 2         | Call 1         |\n| C   | 2         | Call 1         |\n| D   | 2         | Call 1         |\n| E   | 3         | Call 1, Call 2 |\n| F   | 3         |         Call 2 |\n| G   | 4         |         Call 2 |\n\n**Call 1 response** `Count: 5, Total: 7, Last_App_Date: 3`\n\n**Call 2 request** `Date_Range.From: 3` | **Call 2 response** `Count: 3, Total: 3, Last_App_Date: 4`",
+        "description": "### Overview\nRetrieve applications that match the specified search criteria. \n\nCommon reasons to use this endpoint:\n- Monitor for completed applications via periodic polling (as an alternative to or in conjunction with asynchronous Webhooks).\n- Check the status of an in-progress application based on the application ID or reference.\n- Check for failed/errored applications.\n\nThis endpoint is synchronous and will always return an immediate response.\n\n### Date format\nDates included in your request for this endpoint are expected in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. i.e. `yyyy-MM-dd hh:mm:ss.fff T`\n\n| Portion | Example | Description                                                |\n|---------|---------|------------------------------------------------------------|\n| yyyy    | 2016    | The full year                                              |\n| MM      | 04      | The month, with leading zeros                              |\n| dd      | 08      | The day, with leading zeros                                |\n| hh      | 16      | Hours (24 hour time), with leading zeros                   |\n| mm      | 45      | Minutes, with leading zeros                                |\n| ss      | 53      | Seconds, with leading zeros                                |\n| .fff    | .654300 | Factions of a second, 6 decimal places with trailing zeros |\n| T       | +10:00  | The timezone offset                                        |\n\n**Notes:**\n- If you provide your local time, make sure you include your timezone offset.\n- Dates will be returned in UTC.\n- Although ISO standard dates support providing only the date portion, to avoid confusion it is recommended you always pass full date and time for the `Date_Range.To` object. If no time is provided, the default `00:00:00.000000` time is assumed.\n\n### Pagination\nA maximum of 500 results will be returned for calls to this endpoint. If you receive a `Total` that is larger than the `Count`, you should repeat the call but with `Date_Range.From` set to the returned `Last_App_Dt`, to get the rest of the applications. You may need to do this multiple times to get all of the available applications.\n\n### Duplicate applications\nIt is possible to receive the same application in different date ranges. It's important that you handle this accordingly.\n\nThere are two reasons this happens: \n1. When applications are changed in some way, their `Modify_Dt` will change, making them applicable for different date ranges. \n2. If your search returns more than the maximum number of results, when the results are returned paginated you may have the last application of your _first_ call appear as the first of your _second_ call. See the example below.\n\n#### Example\n| App | Modify_Dt | Returned in    |\n|-----|-----------|----------------|\n| A   | 1         | Call 1         |\n| B   | 2         | Call 1         |\n| C   | 2         | Call 1         |\n| D   | 2         | Call 1         |\n| E   | 3         | Call 1, Call 2 |\n| F   | 3         |         Call 2 |\n| G   | 4         |         Call 2 |\n\n**Call 1 response** `Count: 5, Total: 7, Last_App_Date: 3`\n\n**Call 2 request** `Date_Range.From: 3` | **Call 2 response** `Count: 3, Total: 3, Last_App_Date: 4`",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3233,7 +3233,7 @@
             "description": "Invalid Post"
           }
         },
-        "description": "Retrieve statistics on the number of applications completed.",
+        "description": "### Overview\nRetrieve statistics on the number of applications completed.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3363,7 +3363,7 @@
             "description": "Invalid Post"
           }
         },
-        "description": "Grant access permissions for applications to another Store.\nTransfers are only permitted to Stores within the same Client Group.",
+        "description": "### Overview\nGrant access permissions for applications to another Store.\nTransfers are only permitted to Stores within the same Client Group.",
         "tags": [
           "General"
         ],
@@ -3637,7 +3637,7 @@
         "tags": [
           "Blacklist applicants"
         ],
-        "description": "Add applications to your blacklist.\n\n**In order to use this API endpoint we need to create a blacklist for you and enable access to it for your environment. Please contact us to have this feature configured.**",
+        "description": "### Overview\nAdd applications to your blacklist.\n\n**In order to use this API endpoint we need to create a blacklist for you and enable access to it for your environment. Please contact us to have this feature configured.**",
         "parameters": [
           {
             "schema": {
@@ -3805,7 +3805,7 @@
         "tags": [
           "Blacklist applicants"
         ],
-        "description": "Remove applications to your blacklist.\n\n**In order to use this API endpoint we need to create a blacklist for you and enable access to it for your environment. Please contact us to have this feature configured.**",
+        "description": "### Overview\nRemove applications to your blacklist.\n\n**In order to use this API endpoint we need to create a blacklist for you and enable access to it for your environment. Please contact us to have this feature configured.**",
         "parameters": [
           {
             "schema": {
@@ -3962,7 +3962,7 @@
         "tags": [
           "Blacklist applicants"
         ],
-        "description": "View applications on your blacklist.\n\n**In order to use this API endpoint we need to create a blacklist for you and enable access to it for your environment. Please contact us to have this feature configured.**",
+        "description": "### Overview\nView applications on your blacklist.\n\n**In order to use this API endpoint we need to create a blacklist for you and enable access to it for your environment. Please contact us to have this feature configured.**",
         "parameters": [
           {
             "schema": {
@@ -4368,7 +4368,7 @@
             }
           }
         },
-        "description": "Retrieve a list of quick links that match your search criteria.",
+        "description": "### Overview\nRetrieve a list of quick links that match your search criteria.",
         "parameters": [
           {
             "schema": {
@@ -4769,7 +4769,7 @@
             }
           }
         },
-        "description": "Create a quick link.",
+        "description": "### Overview\nCreate a quick link.",
         "parameters": [
           {
             "schema": {
@@ -5177,7 +5177,7 @@
             }
           }
         },
-        "description": "Request the specified quick link be sent to the provided cell/mobile number.",
+        "description": "### Overview\nRequest the specified quick link be sent to the provided cell/mobile number.",
         "parameters": [
           {
             "schema": {
@@ -5569,7 +5569,7 @@
             }
           }
         },
-        "description": "Request the specified quick link be sent to the provided email address.",
+        "description": "### Overview\nRequest the specified quick link be sent to the provided email address.",
         "parameters": [
           {
             "schema": {
@@ -5961,7 +5961,7 @@
             }
           }
         },
-        "description": "Extend the expiration date of the specified quick link to 7 days from today.",
+        "description": "### Overview\nExtend the expiration date of the specified quick link to the number of days from today specified in the environment configuration.",
         "parameters": [
           {
             "schema": {
@@ -6341,7 +6341,7 @@
             }
           }
         },
-        "description": "Expire the specified quick link by setting the expiry date as today's date.",
+        "description": "### Overview\nExpire the specified quick link by setting the expiry date as today's date.",
         "parameters": [
           {
             "schema": {
@@ -6795,7 +6795,7 @@
             }
           }
         },
-        "description": "Retrieve details for a quick link that matches your search criteria.",
+        "description": "### Overview\nRetrieve details for a quick link that matches your search criteria.",
         "parameters": [
           {
             "schema": {
@@ -6926,7 +6926,7 @@
             "description": "Not Found"
           }
         },
-        "description": "Create an application for a supported financial institution by passing in the required account data, transaction data, and metadata.",
+        "description": "### Overview\nCreate an application for a supported financial institution by passing in the required account data, transaction data, and metadata.",
         "tags": [
           "Credit Sense Analysis Service (CSAS)"
         ],
@@ -7095,7 +7095,7 @@
             "description": "Invalid Post"
           }
         },
-        "description": "Create an application using data from a supported third-party.",
+        "description": "### Overview\nCreate an application using data from a supported third-party.",
         "tags": [
           "Credit Sense Analysis Service (CSAS)"
         ],
