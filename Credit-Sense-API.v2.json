@@ -2886,7 +2886,7 @@
         "tags": [
           "General"
         ],
-        "description": "Retrieve applications that match the specified search criteria. \n\nCommon reasons to use this endpoint:\n- Monitor for completed applications via periodic polling (as an alternative to or in conjunction with asynchronous Webhooks).\n- Check the status of an in-progress application based on the application id or reference.\n- Check for failed/errored applications.\n\nThis endpoint is synchronous and will always return an immediate response.",
+        "description": "Retrieve applications that match the specified search criteria. \n\nCommon reasons to use this endpoint:\n- Monitor for completed applications via periodic polling (as an alternative to or in conjunction with asynchronous Webhooks).\n- Check the status of an in-progress application based on the application ID or reference.\n- Check for failed/errored applications.\n\nThis endpoint is synchronous and will always return an immediate response.\n\n# Date format\nDates included in your request for this endpoint are expected in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.\n\n## Format\n`yyyy-MM-dd hh:mm:ss.fff T`\n\n| Portion | Example | Description                                                |\n|---------|---------|------------------------------------------------------------|\n| yyyy    | 2016    | The full year                                              |\n| MM      | 04      | The month, with leading zeros                              |\n| dd      | 08      | The day, with leading zeros                                |\n| hh      | 16      | Hours (24 hour time), with leading zeros                   |\n| mm      | 45      | Minutes, with leading zeros                                |\n| ss      | 53      | Seconds, with leading zeros                                |\n| .fff    | .654300 | Factions of a second, 6 decimal places with trailing zeros |\n| T       | +10:00  | The timezone offset                                        |\n\n**Notes:**\n- If you provide your local time, make sure you include your timezone offset.\n- Dates will be returned in UTC.\n- Although ISO standard dates support providing only the date portion, to avoid confusion it is recommended you always pass full date and time for the 'To' date object. If no time is provided default `00:00:00.000000` is assumed.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2921,7 +2921,8 @@
                         ],
                         "description": "Our unique identifiers for the applications.",
                         "items": {
-                          "type": "integer"
+                          "type": "integer",
+                          "example": 1234567
                         }
                       },
                       "App_Ref": {
@@ -2931,7 +2932,8 @@
                         ],
                         "description": "Your references for the applications.",
                         "items": {
-                          "type": "string"
+                          "type": "string",
+                          "example": "B123"
                         }
                       },
                       "Status": {
@@ -2941,7 +2943,14 @@
                         ],
                         "description": "The statuses to filter the applications by.",
                         "items": {
-                          "type": "string"
+                          "type": "string",
+                          "enum": [
+                            "Quick Link",
+                            "Receiving Logons",
+                            "Processing",
+                            "Complete",
+                            "Error"
+                          ]
                         }
                       },
                       "Client_Code": {
@@ -2951,7 +2960,8 @@
                         ],
                         "description": "Allows limiting of results by Store codes.",
                         "items": {
-                          "type": "string"
+                          "type": "string",
+                          "example": "PICK01"
                         }
                       },
                       "Date_Range": {
