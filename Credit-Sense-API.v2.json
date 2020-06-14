@@ -2941,17 +2941,35 @@
                         "Error_Code": {
                           "type": "number",
                           "description": "The code that identifies the error.",
-                          "example": 101
+                          "enum": [
+                            1,
+                            99,
+                            100,
+                            101,
+                            102
+                          ]
                         },
                         "Error_Type": {
                           "type": "string",
                           "description": "Denotes the type of error encountered.",
-                          "example": "Invalid Post"
+                          "enum": [
+                            "Data Error",
+                            "Unknown Error",
+                            "Database Connectivity",
+                            "Invalid Post",
+                            "Authentication failure"
+                          ]
                         },
                         "Error_Description": {
                           "type": "string",
                           "description": "Describes the error.",
-                          "example": "Missing Post Variables: App_ID"
+                          "enum": [
+                            "Invalid date format. ISO 8601 Standard dates must be provided.",
+                            "Unknown Error",
+                            "We are unable to connect to the database at this time",
+                            "Missing post parameters",
+                            "Invalid API_Key or API_Token"
+                          ]
                         }
                       },
                       "required": [
@@ -2972,7 +2990,7 @@
         "tags": [
           "General"
         ],
-        "description": "Retrieve applications that match the specified search criteria. \n\nCommon reasons to use this endpoint:\n- Monitor for completed applications via periodic polling (as an alternative to or in conjunction with asynchronous Webhooks).\n- Check the status of an in-progress application based on the application ID or reference.\n- Check for failed/errored applications.\n\nThis endpoint is synchronous and will always return an immediate response.\n\n# Date format\nDates included in your request for this endpoint are expected in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. i.e. `yyyy-MM-dd hh:mm:ss.fff T`\n\n| Portion | Example | Description                                                |\n|---------|---------|------------------------------------------------------------|\n| yyyy    | 2016    | The full year                                              |\n| MM      | 04      | The month, with leading zeros                              |\n| dd      | 08      | The day, with leading zeros                                |\n| hh      | 16      | Hours (24 hour time), with leading zeros                   |\n| mm      | 45      | Minutes, with leading zeros                                |\n| ss      | 53      | Seconds, with leading zeros                                |\n| .fff    | .654300 | Factions of a second, 6 decimal places with trailing zeros |\n| T       | +10:00  | The timezone offset                                        |\n\n**Notes:**\n- If you provide your local time, make sure you include your timezone offset.\n- Dates will be returned in UTC.\n- Although ISO standard dates support providing only the date portion, to avoid confusion it is recommended you always pass full date and time for the `Date_Range.To` object. If no time is provided, the default `00:00:00.000000` time is assumed.\n\n# Pagination\nA maximum of 500 results will be returned for calls to this endpoint. If you receive a `Total` that is larger than the `Count`, you should repeat the call but with `Date_Range.From` set to the returned `Last_App_Dt`, to get the rest of the applications. You may need to do this multiple times to get all of the available applications.\n\n# Duplicate applications\nIt is possible to receive the same application in different date ranges. It's important that you handle this accordingly.\n\nThere are two reasons this happens: \n1. When applications are changed in some way, their `Modify_Dt` will change, making them applicable for different date ranges. \n2. If your search returns more than the maximum number of results, when the results are returned paginated you may have the last application of your _first_ call appear as the first of your _second_ call. See the example below.\n\n| App | Modify_Dt | Returned in    |\n|-----|-----------|----------------|\n| A   | 1         | Call 1         |\n| B   | 2         | Call 1         |\n| C   | 2         | Call 1         |\n| D   | 2         | Call 1         |\n| E   | 3         | Call 1, Call 2 |\n| F   | 3         |         Call 2 |\n| G   | 4         |         Call 2 |\n\n**Call 1 response**\n```\nCount: 5\nTotal: 7\nLast_App_Date: 3\n```\n\n**Call 2 request**\n```\nDate_Range.From: 3\n```\n\n**Call 2 response**\n```\nCount: 3\nTotal: 3\nLast_App_Date: 4\n```",
+        "description": "Retrieve applications that match the specified search criteria. \n\nCommon reasons to use this endpoint:\n- Monitor for completed applications via periodic polling (as an alternative to or in conjunction with asynchronous Webhooks).\n- Check the status of an in-progress application based on the application ID or reference.\n- Check for failed/errored applications.\n\nThis endpoint is synchronous and will always return an immediate response.\n\n### Date format\nDates included in your request for this endpoint are expected in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. i.e. `yyyy-MM-dd hh:mm:ss.fff T`\n\n| Portion | Example | Description                                                |\n|---------|---------|------------------------------------------------------------|\n| yyyy    | 2016    | The full year                                              |\n| MM      | 04      | The month, with leading zeros                              |\n| dd      | 08      | The day, with leading zeros                                |\n| hh      | 16      | Hours (24 hour time), with leading zeros                   |\n| mm      | 45      | Minutes, with leading zeros                                |\n| ss      | 53      | Seconds, with leading zeros                                |\n| .fff    | .654300 | Factions of a second, 6 decimal places with trailing zeros |\n| T       | +10:00  | The timezone offset                                        |\n\n**Notes:**\n- If you provide your local time, make sure you include your timezone offset.\n- Dates will be returned in UTC.\n- Although ISO standard dates support providing only the date portion, to avoid confusion it is recommended you always pass full date and time for the `Date_Range.To` object. If no time is provided, the default `00:00:00.000000` time is assumed.\n\n### Pagination\nA maximum of 500 results will be returned for calls to this endpoint. If you receive a `Total` that is larger than the `Count`, you should repeat the call but with `Date_Range.From` set to the returned `Last_App_Dt`, to get the rest of the applications. You may need to do this multiple times to get all of the available applications.\n\n### Duplicate applications\nIt is possible to receive the same application in different date ranges. It's important that you handle this accordingly.\n\nThere are two reasons this happens: \n1. When applications are changed in some way, their `Modify_Dt` will change, making them applicable for different date ranges. \n2. If your search returns more than the maximum number of results, when the results are returned paginated you may have the last application of your _first_ call appear as the first of your _second_ call. See the example below.\n\n#### Example\n| App | Modify_Dt | Returned in    |\n|-----|-----------|----------------|\n| A   | 1         | Call 1         |\n| B   | 2         | Call 1         |\n| C   | 2         | Call 1         |\n| D   | 2         | Call 1         |\n| E   | 3         | Call 1, Call 2 |\n| F   | 3         |         Call 2 |\n| G   | 4         |         Call 2 |\n\n**Call 1 response** `Count: 5, Total: 7, Last_App_Date: 3`\n\n**Call 2 request** `Date_Range.From: 3` | **Call 2 response** `Count: 3, Total: 3, Last_App_Date: 4`",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2993,7 +3011,13 @@
                       "Raise_Error": {
                         "type": "integer",
                         "description": "The error code you specify will be returned in the response. \nThis is used for testing purposes only.",
-                        "example": 101
+                        "enum": [
+                          1,
+                          99,
+                          100,
+                          101,
+                          102
+                        ]
                       }
                     }
                   },
@@ -3478,7 +3502,7 @@
                     "Success": {
                       "type": "boolean",
                       "example": false,
-                      "description": "Denotes whether the application was successfully added to the blacklist."
+                      "description": "Denotes whether the search was successfully executed."
                     },
                     "Error_Response": {
                       "type": "object",
@@ -3486,17 +3510,38 @@
                         "Error_Code": {
                           "type": "number",
                           "description": "The code that identifies the error.",
-                          "example": 2
+                          "enum": [
+                            1,
+                            2,
+                            99,
+                            100,
+                            101,
+                            102
+                          ]
                         },
                         "Error_Type": {
                           "type": "string",
                           "description": "Denotes the type of error encountered.",
-                          "example": "Data Error"
+                          "enum": [
+                            "Data Error",
+                            "Data Error",
+                            "Unknown Error",
+                            "Database Connectivity",
+                            "Invalid Post",
+                            "Authentication failure"
+                          ]
                         },
                         "Error_Description": {
                           "type": "string",
                           "description": "Describes the error.",
-                          "example": "Invalid Blacklist Code or not authorised for Blacklist"
+                          "enum": [
+                            "Invalid Credit Sense AppID or not authorised for AppID",
+                            "Invalid Blacklist Code or not authorised for Blacklist",
+                            "Unknown Error",
+                            "We are unable to connect to the database at this time",
+                            "Missing post parameters",
+                            "Invalid API_Key or API_Token"
+                          ]
                         }
                       },
                       "required": [
@@ -3534,7 +3579,14 @@
                       "Raise_Error": {
                         "type": "integer",
                         "description": "The error code you specify will be returned in the response. \nThis is used for testing purposes only.",
-                        "example": 100
+                        "enum": [
+                          1,
+                          2,
+                          99,
+                          100,
+                          101,
+                          102
+                        ]
                       }
                     }
                   },
