@@ -2705,6 +2705,7 @@
                       "properties": {
                         "Applications": {
                           "type": "array",
+                          "description": "The array of matching applications, ordered by `Modify_Dt` descending. If there are no applications found the array will be empty.",
                           "items": {
                             "type": "object",
                             "properties": {
@@ -2720,18 +2721,97 @@
                               },
                               "Status": {
                                 "type": "string",
-                                "example": "Error",
-                                "description": "Denotes the status for the application."
+                                "description": "Denotes the status for the application.",
+                                "enum": [
+                                  "Quick Link",
+                                  "Receiving Logons",
+                                  "Processing",
+                                  "Complete",
+                                  "Error"
+                                ]
                               },
                               "Error_Code": {
                                 "type": "string",
-                                "example": "402",
-                                "description": "The code that identifies the error."
+                                "description": "The code that identifies the error.",
+                                "enum": [
+                                  "401",
+                                  "402",
+                                  "403",
+                                  "404",
+                                  "405",
+                                  "406",
+                                  "407",
+                                  "408",
+                                  "409",
+                                  "412",
+                                  "413",
+                                  "414",
+                                  "415",
+                                  "416",
+                                  "419",
+                                  "422",
+                                  "424",
+                                  "428",
+                                  "429",
+                                  "470",
+                                  "505",
+                                  "507",
+                                  "508",
+                                  "509",
+                                  "518",
+                                  "520",
+                                  "522",
+                                  "523",
+                                  "525",
+                                  "801",
+                                  "802",
+                                  "1000",
+                                  "1001",
+                                  "1002",
+                                  "1003"
+                                ]
                               },
                               "Error_Message": {
                                 "type": "string",
                                 "example": "402 - Incorrect internet banking username or password",
-                                "description": "Describes the error."
+                                "description": "Describes the error.",
+                                "enum": [
+                                  "401 - The request timed out before completing due to delays beyond our control - Customer should retry in a few minutes.",
+                                  "402 - Incorrect internet banking username or password",
+                                  "403 - There is a problem retrieving information from the customers internet banking. Please submit a ticket with us so we can resolve this. The bank statement will need to be retrieved manually.",
+                                  "404 - Temporary technical difficulties are causing a problem, fetching the bank statement is failing after logging in. The customer can try again as this is temporary however please also log a ticket with us for investigation.",
+                                  "405 - The request cannot be completed because the request was canceled. The customer may have logged into their banking site at the same time. Please ask the customer to try again.",
+                                  "406 - The customers password has expired with their internet banking site. They will have to change the password and try again.",
+                                  "407 - The customer's bank account is locked and cant be logged into.",
+                                  "408 - It appears the customer’s accounts are not linked to their internet banking. Please have the customer link their accounts to their internet banking and then try again.",
+                                  "409 - Internet Banking site has errored after verifying login, this is usually a temporary error. If the problem is persisting, please log a ticket for escalation.",
+                                  "ing - Customer should retry in a few minutes.",
+                                  "413 - There is a problem retrieving information from the customers internet banking. Please submit a ticket with us so we can resolve this. The bank statement will need to be retrieved manually.",
+                                  "414 - The customers banking site says the requested account was not found at the site.",
+                                  "415 - The request cannot be completed due to technical difficulties at the internet banking site.",
+                                  "416 - The request cannot be completed as another attempt to login to their internet banking was already established at the same time.",
+                                  "419 - Unexpected changes to the bank’s site. Please ask the customer to supply manually, this problem should be resolved in a few days.",
+                                  "422 - We were unable to retrieve the account information because it appears one or more of the related accounts have been closed.",
+                                  "424 - Internet Banking site is showing a maintenance window message, the customer will need to wait till the maintenance is complete to continue.",
+                                  "428 - The customers banking site requires that the consumer accept new terms and conditions. After this has been accepted re-run this application.",
+                                  "429 - The internet banking site is requesting an update of personal information thats blocking the statement collection process, Please ask the customer to log in and resolve before attempting a new application.",
+                                  "470 - The request cannot be completed because the payee site requires that the consumer contact customer support.",
+                                  "505 - We do not currently support the security system used by this bank, we apologise for any inconvenience.",
+                                  "507 - This bank is in beta, Yodlee is providing data updates for this bank but it is not out of beta and reports are not completing successfully yet.",
+                                  "508 - The request timedout when processing, the customer should retry.",
+                                  "509 - The customers banking site says information provided is no longer valid at the site.",
+                                  "518 - The required additional authentication information was unavailable. Please try again.",
+                                  "520 - Authentication Information Incorrect: The additional authentication information provided is incorrect. Please retry.",
+                                  "522 - Request has timedout at our data provider, please try to run again.",
+                                  "523 - We're sorry, the authentication information you provided is incorrect. Please try again.",
+                                  "525 - The request timedout when processing, the customer should retry.",
+                                  "801 - This is an intermittent issue with our data provider. Please ask the customer to try again, if the problem persists please lodge a ticket.",
+                                  "802 - This is an intermittent issue with our data provider. Please ask the customer to try again, if the problem persists please lodge a ticket.",
+                                  "1000 - The request timed out when processing, the customer should retry.",
+                                  "1001 - The request timed out when processing, the customer should retry.",
+                                  "1002 - The request timed out when processing, the customer should retry.",
+                                  "1003 - The request timed out when processing, the customer should retry."
+                                ]
                               },
                               "Create_Dt": {
                                 "type": "string",
@@ -2755,12 +2835,18 @@
                               },
                               "Centrelink_Status": {
                                 "type": "string",
-                                "example": "Complete",
-                                "description": "Denotes the status for myGov or WINZ supporting documents."
+                                "description": "Denotes the status for myGov or WINZ supporting documents.",
+                                "enum": [
+                                  "Receiving_Logons",
+                                  "Processing",
+                                  "Error",
+                                  "Success"
+                                ]
                               },
                               "Refresh_Authority": {
                                 "type": "object",
                                 "nullable": true,
+                                "description": "The refresh authority object of the application. If there's no refresh authority for the application, the object will have a `NULL` value.",
                                 "properties": {
                                   "Is_Active": {
                                     "type": "boolean",
@@ -2804,7 +2890,7 @@
                         },
                         "Current_Dt": {
                           "type": "string",
-                          "description": "Denotes the current date and time for the server when the response was generated.",
+                          "description": "Denotes the current date and time for the server when the response was generated. To get a list of all applications that have changed since this call, pass the `Current_Dt` value in as `the `From` date in your call.",
                           "example": "2020-04-26 20:37:44.530 +00:00"
                         },
                         "Last_App_Dt": {
@@ -2886,7 +2972,7 @@
         "tags": [
           "General"
         ],
-        "description": "Retrieve applications that match the specified search criteria. \n\nCommon reasons to use this endpoint:\n- Monitor for completed applications via periodic polling (as an alternative to or in conjunction with asynchronous Webhooks).\n- Check the status of an in-progress application based on the application ID or reference.\n- Check for failed/errored applications.\n\nThis endpoint is synchronous and will always return an immediate response.\n\n# Date format\nDates included in your request for this endpoint are expected in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.\n\n## Format\n`yyyy-MM-dd hh:mm:ss.fff T`\n\n| Portion | Example | Description                                                |\n|---------|---------|------------------------------------------------------------|\n| yyyy    | 2016    | The full year                                              |\n| MM      | 04      | The month, with leading zeros                              |\n| dd      | 08      | The day, with leading zeros                                |\n| hh      | 16      | Hours (24 hour time), with leading zeros                   |\n| mm      | 45      | Minutes, with leading zeros                                |\n| ss      | 53      | Seconds, with leading zeros                                |\n| .fff    | .654300 | Factions of a second, 6 decimal places with trailing zeros |\n| T       | +10:00  | The timezone offset                                        |\n\n**Notes:**\n- If you provide your local time, make sure you include your timezone offset.\n- Dates will be returned in UTC.\n- Although ISO standard dates support providing only the date portion, to avoid confusion it is recommended you always pass full date and time for the 'To' date object. If no time is provided default `00:00:00.000000` is assumed.",
+        "description": "Retrieve applications that match the specified search criteria. \n\nCommon reasons to use this endpoint:\n- Monitor for completed applications via periodic polling (as an alternative to or in conjunction with asynchronous Webhooks).\n- Check the status of an in-progress application based on the application ID or reference.\n- Check for failed/errored applications.\n\nThis endpoint is synchronous and will always return an immediate response.\n\n# Date format\nDates included in your request for this endpoint are expected in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. i.e. `yyyy-MM-dd hh:mm:ss.fff T`\n\n| Portion | Example | Description                                                |\n|---------|---------|------------------------------------------------------------|\n| yyyy    | 2016    | The full year                                              |\n| MM      | 04      | The month, with leading zeros                              |\n| dd      | 08      | The day, with leading zeros                                |\n| hh      | 16      | Hours (24 hour time), with leading zeros                   |\n| mm      | 45      | Minutes, with leading zeros                                |\n| ss      | 53      | Seconds, with leading zeros                                |\n| .fff    | .654300 | Factions of a second, 6 decimal places with trailing zeros |\n| T       | +10:00  | The timezone offset                                        |\n\n**Notes:**\n- If you provide your local time, make sure you include your timezone offset.\n- Dates will be returned in UTC.\n- Although ISO standard dates support providing only the date portion, to avoid confusion it is recommended you always pass full date and time for the `Date_Range.To` object. If no time is provided, the default `00:00:00.000000` time is assumed.\n\n# Pagination\nA maximum of 500 results will be returned for calls to this endpoint. If you receive a `Total` that is larger than the `Count`, you should repeat the call but with `Date_Range.From` set to the returned `Last_App_Dt`, to get the rest of the applications. You may need to do this multiple times to get all of the available applications.\n\n# Duplicate applications\nIt is possible to receive the same application in different date ranges. It's important that you handle this accordingly.\n\nThere are two reasons this happens: \n1. When applications are changed in some way, their `Modify_Dt` will change, making them applicable for different date ranges. \n2. If your search returns more than the maximum number of results, when the results are returned paginated you may have the last application of your _first_ call appear as the first of your _second_ call. See the example below.\n\n| App | Modify_Dt | Returned in    |\n|-----|-----------|----------------|\n| A   | 1         | Call 1         |\n| B   | 2         | Call 1         |\n| C   | 2         | Call 1         |\n| D   | 2         | Call 1         |\n| E   | 3         | Call 1, Call 2 |\n| F   | 3         |         Call 2 |\n| G   | 4         |         Call 2 |\n\n**Call 1 response**\n```\nCount: 5\nTotal: 7\nLast_App_Date: 3\n```\n\n**Call 2 request**\n```\nDate_Range.From: 3\n```\n\n**Call 2 response**\n```\nCount: 3\nTotal: 3\nLast_App_Date: 4\n```",
         "requestBody": {
           "content": {
             "application/json": {
