@@ -3,7 +3,7 @@
   "info": {
     "title": "Credit Sense API",
     "version": "2.0",
-    "description": "The Credit Sense API allows you to:\n- Create, manage, and send quick links.\n- Grant access permissions for applications to another Store.\n- Manage refresh authorities and trigger refreshes on existing applications.\n- Provide transaction data that we'll use to generate Credit Sense reports.\n- Retrieve existing Credit Sense reports.\n- Retrieve statistics on the number of applications completed.\n- Retrieve statuses and metadata for applications.\n- View and manage blacklisted applications.\n# Authentication\nEach call to the API requires:\n- **API key** - identifies your account; forms part of the request URL (https://api.creditsense.com.au/v2/{api-key}/{endpoint}).\n- **API token** - identifies your access to the API; included in the `Settings` object in your request body.\n\nIf you don't have your API credentials or you'd like them to be changed, please [contact us](mailto:support@creditsense.com.au).\n# Rate Limiting\nConnections to the API are limited to a maximum of ten (10) per minute. A 429 response code will be returned for API calls that exceed the limit.",
+    "description": "The Credit Sense API allows you to:\n- Create, manage, and send quick links.\n- Grant access permissions for applications to another Store.\n- Manage refresh authorities and trigger refreshes on existing applications.\n- Provide transaction data that we'll use to generate Credit Sense reports.\n- Retrieve existing Credit Sense reports.\n- Retrieve statistics on the number of applications completed.\n- Retrieve statuses and metadata for applications.\n- View and manage blacklisted applications.\n### Authentication\nEach call to the API requires:\n- **API key** - identifies your account; forms part of the request URL (https://api.creditsense.com.au/v2/{api-key}/{endpoint}).\n- **API token** - identifies your access to the API; included in the `Settings` object in your request body.\n\nIf you don't have your API credentials or you'd like them to be changed, please [contact us](mailto:support@creditsense.com.au).\n### Rate Limiting\nConnections to the API are limited to a maximum of ten (10) per minute. A 429 response code will be returned for API calls that exceed the limit.",
     "contact": {
       "name": "Credit Sense Support",
       "url": "https://creditsense.com.au/contact",
@@ -529,7 +529,7 @@
             }
           }
         },
-        "description": "### Overview\nTrigger a refresh for one or more existing applications.\n\nIn order to refresh the application successfully, the following requirements must be met:\n\n1. Valid API key and Token.\n2. Valid application ID provided.\n3. The Store of the refresh application needs to have a refresh Store assigned.\n4. The application needs a valid and active refresh authority.\n5. The Client of the refresh application needs to have a valid provider (e.g. Yodlee v12).\n6. The credential of the refresh application doesn't require MFA verification.\n\nWhen an application is refreshed as a priority, it will be processed first in the queue. Each Client has a certain number of applications which can be set as priority. If the number of priority applications reaches the limit, the system will ignore the \"priority\" settings and refresh the application as normal priority. The refresh limit can be defined at a Store level.\n\nIf the refresh is triggered on a completed application, the system will create a new application, otherwise, it will refresh the existing application.\n\nOnce a refresh is completed, an email and/or webhook call may be made, dependent on the Client and Store settings.\n\nFor code snippets to assist with your implementation, check out our [help docs](https://docs.creditsense.com.au).",
+        "description": "### Overview\nTrigger a refresh for one or more existing applications.\n\nIn order to refresh the application successfully, the following requirements must be met:\n\n1. Valid API key and Token.\n2. Valid application ID provided.\n3. The Store of the refresh application needs to have a refresh Store assigned.\n4. The application needs a valid and active refresh authority.\n5. The Client of the refresh application needs to have a valid provider (e.g. Yodlee v12).\n6. The credential of the refresh application doesn't require MFA verification.\n\nWhen an application is refreshed as a priority, it will be processed first in the queue. Each Client has a certain number of applications which can be set as priority. If the number of priority applications reaches the limit, the system will ignore the \"priority\" settings and refresh the application as normal priority. The refresh limit can be defined at a Store level.\n\nIf the refresh is triggered on a completed application, the system will create a new application, otherwise, it will refresh the existing application.\n\nOnce a refresh is completed, an email and/or webhook call may be made, dependent on the Client and Store settings.\n\nFor code snippets to assist with your implementation, check out our [help docs](https://docs.creditsense.com.au).\n\n### Raising errors during testing",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1076,7 +1076,7 @@
             }
           }
         },
-        "description": "### Overview\nTrigger a cancellation on one or more refresh applications.",
+        "description": "### Overview\nTrigger a cancellation on one or more refresh applications.\n\n### Raising errors during testing",
         "tags": [
           "Refresh"
         ],
@@ -1603,7 +1603,7 @@
             }
           }
         },
-        "description": "### Overview\nSet the active refresh authority on one or more applications as inactive and cancel the refresh on the applications.",
+        "description": "### Overview\nSet the active refresh authority on one or more applications as inactive and cancel the refresh on the applications.\n\n### Raising errors during testing",
         "tags": [
           "Refresh"
         ],
@@ -2130,7 +2130,7 @@
             }
           }
         },
-        "description": "### Overview\nTrigger a renewal on the authority of the applications provided.\n\n**This endpoint is disabled by default. [Contact us](mailto:support@creditsense.com.au) for more information.**",
+        "description": "### Overview\nTrigger a renewal on the authority of the applications provided.\n\n**This endpoint is disabled by default. [Contact us](mailto:support@creditsense.com.au) for more information.**\n\n### Raising errors during testing",
         "tags": [
           "Refresh"
         ],
@@ -2467,7 +2467,7 @@
           },
           "description": ""
         },
-        "description": "### Overview\nRetrieve reports in the requested formats for a specified application.",
+        "description": "### Overview\nRetrieve reports in the requested formats for a specified application.\n\n### Raising errors during testing",
         "tags": [
           "General"
         ],
@@ -2652,17 +2652,35 @@
                         "Error_Code": {
                           "type": "number",
                           "description": "The code that identifies the error.",
-                          "example": 101
+                          "enum": [
+                            1,
+                            99,
+                            100,
+                            101,
+                            102
+                          ]
                         },
                         "Error_Type": {
                           "type": "string",
                           "description": "Denotes the type of error encountered.",
-                          "example": "Invalid Post"
+                          "enum": [
+                            "Data Error",
+                            "Unknown Error",
+                            "Database Connectivity",
+                            "Invalid Post",
+                            "Authentication failure"
+                          ]
                         },
                         "Error_Description": {
                           "type": "string",
                           "description": "Describes the error.",
-                          "example": "Missing Post Variables App_ID or App_Ref is required"
+                          "enum": [
+                            "Invalid Credit Sense Application or not authorised to get status of application",
+                            "Unknown Error",
+                            "We are unable to connect to the database at this time",
+                            "Missing post parameters. (The missing parameters will be listed)",
+                            "Invalid API_Key or API_Token"
+                          ]
                         }
                       },
                       "required": [
@@ -2685,7 +2703,7 @@
         "tags": [
           "General"
         ],
-        "description": "**This endpoint has been deprecated. Use `/app/search` instead.**",
+        "description": "### Endpoint deprecated\n**This endpoint has been deprecated. Use `/app/search` instead.**",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3172,7 +3190,7 @@
               }
             }
           },
-          "description": ""
+          "description": "### Raising errors during testing\n| Error code | Error type             | Error description                                                |\n|------------|------------------------|------------------------------------------------------------------|\n| 1          | Data Error             | Invalid date format. ISO 8601 Standard dates must be provided.   |\n| 99         | Unknown Error          | Unknown Error                                                    |\n| 100        | Database Connectivity  | We are unable to connect to the database at this time            |\n| 101        | Invalid Post           | Missing post parameters. (The missing parameters will be listed) |\n| 102        | Authentication failure | Invalid API_Key or API_Token                                     |"
         },
         "parameters": [
           {
@@ -3306,7 +3324,7 @@
             "description": "Invalid Post"
           }
         },
-        "description": "### Overview\nRetrieve statistics on the number of applications completed.",
+        "description": "### Overview\nRetrieve statistics on the number of applications completed.\n\n### Raising errors during testing",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3436,7 +3454,7 @@
             "description": "Invalid Post"
           }
         },
-        "description": "### Overview\nGrant access permissions for applications to another Store.\nTransfers are only permitted to Stores within the same Client Group.",
+        "description": "### Overview\nGrant access permissions for applications to another Store.\nTransfers are only permitted to Stores within the same Client Group.\n\n### Raising errors during testing",
         "tags": [
           "General"
         ],
@@ -3705,7 +3723,7 @@
               }
             }
           },
-          "description": ""
+          "description": "### Raising errors during testing\n| Error code | Error type             | Error description                                                |\n|------------|------------------------|------------------------------------------------------------------|\n| 1          | Data Error             | Invalid Credit Sense AppID or not authorised for AppID           |\n| 2          | Data Error             | Invalid Blacklist Code or not authorised for Blacklist           |\n| 99         | Unknown Error          | Unknown Error                                                    |\n| 100        | Database Connectivity  | We are unable to connect to the database at this time            |\n| 101        | Invalid Post           | Missing post parameters. (The missing parameters will be listed) |\n| 102        | Authentication failure | Invalid API_Key or API_Token                                     |"
         },
         "tags": [
           "Blacklist applicants"
@@ -3785,17 +3803,37 @@
                         "Error_Code": {
                           "type": "number",
                           "description": "The code that identifies the error.",
-                          "example": 2
+                          "enum": [
+                            1,
+                            2,
+                            99,
+                            100,
+                            101,
+                            102
+                          ]
                         },
                         "Error_Type": {
                           "type": "string",
                           "description": "Denotes the type of error encountered.",
-                          "example": "Data Error"
+                          "enum": [
+                            "Data Error",
+                            "Unknown Error",
+                            "Database Connectivity",
+                            "Invalid Post",
+                            "Authentication failure"
+                          ]
                         },
                         "Error_Description": {
                           "type": "string",
                           "description": "Describes the error.",
-                          "example": "Invalid Blacklist Code or not authorised for Blacklist"
+                          "enum": [
+                            "Invalid Credit Sense AppID or not authorised for AppID",
+                            "Invalid Blacklist Code or not authorised for Blacklist",
+                            "Unknown Error",
+                            "We are unable to connect to the database at this time",
+                            "Missing post parameters. (The missing parameters will be listed)",
+                            "Invalid API_Key or API_Token"
+                          ]
                         }
                       },
                       "required": [
@@ -3874,7 +3912,7 @@
               }
             }
           },
-          "description": ""
+          "description": "### Raising errors during testing\n| Error code | Error type             | Error description                                                |\n|------------|------------------------|------------------------------------------------------------------|\n| 1          | Data Error             | Invalid Credit Sense AppID or not authorised for AppID           |\n| 2          | Data Error             | Invalid Blacklist Code or not authorised for Blacklist           |\n| 99         | Unknown Error          | Unknown Error                                                    |\n| 100        | Database Connectivity  | We are unable to connect to the database at this time            |\n| 101        | Invalid Post           | Missing post parameters. (The missing parameters will be listed) |\n| 102        | Authentication failure | Invalid API_Key or API_Token                                     |"
         },
         "tags": [
           "Blacklist applicants"
@@ -3959,17 +3997,36 @@
                         "Error_Code": {
                           "type": "number",
                           "description": "The code that identifies the error.",
-                          "example": 2
+                          "enum": [
+                            2,
+                            99,
+                            100,
+                            101,
+                            102
+                          ]
                         },
                         "Error_Type": {
                           "type": "string",
                           "description": "Denotes the type of error encountered.",
-                          "example": "Data Error"
+                          "enum": [
+                            "Data Error",
+                            "Unknown Error",
+                            "Database Connectivity",
+                            "Invalid Post",
+                            "Authentication failure"
+                          ]
                         },
                         "Error_Description": {
                           "type": "string",
                           "description": "Describes the error.",
-                          "example": "Invalid Blacklist Code or not authorised for Blacklist"
+                          "example": "Invalid Blacklist Code or not authorised for Blacklist",
+                          "enum": [
+                            "Invalid Blacklist Code or not authorised for Blacklist",
+                            "Unknown Error",
+                            "We are unable to connect to the database at this time",
+                            "Missing post parameters. (The missing parameters will be listed)",
+                            "Invalid API_Key or API_Token"
+                          ]
                         }
                       },
                       "required": [
@@ -4032,7 +4089,7 @@
               }
             }
           },
-          "description": ""
+          "description": "### Raising errors during testing\n| Error code | Error type             | Error description                                                |\n|------------|------------------------|------------------------------------------------------------------|\n| 2          | Data Error             | Invalid Blacklist Code or not authorised for Blacklist           |\n| 99         | Unknown Error          | Unknown Error                                                    |\n| 100        | Database Connectivity  | We are unable to connect to the database at this time            |\n| 101        | Invalid Post           | Missing post parameters. (The missing parameters will be listed) |\n| 102        | Authentication failure | Invalid API_Key or API_Token                                     |"
         },
         "tags": [
           "Blacklist applicants"
@@ -4520,7 +4577,8 @@
                 ]
               }
             }
-          }
+          },
+          "description": "### Raising errors during testing\n| HTTP status codes | Error code | Error type            | Error description                                                                                                               |\n|-------------------|------------|-----------------------|---------------------------------------------------------------------------------------------------------------------------------|\n| 400               | 400        | Bad Request           | The server cannot or will not process the request due to an apparent client error.                                              |\n|                   | 400.1      | Bad Request           | The request could not be correctly parsed due to syntax error or missing the required data.                                     |\n|                   | 400.2      | Bad Request           | Empty post body.                                                                                                                |\n| 401               | 401        | Unauthorized          | Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided. |\n|                   | 401.1      | Unauthorized          | Invalid API key.                                                                                                                |\n|                   | 401.2      | Unauthorized          | Invalid API token.                                                                                                              |\n|                   | 401.3      | Unauthorized          | Invalid API key/token.                                                                                                          |\n| 403               | 403        | Forbidden             | Access denied.                                                                                                                  |\n| 422               | 422        | Unprocessable Entity  | The request was well-formed but was unable to be followed due to semantic errors.                                               |\n|                   | 422.2      | Unprocessable Entity  | The raise error code is not found.                                                                                              |\n|                   | 422.3      | Unprocessable Entity  | Quick link does not exist or is expired.                                                                                        |\n|                   | 422.4      | Unprocessable Entity  | The store code provided is not valid                                                                                            |\n|                   | 422.5      | Unprocessable Entity  | Unique AppRef already exists                                                                                                    |\n| 429               | 429        | Too Many Requests     | API calls exceed a maximum of calls per minute limit.                                                                           |\n| 500               | 500        | Internal server error | Internal server error.                                                                                                          |\n| 501               | 501        | Not Implemented       | Invalid command.                                                                                                                |\n| 503               | 503.1      | Service Unavailable   | Unable to service your request at this time. Please try again later.                                                            |"
         },
         "tags": [
           "Quick links"
@@ -4844,7 +4902,7 @@
             }
           }
         },
-        "description": "### Overview\nCreate a quick link.",
+        "description": "### Overview\nCreate a quick link.\n\n### Raising errors during testing",
         "parameters": [
           {
             "schema": {
@@ -4928,7 +4986,8 @@
                 ]
               }
             }
-          }
+          },
+          "description": "### Raising errors during testing\n| HTTP status codes | Error code | Error type            | Error description                                                                                                               |\n|-------------------|------------|-----------------------|---------------------------------------------------------------------------------------------------------------------------------|\n| 400               | 400        | Bad Request           | The server cannot or will not process the request due to an apparent client error.                                              |\n|                   | 400.1      | Bad Request           | The request could not be correctly parsed due to syntax error or missing the required data.                                     |\n|                   | 400.2      | Bad Request           | Empty post body.                                                                                                                |\n| 401               | 401        | Unauthorized          | Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided. |\n|                   | 401.1      | Unauthorized          | Invalid API key.                                                                                                                |\n|                   | 401.2      | Unauthorized          | Invalid API token.                                                                                                              |\n|                   | 401.3      | Unauthorized          | Invalid API key/token.                                                                                                          |\n| 403               | 403        | Forbidden             | Access denied.                                                                                                                  |\n| 422               | 422        | Unprocessable Entity  | The request was well-formed but was unable to be followed due to semantic errors.                                               |\n|                   | 422.2      | Unprocessable Entity  | The raise error code is not found.                                                                                              |\n|                   | 422.3      | Unprocessable Entity  | Quick link does not exist or is expired.                                                                                        |\n|                   | 422.4      | Unprocessable Entity  | The store code provided is not valid                                                                                            |\n|                   | 422.5      | Unprocessable Entity  | Unique AppRef already exists                                                                                                    |\n| 429               | 429        | Too Many Requests     | API calls exceed a maximum of calls per minute limit.                                                                           |\n| 500               | 500        | Internal server error | Internal server error.                                                                                                          |\n| 501               | 501        | Not Implemented       | Invalid command.                                                                                                                |\n| 503               | 503.1      | Service Unavailable   | Unable to service your request at this time. Please try again later.                                                            |"
         },
         "tags": [
           "Quick links"
@@ -5252,7 +5311,7 @@
             }
           }
         },
-        "description": "### Overview\nRequest the specified quick link be sent to the provided cell/mobile number.",
+        "description": "### Overview\nRequest the specified quick link be sent to the provided cell/mobile number.\n\n### Raising errors during testing",
         "parameters": [
           {
             "schema": {
@@ -5320,7 +5379,8 @@
                 ]
               }
             }
-          }
+          },
+          "description": "### Raising errors during testing\n| HTTP status codes | Error code | Error type            | Error description                                                                                                               |\n|-------------------|------------|-----------------------|---------------------------------------------------------------------------------------------------------------------------------|\n| 400               | 400        | Bad Request           | The server cannot or will not process the request due to an apparent client error.                                              |\n|                   | 400.1      | Bad Request           | The request could not be correctly parsed due to syntax error or missing the required data.                                     |\n|                   | 400.2      | Bad Request           | Empty post body.                                                                                                                |\n| 401               | 401        | Unauthorized          | Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided. |\n|                   | 401.1      | Unauthorized          | Invalid API key.                                                                                                                |\n|                   | 401.2      | Unauthorized          | Invalid API token.                                                                                                              |\n|                   | 401.3      | Unauthorized          | Invalid API key/token.                                                                                                          |\n| 403               | 403        | Forbidden             | Access denied.                                                                                                                  |\n| 422               | 422        | Unprocessable Entity  | The request was well-formed but was unable to be followed due to semantic errors.                                               |\n|                   | 422.2      | Unprocessable Entity  | The raise error code is not found.                                                                                              |\n|                   | 422.3      | Unprocessable Entity  | Quick link does not exist or is expired.                                                                                        |\n|                   | 422.4      | Unprocessable Entity  | The store code provided is not valid                                                                                            |\n|                   | 422.5      | Unprocessable Entity  | Unique AppRef already exists                                                                                                    |\n| 429               | 429        | Too Many Requests     | API calls exceed a maximum of calls per minute limit.                                                                           |\n| 500               | 500        | Internal server error | Internal server error.                                                                                                          |\n| 501               | 501        | Not Implemented       | Invalid command.                                                                                                                |\n| 503               | 503.1      | Service Unavailable   | Unable to service your request at this time. Please try again later.                                                            |"
         },
         "tags": [
           "Quick links"
@@ -5644,7 +5704,7 @@
             }
           }
         },
-        "description": "### Overview\nRequest the specified quick link be sent to the provided email address.",
+        "description": "### Overview\nRequest the specified quick link be sent to the provided email address.\n\n### Raising errors during testing",
         "parameters": [
           {
             "schema": {
@@ -5712,7 +5772,8 @@
                 ]
               }
             }
-          }
+          },
+          "description": "### Raising errors during testing\n| HTTP status codes | Error code | Error type            | Error description                                                                                                               |\n|-------------------|------------|-----------------------|---------------------------------------------------------------------------------------------------------------------------------|\n| 400               | 400        | Bad Request           | The server cannot or will not process the request due to an apparent client error.                                              |\n|                   | 400.1      | Bad Request           | The request could not be correctly parsed due to syntax error or missing the required data.                                     |\n|                   | 400.2      | Bad Request           | Empty post body.                                                                                                                |\n| 401               | 401        | Unauthorized          | Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided. |\n|                   | 401.1      | Unauthorized          | Invalid API key.                                                                                                                |\n|                   | 401.2      | Unauthorized          | Invalid API token.                                                                                                              |\n|                   | 401.3      | Unauthorized          | Invalid API key/token.                                                                                                          |\n| 403               | 403        | Forbidden             | Access denied.                                                                                                                  |\n| 422               | 422        | Unprocessable Entity  | The request was well-formed but was unable to be followed due to semantic errors.                                               |\n|                   | 422.2      | Unprocessable Entity  | The raise error code is not found.                                                                                              |\n|                   | 422.3      | Unprocessable Entity  | Quick link does not exist or is expired.                                                                                        |\n|                   | 422.4      | Unprocessable Entity  | The store code provided is not valid                                                                                            |\n|                   | 422.5      | Unprocessable Entity  | Unique AppRef already exists                                                                                                    |\n| 429               | 429        | Too Many Requests     | API calls exceed a maximum of calls per minute limit.                                                                           |\n| 500               | 500        | Internal server error | Internal server error.                                                                                                          |\n| 501               | 501        | Not Implemented       | Invalid command.                                                                                                                |\n| 503               | 503.1      | Service Unavailable   | Unable to service your request at this time. Please try again later.                                                            |"
         },
         "tags": [
           "Quick links"
@@ -6036,7 +6097,7 @@
             }
           }
         },
-        "description": "### Overview\nExtend the expiration date of the specified quick link to the number of days from today specified in the environment configuration.",
+        "description": "### Overview\nExtend the expiration date of the specified quick link to the number of days from today specified in the environment configuration.\n\n### Raising errors during testing",
         "parameters": [
           {
             "schema": {
@@ -6092,7 +6153,8 @@
                 ]
               }
             }
-          }
+          },
+          "description": "### Raising errors during testing\n| HTTP status codes | Error code | Error type            | Error description                                                                                                               |\n|-------------------|------------|-----------------------|---------------------------------------------------------------------------------------------------------------------------------|\n| 400               | 400        | Bad Request           | The server cannot or will not process the request due to an apparent client error.                                              |\n|                   | 400.1      | Bad Request           | The request could not be correctly parsed due to syntax error or missing the required data.                                     |\n|                   | 400.2      | Bad Request           | Empty post body.                                                                                                                |\n| 401               | 401        | Unauthorized          | Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided. |\n|                   | 401.1      | Unauthorized          | Invalid API key.                                                                                                                |\n|                   | 401.2      | Unauthorized          | Invalid API token.                                                                                                              |\n|                   | 401.3      | Unauthorized          | Invalid API key/token.                                                                                                          |\n| 403               | 403        | Forbidden             | Access denied.                                                                                                                  |\n| 422               | 422        | Unprocessable Entity  | The request was well-formed but was unable to be followed due to semantic errors.                                               |\n|                   | 422.2      | Unprocessable Entity  | The raise error code is not found.                                                                                              |\n|                   | 422.3      | Unprocessable Entity  | Quick link does not exist or is expired.                                                                                        |\n|                   | 422.4      | Unprocessable Entity  | The store code provided is not valid                                                                                            |\n|                   | 422.5      | Unprocessable Entity  | Unique AppRef already exists                                                                                                    |\n| 429               | 429        | Too Many Requests     | API calls exceed a maximum of calls per minute limit.                                                                           |\n| 500               | 500        | Internal server error | Internal server error.                                                                                                          |\n| 501               | 501        | Not Implemented       | Invalid command.                                                                                                                |\n| 503               | 503.1      | Service Unavailable   | Unable to service your request at this time. Please try again later.                                                            |"
         },
         "tags": [
           "Quick links"
@@ -6416,7 +6478,7 @@
             }
           }
         },
-        "description": "### Overview\nExpire the specified quick link by setting the expiry date as today's date.",
+        "description": "### Overview\nExpire the specified quick link by setting the expiry date as today's date.\n\n### Raising errors during testing",
         "parameters": [
           {
             "schema": {
@@ -6474,7 +6536,8 @@
                 ]
               }
             }
-          }
+          },
+          "description": "### Raising errors during testing\n| HTTP status codes | Error code | Error type            | Error description                                                                                                               |\n|-------------------|------------|-----------------------|---------------------------------------------------------------------------------------------------------------------------------|\n| 400               | 400        | Bad Request           | The server cannot or will not process the request due to an apparent client error.                                              |\n|                   | 400.1      | Bad Request           | The request could not be correctly parsed due to syntax error or missing the required data.                                     |\n|                   | 400.2      | Bad Request           | Empty post body.                                                                                                                |\n| 401               | 401        | Unauthorized          | Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided. |\n|                   | 401.1      | Unauthorized          | Invalid API key.                                                                                                                |\n|                   | 401.2      | Unauthorized          | Invalid API token.                                                                                                              |\n|                   | 401.3      | Unauthorized          | Invalid API key/token.                                                                                                          |\n| 403               | 403        | Forbidden             | Access denied.                                                                                                                  |\n| 422               | 422        | Unprocessable Entity  | The request was well-formed but was unable to be followed due to semantic errors.                                               |\n|                   | 422.2      | Unprocessable Entity  | The raise error code is not found.                                                                                              |\n|                   | 422.3      | Unprocessable Entity  | Quick link does not exist or is expired.                                                                                        |\n|                   | 422.4      | Unprocessable Entity  | The store code provided is not valid                                                                                            |\n|                   | 422.5      | Unprocessable Entity  | Unique AppRef already exists                                                                                                    |\n| 429               | 429        | Too Many Requests     | API calls exceed a maximum of calls per minute limit.                                                                           |\n| 500               | 500        | Internal server error | Internal server error.                                                                                                          |\n| 501               | 501        | Not Implemented       | Invalid command.                                                                                                                |\n| 503               | 503.1      | Service Unavailable   | Unable to service your request at this time. Please try again later.                                                            |"
         },
         "tags": [
           "Quick links"
@@ -6870,7 +6933,7 @@
             }
           }
         },
-        "description": "### Overview\nRetrieve details for a quick link that matches your search criteria.",
+        "description": "### Overview\nRetrieve details for a quick link that matches your search criteria.\n\n### Raising errors during testing",
         "parameters": [
           {
             "schema": {
@@ -6928,7 +6991,8 @@
                 ]
               }
             }
-          }
+          },
+          "description": "### Raising errors during testing\n| HTTP status codes | Error code | Error type            | Error description                                                                                                               |\n|-------------------|------------|-----------------------|---------------------------------------------------------------------------------------------------------------------------------|\n| 400               | 400        | Bad Request           | The server cannot or will not process the request due to an apparent client error.                                              |\n|                   | 400.1      | Bad Request           | The request could not be correctly parsed due to syntax error or missing the required data.                                     |\n|                   | 400.2      | Bad Request           | Empty post body.                                                                                                                |\n| 401               | 401        | Unauthorized          | Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided. |\n|                   | 401.1      | Unauthorized          | Invalid API key.                                                                                                                |\n|                   | 401.2      | Unauthorized          | Invalid API token.                                                                                                              |\n|                   | 401.3      | Unauthorized          | Invalid API key/token.                                                                                                          |\n| 403               | 403        | Forbidden             | Access denied.                                                                                                                  |\n| 422               | 422        | Unprocessable Entity  | The request was well-formed but was unable to be followed due to semantic errors.                                               |\n|                   | 422.2      | Unprocessable Entity  | The raise error code is not found.                                                                                              |\n|                   | 422.3      | Unprocessable Entity  | Quick link does not exist or is expired.                                                                                        |\n|                   | 422.4      | Unprocessable Entity  | The store code provided is not valid                                                                                            |\n|                   | 422.5      | Unprocessable Entity  | Unique AppRef already exists                                                                                                    |\n| 429               | 429        | Too Many Requests     | API calls exceed a maximum of calls per minute limit.                                                                           |\n| 500               | 500        | Internal server error | Internal server error.                                                                                                          |\n| 501               | 501        | Not Implemented       | Invalid command.                                                                                                                |\n| 503               | 503.1      | Service Unavailable   | Unable to service your request at this time. Please try again later.                                                            |"
         },
         "tags": [
           "Quick links"
@@ -6995,15 +7059,16 @@
                   }
                 }
               }
-            }
+            },
+            "headers": {}
           },
           "404": {
             "description": "Not Found"
           }
         },
-        "description": "### Overview\nCreate an application for a supported financial institution by passing in the required account data, transaction data, and metadata.",
+        "description": "### Overview\nCreate an application using data from a supported third-party.\n\nReasons to use this endpoint:\n- Submit a customer's bank data in one of our supported custom formats to create a Credit Sense application.",
         "tags": [
-          "Credit Sense Analysis Service (CSAS)"
+          "Credit Sense Analysis Service"
         ],
         "parameters": [
           {
@@ -7036,8 +7101,23 @@
                       },
                       "Raise_Error": {
                         "type": "integer",
-                        "example": 4,
-                        "description": "The error code you specify will be returned in the response. \nThis is used for testing purposes only."
+                        "description": "The error code you specify will be returned in the response. \nThis is used for testing purposes only.",
+                        "enum": [
+                          0,
+                          1,
+                          2,
+                          3,
+                          4,
+                          5,
+                          6,
+                          7,
+                          8,
+                          9,
+                          10,
+                          11,
+                          12,
+                          100
+                        ]
                       }
                     }
                   },
@@ -7053,7 +7133,7 @@
               }
             }
           },
-          "description": ""
+          "description": "### Raising errors during testing\n| Error code | Error type             | Error description                                     |\n|------------|------------------------|-------------------------------------------------------|\n| 0          | Authentication failure | Invalid API_Key or API_Token                          |\n| 1          | Invalid XML            | No or multiple application data found                 |\n| 2          | Invalid XML            | No source data found                                  |\n| 3          | Invalid XML            | No account data found                                 |\n| 4          | Authentication failure | Authentication failure, invalid ClientCode            |\n| 5          | Invalid Data           | Reference provided already exists                     |\n| 6          | Invalid Data           | Invalid sourceTypeID                                  |\n| 7          | Invalid Data           | Invalid accountType                                   |\n| 8          | Invalid Data           | Invalid transaction type (must be credit/debit)       |\n| 9          | Invalid Data           | Application failed to add                             |\n| 10         | Invalid Data           | Source failed to add                                  |\n| 11         | Invalid Data           | Account failed to add                                 |\n| 12         | Invalid Data           | Transactions failed to add                            |\n| 100        | Database Connectivity  | We are unable to connect to the database at this time |"
         }
       }
     },
@@ -7170,9 +7250,9 @@
             "description": "Invalid Post"
           }
         },
-        "description": "### Overview\nCreate an application using data from a supported third-party.",
+        "description": "### Overview\nCreate an application using data from a supported third-party.\n\nReasons to use this endpoint:\n- Submit a customer's bank data in one of our supported custom formats to create a Credit Sense application.",
         "tags": [
-          "Credit Sense Analysis Service (CSAS)"
+          "Credit Sense Analysis Service"
         ],
         "parameters": [
           {
@@ -7254,7 +7334,7 @@
               }
             }
           },
-          "description": ""
+          "description": "### Raising errors during testing\n| Error code | Error type             | Error description                                                |\n|------------|------------------------|------------------------------------------------------------------|\n| 1          | Data Error             | There was an error in processing.                                |\n| 99         | Unknown Error          | Unknown Error                                                    |\n| 100        | Database Connectivity  | We are unable to connect to the database at this time            |\n| 101        | Invalid Post           | Missing post parameters. (The missing parameters will be listed) |\n| 102        | Authentication failure | Invalid API_Key or API_Token                                     |"
         }
       }
     }
@@ -7280,7 +7360,7 @@
       "description": "Manage refresh authorities and trigger refreshes on existing applications."
     },
     {
-      "name": "Credit Sense Analysis Service (CSAS)",
+      "name": "Credit Sense Analysis Service",
       "description": "Provide transaction data that we'll use to generate Credit Sense reports."
     },
     {
