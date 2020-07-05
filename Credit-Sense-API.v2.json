@@ -1112,6 +1112,16 @@
         "tags": [
           "Refresh"
         ],
+	      "x-codeSamples": [
+          {
+            "lang": "C#",
+            "source": ""
+          },
+          {
+            "lang": "PHP",
+            "source": ""
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1668,6 +1678,26 @@
         "tags": [
           "Refresh"
         ],
+	      "x-codeSamples": [
+          {
+            "lang": "C#",
+            "source": ""
+          },
+          {
+            "lang": "PHP",
+            "source": ""
+          }
+        ],
+	      "x-codeSamples": [
+          {
+            "lang": "C#",
+            "source": ""
+          },
+          {
+            "lang": "PHP",
+            "source": ""
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2223,6 +2253,16 @@
         "description": "### Overview\nTrigger a renewal on the authority of the applications provided.\n\n**This endpoint is disabled by default. [Contact us](mailto:support@creditsense.com.au) for more information.**\n\nReasons to use this endpoint:\n- ???\n\n### Requirements\nIn order to extend the expiration date for a refresh authority on an application, the following requirements must be met:\n\n1. A valid App ID must be provided.\n2. The application needs a valid and active refresh authority assigned.\n3. The refresh authority was not revoked by the customer.\n\n### Code samples\n#### PHP\n```\n// this is some example code to implement a renew authority in PHP\npublic function OnRenewAuthority(){\n    try {\n        // credit sense api request url\n        $apiUrl = 'https://api.creditsense.com.au';\n \n        // credit sense api details (replace with your details, listed at ...)\n        $apiKey = 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX';\n        $apiToken = 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX';\n \n        // set up the application details to be refreshed\n        $apps = array();\n \n        // first application information\n        $app1 = array('App_ID' => \"1234567\");\n        array_push($apps, $app1);\n \n        // repeat the first example to set up multiple applications if this is required\n        $app2 = array('App_ID' => \"12345678\");\n        array_push($apps, $app2);\n \n        // do the new authority api call to renew the authority of the applications\n        $postFields = array(\n            'Settings' => array('API_Token' => $apiToken),\n            'Payload' => array('Apps' => $apps)\n        );\n \n        // curl action\n        $curl = curl_init($apiUrl . '/v2/' . $apiKey . '/refresh/renewAuthority');\n        curl_setopt($curl, CURLOPT_POST, true);\n        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);\n        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postFields));\n \n        $result = curl_exec($curl);\n        curl_close($curl);\n \n        $result = json_decode($result, true);\n        print_r($result);\n \n        // renew authority successfully\n        if ($result && $result['Response'] && count($result['Response']) > 0 && !$result['Error_Response']) {\n            echo 'OK';\n        } else {\n \n            // check applications with success status\n            if ($result && $result['Response'] && count($result['Response']) > 0){\n                foreach ($result['Response'] as $app) {\n                    // retrieve details from the response\n                    $appId = $app[\"App_ID\"];\n                    $appRef = $app[\"App_Ref\"];\n                    $isPriority = $app[\"Is_Priority\"];\n                    $isNewApp = $app[\"Is_New_App\"];\n                    $existingAppId = $app[\"Existing_App_ID\"];\n \n                    echo \"done: \" . $appId . \"<br>\";\n                }\n            }\n \n            // check applications with error status\n            if ($result && $result['Error_Response']){\n                // retrieve details from the response\n                $errorCode = $result['Error_Response'][\"Error_Code\"];\n                $errorType = $result['Error_Response'][\"Error_Type\"];\n                $errorDescription = $result['Error_Response'][\"Error_Description\"];\n                echo \"error: \" . $errorCode . \"<br>\";\n \n                // get applications which is failed to refresh\n                if($result['Error_Response']['Apps'] && count($result['Error_Response']['Apps']) > 0){\n                    foreach ($result['Error_Response']['Apps'] as $app) {\n                        // retrieve details from the response\n                        $appId = $app[\"App_ID\"];\n \n                        echo \"failed: \" . $appId . \"<br>\";\n                    }\n                }\n \n            }\n \n            // log the error on your end so that you have visibility\n            $this->logFailedApiCall($result);\n \n        }\n \n    }catch(\\Exception $e){\n        // log the error on your end so that you have visibility\n        $this->logFailedRefresh($e);\n \n        echo $e->getMessage();\n    }\n}\n```\n\n#### ASP.NET (C#)\n```\nusing System;\nusing System.Collections.Generic;\nusing System.IO;\nusing System.Net;\nusing System.Runtime.Serialization.Json;\nusing System.Text;\nusing System.Threading.Tasks;\n \n//please add the above library references to your porject if they are not included yet.\n \nnamespace API\n{\n    public class RefreshCall\n    {\n        /// <summary>\n        /// this is an example to renew authority of the applications via API call (c#)\n        /// </summary>\n        public static async Task<RootObject> RenewAuthority()\n        {\n            RootObject result = null;\n \n            // credit sense api request url\n            string api_url = \"https://api.creditsense.com.au\";\n \n            // your credential information here\n            string api_key = \"XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX\";\n            string api_token = \"XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX\";\n \n            //api url and post body/parameters\n            string URL = api_url + \"/v2/\" + api_key + \"/refresh/renewAuthority\";\n            string postBody = \"{\\\"Settings\\\" : {\\\"API_Token\\\":\\\"\" + api_token + \"\\\"},\\\"Payload\\\" : {\\\"Apps\\\" :[\";\n            postBody += \"{\\\"App_ID\\\":\\\"1234567\\\"},\";    // application to be refresh\n            postBody += \"{\\\"App_ID\\\":\\\"12345678\\\"}\";   // application to be refresh\n            postBody += \"]}}\";\n \n            HttpWebRequest apirptreq = (HttpWebRequest)WebRequest.Create(URL);\n            apirptreq.ContentType = \"application/json\";\n            apirptreq.Method = \"POST\";\n \n            byte[] postString = Encoding.UTF8.GetBytes(postBody);\n \n            apirptreq.ContentLength = postString.Length;\n            Stream jsonStream = apirptreq.GetRequestStream();\n \n            jsonStream.Write(postString, 0, postString.Length);\n            jsonStream.Close();\n \n            // get response\n            HttpWebResponse apirsp;\n            try\n            {\n                // http status with 200\n                apirsp = (HttpWebResponse)apirptreq.GetResponse();\n            }\n            catch (WebException ex)\n            {\n                apirsp = (HttpWebResponse)(ex.Response);\n            }\n \n            using (Stream jsonRspStream = apirsp.GetResponseStream())\n            {\n                string responseStr = null;\n \n                using (StreamReader reader = new StreamReader(jsonRspStream))\n                {\n                    \n                    responseStr = reader.ReadToEnd();\n \n                    var serializer = new DataContractJsonSerializer(typeof(RootObject));\n                    var ms = new MemoryStream(Encoding.UTF8.GetBytes(responseStr));\n                    //get the return json object if reaching this point\n                    var data = (RootObject)serializer.ReadObject(ms);\n \n                    // you can work throught the result here\n                    if (data != null && data.Response != null && data.Response.Count > 0 && data.Error_Response == null) {\n                        //renew authority successfully\n                        System.Diagnostics.Debug.WriteLine(\"OK\");\n                    }else{\n                        // check applications with success status\n                        if (data != null && data.Response != null && data.Response.Count > 0) {\n                            foreach (AppSuccess app in data.Response)\n                            {\n                                //you can access application data here,\n                                System.Diagnostics.Debug.WriteLine(\"success:\"+app.App_ID);\n                            }\n                        }\n \n                        // check applications with error status\n                        if (data != null && data.Error_Response != null)\n                        {\n                            Console.Write(data.Error_Response.Error_Code);\n                            if (data.Error_Response.Apps != null && data.Error_Response.Apps.Count > 0)\n                            {\n                                foreach (AppFail app in data.Error_Response.Apps)\n                                {\n                                    //you can access fail application data here,\n                                    System.Diagnostics.Debug.WriteLine(\"fail:\" + app.App_ID);\n                                }\n                            }\n                        }\n \n                        // log the error on your end so that you have visibility\n                        System.Diagnostics.Debug.WriteLine(data);\n                    }\n                }\n            }\n \n            return result;\n        }\n \n        // the below classes are generate to match the api return json\n \n        /// <summary>\n        /// return resonse object\n        /// </summary>\n        public class AppSuccess\n        {\n            public int App_ID { get; set; }\n        }\n \n        /// <summary>\n        /// return application object\n        /// </summary>\n        public class AppFail\n        {\n            public int App_ID { get; set; }\n            public int Error_Code { get; set; }\n            public string Error_Type { get; set; }\n            public string Error_Description { get; set; }\n        }\n \n        /// <summary>\n        /// return error resonse object\n        /// </summary>\n        public class ErrorResponse\n        {\n            public int Error_Code { get; set; }\n            public string Error_Type { get; set; }\n            public string Error_Description { get; set; }\n            public List<AppFail> Apps { get; set; }\n        }\n \n        /// <summary>\n        /// return json object - root level\n        /// </summary>\n        public class RootObject\n        {\n            public List<AppSuccess> Response { get; set; }\n            public ErrorResponse Error_Response { get; set; }\n        }\n    }\n}\n```",
         "tags": [
           "Refresh"
+        ],
+	      "x-codeSamples": [
+          {
+            "lang": "C#",
+            "source": "\nusing System;\nusing System.Collections.Generic;\nusing System.IO;\nusing System.Net;\nusing System.Runtime.Serialization.Json;\nusing System.Text;\nusing System.Threading.Tasks;\n \n//please add the above library references to your porject if they are not included yet.\n \nnamespace API\n{\n    public class RefreshCall\n    {\n        /// <summary>\n        /// this is an example to renew authority of the applications via API call (c#)\n        /// </summary>\n        public static async Task<RootObject> RenewAuthority()\n        {\n            RootObject result = null;\n \n            // credit sense api request url\n            string api_url = \"https://api.creditsense.com.au\";\n \n            // your credential information here\n            string api_key = \"XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX\";\n            string api_token = \"XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX\";\n \n            //api url and post body/parameters\n            string URL = api_url + \"/v2/\" + api_key + \"/refresh/renewAuthority\";\n            string postBody = \"{\\\"Settings\\\" : {\\\"API_Token\\\":\\\"\" + api_token + \"\\\"},\\\"Payload\\\" : {\\\"Apps\\\" :[\";\n            postBody += \"{\\\"App_ID\\\":\\\"1234567\\\"},\";    // application to be refresh\n            postBody += \"{\\\"App_ID\\\":\\\"12345678\\\"}\";   // application to be refresh\n            postBody += \"]}}\";\n \n            HttpWebRequest apirptreq = (HttpWebRequest)WebRequest.Create(URL);\n            apirptreq.ContentType = \"application/json\";\n            apirptreq.Method = \"POST\";\n \n            byte[] postString = Encoding.UTF8.GetBytes(postBody);\n \n            apirptreq.ContentLength = postString.Length;\n            Stream jsonStream = apirptreq.GetRequestStream();\n \n            jsonStream.Write(postString, 0, postString.Length);\n            jsonStream.Close();\n \n            // get response\n            HttpWebResponse apirsp;\n            try\n            {\n                // http status with 200\n                apirsp = (HttpWebResponse)apirptreq.GetResponse();\n            }\n            catch (WebException ex)\n            {\n                apirsp = (HttpWebResponse)(ex.Response);\n            }\n \n            using (Stream jsonRspStream = apirsp.GetResponseStream())\n            {\n                string responseStr = null;\n \n                using (StreamReader reader = new StreamReader(jsonRspStream))\n                {\n                    \n                    responseStr = reader.ReadToEnd();\n \n                    var serializer = new DataContractJsonSerializer(typeof(RootObject));\n                    var ms = new MemoryStream(Encoding.UTF8.GetBytes(responseStr));\n                    //get the return json object if reaching this point\n                    var data = (RootObject)serializer.ReadObject(ms);\n \n                    // you can work throught the result here\n                    if (data != null && data.Response != null && data.Response.Count > 0 && data.Error_Response == null) {\n                        //renew authority successfully\n                        System.Diagnostics.Debug.WriteLine(\"OK\");\n                    }else{\n                        // check applications with success status\n                        if (data != null && data.Response != null && data.Response.Count > 0) {\n                            foreach (AppSuccess app in data.Response)\n                            {\n                                //you can access application data here,\n                                System.Diagnostics.Debug.WriteLine(\"success:\"+app.App_ID);\n                            }\n                        }\n \n                        // check applications with error status\n                        if (data != null && data.Error_Response != null)\n                        {\n                            Console.Write(data.Error_Response.Error_Code);\n                            if (data.Error_Response.Apps != null && data.Error_Response.Apps.Count > 0)\n                            {\n                                foreach (AppFail app in data.Error_Response.Apps)\n                                {\n                                    //you can access fail application data here,\n                                    System.Diagnostics.Debug.WriteLine(\"fail:\" + app.App_ID);\n                                }\n                            }\n                        }\n \n                        // log the error on your end so that you have visibility\n                        System.Diagnostics.Debug.WriteLine(data);\n                    }\n                }\n            }\n \n            return result;\n        }\n \n        // the below classes are generate to match the api return json\n \n        /// <summary>\n        /// return resonse object\n        /// </summary>\n        public class AppSuccess\n        {\n            public int App_ID { get; set; }\n        }\n \n        /// <summary>\n        /// return application object\n        /// </summary>\n        public class AppFail\n        {\n            public int App_ID { get; set; }\n            public int Error_Code { get; set; }\n            public string Error_Type { get; set; }\n            public string Error_Description { get; set; }\n        }\n \n        /// <summary>\n        /// return error resonse object\n        /// </summary>\n        public class ErrorResponse\n        {\n            public int Error_Code { get; set; }\n            public string Error_Type { get; set; }\n            public string Error_Description { get; set; }\n            public List<AppFail> Apps { get; set; }\n        }\n \n        /// <summary>\n        /// return json object - root level\n        /// </summary>\n        public class RootObject\n        {\n            public List<AppSuccess> Response { get; set; }\n            public ErrorResponse Error_Response { get; set; }\n        }\n    }\n}\n"
+          },
+          {
+            "lang": "PHP",
+            "source": "\n// this is some example code to implement a renew authority in PHP\npublic function OnRenewAuthority(){\n    try {\n        // credit sense api request url\n        $apiUrl = 'https://api.creditsense.com.au';\n \n        // credit sense api details (replace with your details, listed at ...)\n        $apiKey = 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX';\n        $apiToken = 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX';\n \n        // set up the application details to be refreshed\n        $apps = array();\n \n        // first application information\n        $app1 = array('App_ID' => \"1234567\");\n        array_push($apps, $app1);\n \n        // repeat the first example to set up multiple applications if this is required\n        $app2 = array('App_ID' => \"12345678\");\n        array_push($apps, $app2);\n \n        // do the new authority api call to renew the authority of the applications\n        $postFields = array(\n            'Settings' => array('API_Token' => $apiToken),\n            'Payload' => array('Apps' => $apps)\n        );\n \n        // curl action\n        $curl = curl_init($apiUrl . '/v2/' . $apiKey . '/refresh/renewAuthority');\n        curl_setopt($curl, CURLOPT_POST, true);\n        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);\n        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postFields));\n \n        $result = curl_exec($curl);\n        curl_close($curl);\n \n        $result = json_decode($result, true);\n        print_r($result);\n \n        // renew authority successfully\n        if ($result && $result['Response'] && count($result['Response']) > 0 && !$result['Error_Response']) {\n            echo 'OK';\n        } else {\n \n            // check applications with success status\n            if ($result && $result['Response'] && count($result['Response']) > 0){\n                foreach ($result['Response'] as $app) {\n                    // retrieve details from the response\n                    $appId = $app[\"App_ID\"];\n                    $appRef = $app[\"App_Ref\"];\n                    $isPriority = $app[\"Is_Priority\"];\n                    $isNewApp = $app[\"Is_New_App\"];\n                    $existingAppId = $app[\"Existing_App_ID\"];\n \n                    echo \"done: \" . $appId . \"<br>\";\n                }\n            }\n \n            // check applications with error status\n            if ($result && $result['Error_Response']){\n                // retrieve details from the response\n                $errorCode = $result['Error_Response'][\"Error_Code\"];\n                $errorType = $result['Error_Response'][\"Error_Type\"];\n                $errorDescription = $result['Error_Response'][\"Error_Description\"];\n                echo \"error: \" . $errorCode . \"<br>\";\n \n                // get applications which is failed to refresh\n                if($result['Error_Response']['Apps'] && count($result['Error_Response']['Apps']) > 0){\n                    foreach ($result['Error_Response']['Apps'] as $app) {\n                        // retrieve details from the response\n                        $appId = $app[\"App_ID\"];\n \n                        echo \"failed: \" . $appId . \"<br>\";\n                    }\n                }\n \n            }\n \n            // log the error on your end so that you have visibility\n            $this->logFailedApiCall($result);\n \n        }\n \n    }catch(\\Exception $e){\n        // log the error on your end so that you have visibility\n        $this->logFailedRefresh($e);\n \n        echo $e->getMessage();\n    }\n}\n"
+          }
         ],
         "requestBody": {
           "content": {
@@ -4719,13 +4759,13 @@
 	      "x-codeSamples": [
           {
             "lang": "C#",
-            "source": "PetStore.v1.Pet pet = new PetStore.v1.Pet();\npet.setApiKey(\"your api key\");\npet.petType = PetStore.v1.Pet.TYPE_DOG;\npet.name = \"Rex\";\n// set other fields\nPetStoreResponse response = pet.create();\nif (response.statusCode == HttpStatusCode.Created)\n{\n  // Successfully created\n}\nelse\n{\n  // Something wrong -- check response for errors\n  Console.WriteLine(response.getRawResponse());\n}\n"
+            "source": ""
           },
           {
             "lang": "PHP",
-            "source": "$form = new \\PetStore\\Entities\\Pet();\n$form->setPetType(\"Dog\");\n$form->setName(\"Rex\");\n// set other fields\ntry {\n    $pet = $client->pets()->create($form);\n} catch (UnprocessableEntityException $e) {\n    var_dump($e->getErrors());\n}\n"
+            "source": ""
           }
-        ],  
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -5141,6 +5181,16 @@
             "in": "header",
             "name": "Content-Type",
             "required": true
+          }
+        ],
+	      "x-codeSamples": [
+          {
+            "lang": "C#",
+            "source": ""
+          },
+          {
+            "lang": "PHP",
+            "source": ""
           }
         ],
         "requestBody": {
@@ -5566,6 +5616,16 @@
             "required": true
           }
         ],
+	      "x-codeSamples": [
+          {
+            "lang": "C#",
+            "source": ""
+          },
+          {
+            "lang": "PHP",
+            "source": ""
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -5971,6 +6031,16 @@
             "in": "header",
             "name": "Content-Type",
             "required": true
+          }
+        ],
+	      "x-codeSamples": [
+          {
+            "lang": "C#",
+            "source": ""
+          },
+          {
+            "lang": "PHP",
+            "source": ""
           }
         ],
         "requestBody": {
@@ -6380,6 +6450,16 @@
             "required": true
           }
         ],
+	      "x-codeSamples": [
+          {
+            "lang": "C#",
+            "source": ""
+          },
+          {
+            "lang": "PHP",
+            "source": ""
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -6773,6 +6853,16 @@
             "in": "header",
             "name": "Content-Type",
             "required": true
+          }
+        ],
+	      "x-codeSamples": [
+          {
+            "lang": "C#",
+            "source": ""
+          },
+          {
+            "lang": "PHP",
+            "source": ""
           }
         ],
         "requestBody": {
@@ -7242,6 +7332,16 @@
             "in": "header",
             "name": "Content-Type",
             "required": true
+          }
+        ],
+	      "x-codeSamples": [
+          {
+            "lang": "C#",
+            "source": ""
+          },
+          {
+            "lang": "PHP",
+            "source": ""
           }
         ],
         "requestBody": {
