@@ -4,7 +4,7 @@
     "title": "Credit Sense API",
     "version": "2.0",
     "x-logo": {
-      "url": "https://creditsense.com.au/views/website/view/AU/images/cs_logo_white_bg.png"
+      "url": "https://rmeredithcs.github.io/credit-sense-v2-api/credit_sense_logo.png"
     },
     "description": "The Credit Sense API allows you to:\n- Create, manage, and send quick links.\n- Grant access permissions for applications to another Store.\n- Manage refresh authorities and trigger refreshes on existing applications.\n- Provide transaction data that we'll use to generate Credit Sense reports.\n- Retrieve existing Credit Sense reports.\n- Retrieve statistics on the number of applications completed.\n- Retrieve statuses and metadata for applications.\n- View and manage blacklisted applications.\n\n### Authentication\nEach call to the API requires:\n- **API key** - identifies your account; forms part of the request URL (https://api.creditsense.com.au/v2/{api-key}/{endpoint}).\n- **API token** - identifies your access to the API; included in the `Settings` object in your request body.\n\nIf you don't have your API credentials or you'd like them to be changed, please [contact us](mailto:support@creditsense.com.au).\n\n### Rate Limiting\nConnections to the API are limited to a maximum of ten (10) per minute. A 429 response code will be returned for API calls that exceed the limit.",
     "contact": {
