@@ -532,7 +532,7 @@
             }
           }
         },
-        "description": "### Overview\nTrigger a refresh for one or more existing applications.\n\nReasons to use this endpoint:\n- ???\n\n### Requirements\nIn order to refresh the application successfully, the following requirements must be met:\n\n1. A valid App ID must be provided.\n2. The application needs a valid and active refresh authority.\n3. The Store that owns the refresh application needs to have a refresh Store linked.\n4. The Client that owns the refresh application needs to have a valid provider (e.g. Yodlee v12).\n5. The credential of the refresh application doesn't require MFA verification.\n\n### Priority\nWhen an application is refreshed as a priority, it will be processed first in the queue. Each Client has a certain number of applications that can be set as priority. If the number of priority applications reaches the limit, the system will ignore the \"priority\" settings and refresh the application as normal priority. \n\n### Additional information\nIf a refresh is triggered on a completed application, the system will create a new application, otherwise, it will refresh the existing application.\n\nOnce a refresh is completed, an email and/or webhook call may be made, dependent on the Client and Store settings.",
+        "description": "### Overview\nTrigger a refresh for one or more existing applications.\n\nReasons to use this endpoint:\n- To generate a new Credit Sense Report with the latest transaction history\n- To monitor the Customer's account balance to ensure the customer doesn't have a dishonour\n\n### Requirements\nIn order to refresh the application successfully, the following requirements must be met:\n\n1. A valid App ID must be provided.\n2. The application needs a valid and active refresh authority.\n3. The Store that owns the refresh application needs to have a refresh Store linked.\n4. The Client that owns the refresh application needs to have a valid provider (e.g. Yodlee v12).\n5. The credential of the refresh application doesn't require MFA verification.\n\n### Priority\nWhen an application is refreshed as a priority, it will be processed first in the queue. Each Client has a certain number of applications that can be set as priority. If the number of priority applications reaches the limit, the system will ignore the \"priority\" settings and refresh the application as normal priority. \n\n### Additional information\nIf a refresh is triggered on a completed application, the system will create a new application, otherwise, it will refresh the existing application.\n\nOnce a refresh is completed, an email and/or webhook call may be made, dependent on the Client and Store settings.",
         "tags": [
           "Refresh"
         ],
@@ -1118,7 +1118,7 @@
             }
           }
         },
-        "description": "### Overview\nTrigger a cancellation on one or more refresh applications.\n\nReasons to use this endpoint:\n- ???\n\n### Requirements\nIn order to cancel a refresh on an application, the following requirements must be met:\n\n1. A valid App ID must be provided.",
+        "description": "### Overview\nTrigger a cancellation on one or more refresh applications.\n\nReasons to use this endpoint:\n- To cancel or stop any pending refresh actions\n\n### Requirements\nIn order to cancel a refresh on an application, the following requirements must be met:\n\n1. A valid App ID must be provided.",
         "tags": [
           "Refresh"
         ],
@@ -1684,7 +1684,7 @@
             }
           }
         },
-        "description": "### Overview\nSet the active refresh authority on one or more applications as inactive and cancel the refresh on the applications.\n\nReasons to use this endpoint:\n- ???\n\n### Requirements\nIn order to set the refresh authority for an application as inactive, the following requirements must be met:\n\n1. A valid App ID must be provided.\n2. The application needs a valid and active refresh authority assigned.",
+        "description": "### Overview\nSet the active refresh authority on one or more applications as inactive and cancel the refresh on the applications.\n\nReasons to use this endpoint:\n- Customer decides to revoke their authority on continued access to there transactional data\n\n### Requirements\nIn order to set the refresh authority for an application as inactive, the following requirements must be met:\n\n1. A valid App ID must be provided.\n2. The application needs a valid and active refresh authority assigned.",
         "tags": [
           "Refresh"
         ],
@@ -2250,7 +2250,7 @@
             }
           }
         },
-        "description": "### Overview\nTrigger a renewal on the authority of the applications provided.\n\n**This endpoint is disabled by default. [Contact us](mailto:support@creditsense.com.au) for more information.**\n\nReasons to use this endpoint:\n- ???\n\n### Requirements\nIn order to extend the expiration date for a refresh authority on an application, the following requirements must be met:\n\n1. A valid App ID must be provided.\n2. The application needs a valid and active refresh authority assigned.\n3. The refresh authority was not revoked by the customer.",
+        "description": "### Overview\nTrigger a renewal on the authority of the applications provided.\n\n**This endpoint is disabled by default. [Contact us](mailto:support@creditsense.com.au) for more information.**\n\nReasons to use this endpoint:\n- Extend the expiration to access the customer's transactional data\n\n### Requirements\nIn order to extend the expiration date for a refresh authority on an application, the following requirements must be met:\n\n1. A valid App ID must be provided.\n2. The application needs a valid and active refresh authority assigned.\n3. The refresh authority was not revoked by the customer.",
         "tags": [
           "Refresh"
         ],
