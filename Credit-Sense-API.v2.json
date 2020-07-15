@@ -2664,7 +2664,7 @@
           },
           "description": "### Raising errors during testing\nPass an error code from the below table into `$.Settings.Raise_Error` to see how your implementation handles different errors being returned in the response.\n\n| Error code | Error type             | Error description                                                                                                                              |\n|------------|------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|\n| 1          | Data Error             | Invalid Credit Sense Application ID or not authorised for application                                                                          |\n| 2          | Data Error             | Invalid Template Report ID or not authorised to to view this report for this application                                                       |\n| 3          | Data Error             | The Credit Sense Application specified is not complete. (This error can only be shown when Supporting_Documents is supplied as an empty array) |\n| 99         | Unknown Error          | Unknown Error                                                                                                                                  |\n| 100        | Database Connectivity  | We are unable to connect to the database at this time                                                                                          |\n| 101        | Invalid Post           | Missing post parameters. (The missing parameters will be listed)                                                                               |\n| 102        | Authentication failure | Invalid API_Key or API_Token                                                                                                                   |\n\n### Report types\nPass a report template ID from the below table into `$.Payload.CS_Report_Template_ID` to download the Credit Sense report in your preferred template.\n\n| Report template ID | Report name                             |\n|--------------------|-----------------------------------------|\n| 7                  | SACC New                                |\n| 9                  | Enhanced Income Liabilities Report      |\n| 10                 | SACC New Full Report                    |\n| 12                 | Enhanced Income Liabilities Full Report |\n| 14                 | SME Report                              |\n| 15                 | Data Only                               |\n| 16                 | Categorised                             |\n\n### Supporting documents\nPass one or more supporting document names from the below table into `$.Payload.Supporting_Documents` to download the supporting docs along with the Credit Sense report.\n\n| Name       | Description                      | Format | Format description        |\n|------------|----------------------------------|--------|---------------------------|\n| ato        | ATO Notice of Assessment         | pdf    | Portable Document Format  |\n| centrelink | Centrelink Income Statement      | pdf    | Portable Document Format  |\n| medicare   | Medicare Profile Screenshot      | png    | Portable Network Graphics |\n| winz       | Work & Income NZ (WINZ) benefits | pdf    | Portable Document Format  |\n\n### Report formats\nPass one or more report format names from the below table into `$.Payload.CS_Report_Formats` to download the Credit Sense report in your preferred formats.\n\n| Name | Description                    | Format description         |\n|------|--------------------------------|----------------------------|\n| pdf  | Non-interactive display format | Portable Document Format   |\n| html | Interactive display format     | Hypertext Markup Language  |\n| json | Data format, for integration   | JavaScript Object Notation |\n| xml  | Data format, for integration   | Extensible Markup Language |"
         },
-        "description": "### Overview\nRetrieve reports in the requested formats for a specified application.\n\nData in `$.Response` is provided in an identical format to the webhook delivery of Credit Sense reports and supporting documents.\n\nThis API delivers the Credit Sense report and supporting documents in `$.Response.Content` as a base64 encoded string. Information about an application ('metadata') is returned in addition to an array of attachments that can contain different document types (HTML, JSON, PDF, XML). To ensure that the metadata and attachments form valid JSON, we encode the attachments (using standard base64 encoding). If we didn't do this, any HTML, PDF, or XML attachments could break the API because they may contain content that is cannot be included in valid JSON. We base64 encode all attachments so that the API works in a consistent way.\n\nReasons to use this endpoint:\n- ???",
+        "description": "### Overview\nRetrieve reports in the requested formats for a specified application.\n\nData in `$.Response` is provided in an identical format to the webhook delivery of Credit Sense reports and supporting documents.\n\nThis API delivers the Credit Sense report and supporting documents in `$.Response.Content` as a base64 encoded string. Information about an application ('metadata') is returned in addition to an array of attachments that can contain different document types (HTML, JSON, PDF, XML). To ensure that the metadata and attachments form valid JSON, we encode the attachments (using standard base64 encoding). If we didn't do this, any HTML, PDF, or XML attachments could break the API because they may contain content that is cannot be included in valid JSON. We base64 encode all attachments so that the API works in a consistent way.\n\nReasons to use this endpoint:\n- To retrieve the Credit Sense report in various data formats including (JSON, XML, PDF, HTML)\n- To download support documents that are attached to Credit Sense report.",
         "tags": [
           "General"
         ],
@@ -3536,7 +3536,7 @@
             "description": "Invalid Post"
           }
         },
-        "description": "### Overview\nRetrieve statistics on the number of applications completed.\n\nReasons to use this endpoint:\n- ???",
+        "description": "### Overview\nRetrieve statistics on the number of applications completed.\n\nReasons to use this endpoint:\n- To see how many Credit Sense reports have been created in the last couple of months\n- To monitor the number of completed Credit Sense reports over time.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3691,7 +3691,7 @@
             "description": "Invalid Post"
           }
         },
-        "description": "### Overview\nGrant access permissions for applications to another Store.\nTransfers are only permitted to Stores within the same Client Group.\n\nReasons to use this endpoint:\n- ???",
+        "description": "### Overview\nGrant access permissions for applications to another Store.\nTransfers are only permitted to Stores within the same Client Group.\n\nReasons to use this endpoint:\n- To ensure that the correct stores are being invoiced\n- Organise applications into it's respective store",
         "tags": [
           "General"
         ],
@@ -5603,7 +5603,7 @@
             }
           }
         },
-        "description": "### Overview\nRequest the specified quick link be sent to the provided cell/mobile number.\n\nReasons to use this endpoint:\n- ???",
+        "description": "### Overview\nRequest the specified quick link be sent to the provided cell/mobile number.\n\nReasons to use this endpoint:\n- Send quicklink via SMS to customers\n- Typically integrated within a CRM or LMS\n- Provides sms functionality using the Credit Sense systems",
         "parameters": [
           {
             "schema": {
@@ -6020,7 +6020,7 @@
             }
           }
         },
-        "description": "### Overview\nRequest the specified quick link be sent to the provided email address.\n\nReasons to use this endpoint:\n- ???",
+        "description": "### Overview\nRequest the specified quick link be sent to the provided email address.\n\nReasons to use this endpoint:\n- Send quicklink via email to customers\n- Typically integrated within a CRM or LMS",
         "parameters": [
           {
             "schema": {
@@ -6437,7 +6437,7 @@
             }
           }
         },
-        "description": "### Overview\nExtend the expiration date of the specified quick link to the number of days from today specified in the environment configuration.\n\nReasons to use this endpoint:\n- ???",
+        "description": "### Overview\nExtend the expiration date of the specified quick link to the number of days from today specified in the environment configuration.\n\nReasons to use this endpoint:\n- Prevent expiration of quicklink to re-engage client\n- Extend the quicklink period for unused quicklinks",
         "parameters": [
           {
             "schema": {
@@ -6842,7 +6842,7 @@
             }
           }
         },
-        "description": "### Overview\nExpire the specified quick link by setting the expiry date as today's date.\n\nReasons to use this endpoint:\n- ???",
+        "description": "### Overview\nExpire the specified quick link by setting the expiry date as today's date.\n\nReasons to use this endpoint:\n- Prevent the customer from accessing Credit Sense using the quicklink",
         "parameters": [
           {
             "schema": {
@@ -7321,7 +7321,7 @@
             }
           }
         },
-        "description": "### Overview\nRetrieve details for a quick link that matches your search criteria.\n\nReasons to use this endpoint:\n- ???",
+        "description": "### Overview\nRetrieve details for a quick link that matches your search criteria.\n\nReasons to use this endpoint:\n- Determines whether an email or sms has been sent customer\n- Confirms te email and mobile number the quicklink was sent to\n- Check whether the quicklink has expired and was created\n- Check the status of whether the quicklink was clicked",
         "parameters": [
           {
             "schema": {
