@@ -5170,7 +5170,7 @@
             }
           }
         },
-        "description": "### Overview\nCreate a quick link.\n\nReasons to use this endpoint:\n- ???",
+        "description": "### Overview\nCreate a quick link.\n\nReasons to use this endpoint:\n- Create a quicklink token to send to customers to perform Credit Sense.\n- Used to integrate Quicklinks in a CRM or LMS",
         "parameters": [
           {
             "schema": {
