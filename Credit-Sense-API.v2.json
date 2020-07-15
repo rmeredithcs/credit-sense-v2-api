@@ -4744,7 +4744,7 @@
             }
           }
         },
-        "description": "### Overview\nRetrieve a list of quick links that match your search criteria.\n\nReasons to use this endpoint:\n- ???",
+        "description": "### Overview\nRetrieve a list of quick links that match your search criteria.\n\nReasons to use this endpoint:\n- Determines whether an email or sms has been sent customer\n- Confirms te email and mobile number the quicklink was sent to\n- Check whether the quicklink has expired and was created\n- Check the status of whether the quicklink was clicked",
         "parameters": [
           {
             "schema": {
