@@ -532,7 +532,7 @@
             }
           }
         },
-        "description": "### Overview\nTrigger a refresh for one or more existing applications.\n\nReasons to use this endpoint:\n- To generate a new Credit Sense Report with the latest transaction history\n- To monitor the Customer's account balance to ensure the customer doesn't have a dishonour\n\n### Requirements\nIn order to refresh the application successfully, the following requirements must be met:\n\n1. A valid App ID must be provided.\n2. The application needs a valid and active refresh authority.\n3. The Store that owns the refresh application needs to have a refresh Store linked.\n4. The Client that owns the refresh application needs to have a valid provider (e.g. Yodlee v12).\n5. The credential of the refresh application doesn't require MFA verification.\n\n### Priority\nWhen an application is refreshed as a priority, it will be processed first in the queue. Each Client has a certain number of applications that can be set as priority. If the number of priority applications reaches the limit, the system will ignore the \"priority\" settings and refresh the application as normal priority. \n\n### Additional information\nIf a refresh is triggered on a completed application, the system will create a new application, otherwise, it will refresh the existing application.\n\nOnce a refresh is completed, an email and/or webhook call may be made, dependent on the Client and Store settings.",
+        "description": "### Overview\nTrigger a refresh for one or more existing applications.\n\nReasons to use this endpoint:\n- Generate a new Credit Sense report with the latest transaction history.\n- Monitor a customer's account balance to determine the best time to process a loan repayment.\n\n### Requirements\nIn order to refresh the application successfully, the following requirements must be met:\n\n1. A valid App ID must be provided.\n2. The application needs a valid and active refresh authority.\n3. The Store that owns the refresh application needs to have a refresh Store linked.\n4. The Client that owns the refresh application needs to have a valid provider (e.g. Yodlee v12).\n5. The credential of the refresh application doesn't require MFA verification.\n\n### Priority\nWhen an application is refreshed as a priority, it will be processed first in the queue. Each Client has a certain number of applications that can be set as priority. If the number of priority applications reaches the limit, the system will ignore the priority settings and refresh any remaining applications as normal priority. \n\n### Additional information\nIf a refresh is triggered on a completed application, the system will create a new application. Whereas if a refresh is triggered on an incomplete or unsuccessful application, it will refresh the existing application.\n\nOnce a refresh is completed, an email and/or webhook call may be made, dependent on the Client and Store configuration.",
         "tags": [
           "Refresh"
         ],
@@ -1118,7 +1118,7 @@
             }
           }
         },
-        "description": "### Overview\nTrigger a cancellation on one or more refresh applications.\n\nReasons to use this endpoint:\n- To cancel or stop any pending refresh actions\n\n### Requirements\nIn order to cancel a refresh on an application, the following requirements must be met:\n\n1. A valid App ID must be provided.",
+        "description": "### Overview\nTrigger a cancellation on one or more refresh applications.\n\nReasons to use this endpoint:\n- Cancel any pending refreshes.\n\n### Requirements\nIn order to cancel a refresh on an application, the following requirements must be met:\n\n1. A valid App ID must be provided.",
         "tags": [
           "Refresh"
         ],
@@ -1684,7 +1684,7 @@
             }
           }
         },
-        "description": "### Overview\nSet the active refresh authority on one or more applications as inactive and cancel the refresh on the applications.\n\nReasons to use this endpoint:\n- Customer decides to revoke their authority on continued access to there transactional data\n\n### Requirements\nIn order to set the refresh authority for an application as inactive, the following requirements must be met:\n\n1. A valid App ID must be provided.\n2. The application needs a valid and active refresh authority assigned.",
+        "description": "### Overview\nSet the active refresh authority on one or more applications as inactive and cancel the refresh on the applications.\n\nReasons to use this endpoint:\n- A customer's loan term ends and you no longer wish to maintain ongoing access to their updated transaction history.\n- A customer requests you to remove the ability to access their bank account information.\n\n### Requirements\nIn order to set the refresh authority for an application as inactive, the following requirements must be met:\n\n1. A valid App ID must be provided.\n2. The application needs a valid and active refresh authority assigned.",
         "tags": [
           "Refresh"
         ],
@@ -2250,7 +2250,7 @@
             }
           }
         },
-        "description": "### Overview\nTrigger a renewal on the authority of the applications provided.\n\n**This endpoint is disabled by default. [Contact us](mailto:support@creditsense.com.au) for more information.**\n\nReasons to use this endpoint:\n- Extend the expiration to access the customer's transactional data\n\n### Requirements\nIn order to extend the expiration date for a refresh authority on an application, the following requirements must be met:\n\n1. A valid App ID must be provided.\n2. The application needs a valid and active refresh authority assigned.\n3. The refresh authority was not revoked by the customer.",
+        "description": "### Overview\nTrigger a renewal on the authority of the applications provided.\n\n**This endpoint is disabled by default. [Contact us](mailto:support@creditsense.com.au) for more information.**\n\nReasons to use this endpoint:\n- Extend the expiration date for the authority to access a customer's transaction history.\n\n### Requirements\nIn order to extend the expiration date for a refresh authority on an application, the following requirements must be met:\n\n1. A valid App ID must be provided.\n2. The application needs a valid and active refresh authority assigned.\n3. The refresh authority was not revoked by the customer.",
         "tags": [
           "Refresh"
         ],
@@ -2664,7 +2664,7 @@
           },
           "description": "### Raising errors during testing\nPass an error code from the below table into `$.Settings.Raise_Error` to see how your implementation handles different errors being returned in the response.\n\n| Error code | Error type             | Error description                                                                                                                              |\n|------------|------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|\n| 1          | Data Error             | Invalid Credit Sense Application ID or not authorised for application                                                                          |\n| 2          | Data Error             | Invalid Template Report ID or not authorised to to view this report for this application                                                       |\n| 3          | Data Error             | The Credit Sense Application specified is not complete. (This error can only be shown when Supporting_Documents is supplied as an empty array) |\n| 99         | Unknown Error          | Unknown Error                                                                                                                                  |\n| 100        | Database Connectivity  | We are unable to connect to the database at this time                                                                                          |\n| 101        | Invalid Post           | Missing post parameters. (The missing parameters will be listed)                                                                               |\n| 102        | Authentication failure | Invalid API_Key or API_Token                                                                                                                   |\n\n### Report types\nPass a report template ID from the below table into `$.Payload.CS_Report_Template_ID` to download the Credit Sense report in your preferred template.\n\n| Report template ID | Report name                             |\n|--------------------|-----------------------------------------|\n| 7                  | SACC New                                |\n| 9                  | Enhanced Income Liabilities Report      |\n| 10                 | SACC New Full Report                    |\n| 12                 | Enhanced Income Liabilities Full Report |\n| 14                 | SME Report                              |\n| 15                 | Data Only                               |\n| 16                 | Categorised                             |\n\n### Supporting documents\nPass one or more supporting document names from the below table into `$.Payload.Supporting_Documents` to download the supporting docs along with the Credit Sense report.\n\n| Name       | Description                      | Format | Format description        |\n|------------|----------------------------------|--------|---------------------------|\n| ato        | ATO Notice of Assessment         | pdf    | Portable Document Format  |\n| centrelink | Centrelink Income Statement      | pdf    | Portable Document Format  |\n| medicare   | Medicare Profile Screenshot      | png    | Portable Network Graphics |\n| winz       | Work & Income NZ (WINZ) benefits | pdf    | Portable Document Format  |\n\n### Report formats\nPass one or more report format names from the below table into `$.Payload.CS_Report_Formats` to download the Credit Sense report in your preferred formats.\n\n| Name | Description                    | Format description         |\n|------|--------------------------------|----------------------------|\n| pdf  | Non-interactive display format | Portable Document Format   |\n| html | Interactive display format     | Hypertext Markup Language  |\n| json | Data format, for integration   | JavaScript Object Notation |\n| xml  | Data format, for integration   | Extensible Markup Language |"
         },
-        "description": "### Overview\nRetrieve reports in the requested formats for a specified application.\n\nData in `$.Response` is provided in an identical format to the webhook delivery of Credit Sense reports and supporting documents.\n\nThis API delivers the Credit Sense report and supporting documents in `$.Response.Content` as a base64 encoded string. Information about an application ('metadata') is returned in addition to an array of attachments that can contain different document types (HTML, JSON, PDF, XML). To ensure that the metadata and attachments form valid JSON, we encode the attachments (using standard base64 encoding). If we didn't do this, any HTML, PDF, or XML attachments could break the API because they may contain content that is cannot be included in valid JSON. We base64 encode all attachments so that the API works in a consistent way.\n\nReasons to use this endpoint:\n- To retrieve the Credit Sense report in various data formats including (JSON, XML, PDF, HTML)\n- To download support documents that are attached to Credit Sense report.",
+        "description": "### Overview\nRetrieve reports in the requested formats for a specified application.\n\nData in `$.Response` is provided in an identical format to the webhook delivery of Credit Sense reports and supporting documents.\n\nThis API delivers the Credit Sense report and supporting documents in `$.Response.attachments.content` as a base64 encoded string. Information about an application ('metadata') is returned in addition to an array of attachments that can contain different document types (HTML, JSON, PDF, XML). To ensure that the metadata and attachments form valid JSON, we encode the attachments (using standard base64 encoding). If we didn't do this, any HTML, PDF, or XML attachments could break the API because they may contain content that is cannot be included in valid JSON.\n\nReasons to use this endpoint:\n- Retrieve a Credit Sense report in data formats (JSON, XML).\n- Retrieve a Credit Sense report in visual formats (HTML, PDF).\n- Retrieve supporting documents attached to Credit Sense a report.",
         "tags": [
           "General"
         ],
@@ -2681,288 +2681,6 @@
         ]
       },
       "parameters": []
-    },
-    "/getAppStatus": {
-      "post": {
-        "summary": "Get the status of an app",
-        "operationId": "post-getAppStatus",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "Success": {
-                      "type": "boolean",
-                      "example": true,
-                      "description": "Denotes whether the report was successfully retrieved."
-                    },
-                    "Response": {
-                      "type": "object",
-                      "required": [
-                        "App_ID",
-                        "App_Ref",
-                        "App_Status",
-                        "App_Status_DateTime"
-                      ],
-                      "properties": {
-                        "App_ID": {
-                          "type": "integer",
-                          "description": "Our unique identifier for the application.",
-                          "example": 1234567
-                        },
-                        "App_Ref": {
-                          "type": "string",
-                          "example": "B123",
-                          "description": "Your reference for the application."
-                        },
-                        "App_Status": {
-                          "type": "string",
-                          "description": "Denotes the status for the application.",
-                          "enum": [
-                            "Quick Link",
-                            "Receiving Logons",
-                            "Processing",
-                            "Generating Report",
-                            "Emailing Report",
-                            "Complete",
-                            "Error"
-                          ]
-                        },
-                        "App_Status_DateTime": {
-                          "type": "string",
-                          "description": "The date the application was created.",
-                          "example": "2020-03-14"
-                        },
-                        "Error_Code": {
-                          "type": "string",
-                          "description": "The code that identifies the error.",
-                          "enum": [
-                            "401",
-                            "402",
-                            "403",
-                            "404",
-                            "405",
-                            "406",
-                            "407",
-                            "408",
-                            "409",
-                            "412",
-                            "413",
-                            "414",
-                            "415",
-                            "416",
-                            "419",
-                            "422",
-                            "424",
-                            "428",
-                            "429",
-                            "470",
-                            "505",
-                            "507",
-                            "508",
-                            "509",
-                            "518",
-                            "520",
-                            "522",
-                            "523",
-                            "525",
-                            "801",
-                            "802",
-                            "1000",
-                            "1001",
-                            "1002",
-                            "1003"
-                          ]
-                        },
-                        "Error_Message": {
-                          "type": "string",
-                          "description": "Describes the error.",
-                          "enum": [
-                            "401 - The request timed out before completing due to delays beyond our control - Customer should retry in a few minutes. ",
-                            "402 - Incorrect internet banking username or password ",
-                            "403 - There is a problem retrieving information from the customers internet banking. Please submit a ticket with us so we can resolve this. The bank statement will need to be retrieved manually.",
-                            "404 - Temporary technical difficulties are causing a problem, fetching the bank statement is failing after logging in. The customer can try again as this is temporary however please also log a ticket with us for investigation.",
-                            "405 - The request cannot be completed because the request was canceled. The customer may have logged into their banking site at the same time. Please ask the customer to try again.",
-                            "406 - The customers password has expired with their internet banking site. They will have to change the password and try again.",
-                            "407 - The customer's bank account is locked and cant be logged into. ",
-                            "408 - It appears the customer’s accounts are not linked to their internet banking. Please have the customer link their accounts to their internet banking and then try again.",
-                            "409 - Internet Banking site has errored after verifying login, this is usually a temporary error. If the problem is persisting, please log a ticket for escalation.",
-                            "412 - The site displays an application error message when attempting to login to internet banking - Customer should retry in a few minutes. ",
-                            "413 - There is a problem retrieving information from the customers internet banking. Please submit a ticket with us so we can resolve this. The bank statement will need to be retrieved manually.",
-                            "414 - The customers banking site says the requested account was not found at the site.",
-                            "415 - The request cannot be completed due to technical difficulties at the internet banking site. ",
-                            "416 - The request cannot be completed as another attempt to login to their internet banking was already established at the same time.",
-                            "419 - Unexpected changes to the bank’s site. Please ask the customer to supply manually, this problem should be resolved in a few days.",
-                            "422 - We were unable to retrieve the account information because it appears one or more of the related accounts have been closed.",
-                            "424 - Internet Banking site is showing a maintenance window message, the customer will need to wait till the maintenance is complete to continue.",
-                            "428 - The customers banking site requires that the consumer accept new terms and conditions. After this has been accepted re-run this application.",
-                            "429 - The internet banking site is requesting an update of personal information thats blocking the statement collection process, Please ask the customer to log in and resolve before attempting a new application.",
-                            "470 - The request cannot be completed because the payee site requires that the consumer contact customer support. ",
-                            "505 - We do not currently support the security system used by this bank, we apologise for any inconvenience.",
-                            "507 - This bank is in beta, Yodlee is providing data updates for this bank but it is not out of beta and reports are not completing successfully yet.",
-                            "508 - The request timedout when processing, the customer should retry.",
-                            "509 - The customers banking site says information provided is no longer valid at the site",
-                            "518 - The required additional authentication information was unavailable. Please try again.",
-                            "520 - Authentication Information Incorrect: The additional authentication information provided is incorrect. Please retry.",
-                            "522 - Request has timedout at our data provider, please try to run again",
-                            "523 - We're sorry, the authentication information you provided is incorrect. Please try again.",
-                            "525 - The request timedout when processing, the customer should retry.",
-                            "801 - This is an intermittent issue with our data provider. Please ask the customer to try again, if the problem persists please lodge a ticket.",
-                            "802 - This is an intermittent issue with our data provider. Please ask the customer to try again, if the problem persists please lodge a ticket.",
-                            "1000 - The request timed out when processing, the customer should retry.",
-                            "1001 - The request timed out when processing, the customer should retry.",
-                            "1002 - The request timed out when processing, the customer should retry.",
-                            "1003 - The request timed out when processing, the customer should retry."
-                          ]
-                        }
-                      }
-                    }
-                  },
-                  "required": [
-                    "Success",
-                    "Response"
-                  ]
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "470": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "Success": {
-                      "type": "boolean",
-                      "example": false,
-                      "description": "Denotes whether the search was successfully executed."
-                    },
-                    "Error_Response": {
-                      "type": "object",
-                      "properties": {
-                        "Error_Code": {
-                          "type": "number",
-                          "description": "The code that identifies the error.",
-                          "enum": [
-                            1,
-                            99,
-                            100,
-                            101,
-                            102
-                          ]
-                        },
-                        "Error_Type": {
-                          "type": "string",
-                          "description": "Denotes the type of error encountered.",
-                          "enum": [
-                            "Data Error",
-                            "Unknown Error",
-                            "Database Connectivity",
-                            "Invalid Post",
-                            "Authentication failure"
-                          ]
-                        },
-                        "Error_Description": {
-                          "type": "string",
-                          "description": "Describes the error.",
-                          "enum": [
-                            "Invalid Credit Sense Application or not authorised to get status of application",
-                            "Unknown Error",
-                            "We are unable to connect to the database at this time",
-                            "Missing post parameters. (The missing parameters will be listed)",
-                            "Invalid API_Key or API_Token"
-                          ]
-                        }
-                      },
-                      "required": [
-                        "Error_Code",
-                        "Error_Type",
-                        "Error_Description"
-                      ]
-                    }
-                  },
-                  "required": [
-                    "Success"
-                  ]
-                }
-              }
-            },
-            "description": "Invalid Post"
-          }
-        },
-        "deprecated": true,
-        "tags": [
-          "General"
-        ],
-        "description": "### Endpoint deprecated\n**This endpoint has been deprecated. Use `/app/search` instead.**",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "Settings": {
-                    "type": "object",
-                    "required": [
-                      "API_Token"
-                    ],
-                    "properties": {
-                      "API_Token": {
-                        "type": "string",
-                        "example": "c738346c-755d-4565-994c-5706ae69ee92",
-                        "description": "The unique token that identifies your API access privileges."
-                      },
-                      "Raise_Error": {
-                        "type": "integer",
-                        "description": "The error code you specify will be returned in the response. \nThis is used for testing purposes only.",
-                        "example": 101
-                      }
-                    }
-                  },
-                  "Payload": {
-                    "type": "object",
-                    "properties": {
-                      "App_ID": {
-                        "type": "integer",
-                        "description": "Our unique identifier for the application.",
-                        "example": 1234567
-                      },
-                      "App_Ref": {
-                        "type": "string",
-                        "description": "Your identifier for the application.",
-                        "example": "B123"
-                      }
-                    }
-                  }
-                },
-                "required": [
-                  "Settings",
-                  "Payload"
-                ]
-              }
-            }
-          },
-          "description": ""
-        },
-        "parameters": [
-          {
-            "schema": {
-              "type": "string",
-              "default": "application/json"
-            },
-            "in": "header",
-            "name": "Content-Type",
-            "required": true,
-            "description": ""
-          }
-        ]
-      }
     },
     "/app/search": {
       "post": {
@@ -3278,7 +2996,7 @@
         "tags": [
           "General"
         ],
-        "description": "### Overview\nRetrieve applications that match the specified search criteria. \n\nReasons to use this endpoint:\n- Monitor for completed applications via periodic polling (as an alternative to or in conjunction with asynchronous Webhooks).\n- Check the status of an in-progress application based on the application ID or reference.\n- Check for failed/errored applications.\n\n### Date format\nDates included in your request in `$.Payload.Date_Range.From` and `$.Payload.Date_Range.To` are expected in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. i.e. `yyyy-MM-dd hh:mm:ss.fff T`\n\n| Portion | Example | Description                                                |\n|---------|---------|------------------------------------------------------------|\n| yyyy    | 2016    | The full year                                              |\n| MM      | 04      | The month, with leading zeros                              |\n| dd      | 08      | The day, with leading zeros                                |\n| hh      | 16      | Hours (24 hour time), with leading zeros                   |\n| mm      | 45      | Minutes, with leading zeros                                |\n| ss      | 53      | Seconds, with leading zeros                                |\n| .fff    | .654300 | Factions of a second, 6 decimal places with trailing zeros |\n| T       | +10:00  | The timezone offset                                        |\n\n**Notes:**\n- If you provide your local time, make sure you include your timezone offset.\n- Dates will be returned in UTC.\n- Although ISO standard dates support providing only the date portion, to avoid confusion it is recommended you always pass full date and time for the `Date_Range.To` object. If no time is provided, the default `00:00:00.000000` time is assumed.\n\n### Pagination\nA maximum of 500 results will be returned for calls to this endpoint. If you receive a `Total` that is larger than the `Count`, you should repeat the call but with `Date_Range.From` set to the returned `Last_App_Dt`, to get the rest of the applications. You may need to do this multiple times to get all of the available applications.\n\n### Duplicate applications\nIt is possible to receive the same application in different date ranges. It's important that you handle this accordingly.\n\nThere are two reasons this happens: \n1. When applications are changed in some way, their `Modify_Dt` will change, making them applicable for different date ranges. \n2. If your search returns more than the maximum number of results, when the results are returned paginated you may have the last application of your _first_ call appear as the first of your _second_ call. See the example below.\n\n#### Example\n| App | Modify_Dt | Returned in    |\n|-----|-----------|----------------|\n| A   | 1         | Call 1         |\n| B   | 2         | Call 1         |\n| C   | 2         | Call 1         |\n| D   | 2         | Call 1         |\n| E   | 3         | Call 1, Call 2 |\n| F   | 3         |         Call 2 |\n| G   | 4         |         Call 2 |\n\n**Call 1 response** `Count: 5, Total: 7, Last_App_Date: 3`\n\n**Call 2 request** `Date_Range.From: 3` | **Call 2 response** `Count: 3, Total: 3, Last_App_Date: 4`",
+        "description": "### Overview\nRetrieve applications that match the specified search criteria. \n\nReasons to use this endpoint:\n- Monitor for completed applications via periodic polling (as an alternative to or in conjunction with asynchronous webhooks).\n- Check the status of an in-progress application based on the App ID or reference.\n- Check for failed/errored applications.\n\n### Date format\nDates included in your request in `$.Payload.Date_Range.From` and `$.Payload.Date_Range.To` are expected in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. i.e. `yyyy-MM-dd hh:mm:ss.fff T`\n\n| Portion | Example | Description                                                |\n|---------|---------|------------------------------------------------------------|\n| yyyy    | 2016    | The full year                                              |\n| MM      | 04      | The month, with leading zeros                              |\n| dd      | 08      | The day, with leading zeros                                |\n| hh      | 16      | Hours (24 hour time), with leading zeros                   |\n| mm      | 45      | Minutes, with leading zeros                                |\n| ss      | 53      | Seconds, with leading zeros                                |\n| .fff    | .654300 | Factions of a second, 6 decimal places with trailing zeros |\n| T       | +10:00  | The timezone offset                                        |\n\n**Notes:**\n- If you provide your local time, make sure you include your timezone offset.\n- Dates will be returned in UTC.\n- Although ISO standard dates support providing only the date portion, to avoid confusion it is recommended you always pass full date and time for the `$.Payload.Date_Range.To` object. If no time is provided, the default `00:00:00.000000` time is assumed.\n\n### Pagination\nA maximum of 500 results will be returned for calls to this endpoint. If you receive a `$.Response.Total` that is larger than the `$.Response.Count`, you should repeat the call but with `$.Payload.Date_Range.From` set to the returned `$.Response.Last_App_Dt`, to get the rest of the applications. You may need to do this multiple times to get all of the available applications.\n\n### Duplicate applications\nIt is possible to receive the same application in different date ranges. It's important that you handle this accordingly.\n\nThere are two reasons this happens: \n1. When applications are changed in some way, their `$.Response.Applications.Modify_Dt` will change, making them applicable for different date ranges. \n2. If your search returns more than the maximum number of results, when the results are returned paginated you may have the last application of your _first_ call appear as the first of your _second_ call. See the example below.\n\n#### Example\n| App | Modify_Dt | Returned in    |\n|-----|-----------|----------------|\n| A   | 1         | Call 1         |\n| B   | 2         | Call 1         |\n| C   | 2         | Call 1         |\n| D   | 2         | Call 1         |\n| E   | 3         | Call 1, Call 2 |\n| F   | 3         |         Call 2 |\n| G   | 4         |         Call 2 |\n\n**Call 1 response** `$.Response.Count: 5`, `$.Response.Total: 7`, `$.Response.Last_App_Date: 3`\n\n**Call 2 request** `$.Payload.Date_Range.From: 3` | **Call 2 response** `$.Response.Count: 3`, `$.Response.Total: 3`, `$.Response.Last_App_Date: 4`",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3536,7 +3254,7 @@
             "description": "Invalid Post"
           }
         },
-        "description": "### Overview\nRetrieve statistics on the number of applications completed.\n\nReasons to use this endpoint:\n- To see how many Credit Sense reports have been created in the last couple of months\n- To monitor the number of completed Credit Sense reports over time.",
+        "description": "### Overview\nRetrieve statistics on the number of applications completed.\n\nReasons to use this endpoint:\n- Monitor the number of Credit Sense applications completed over time.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3691,7 +3409,7 @@
             "description": "Invalid Post"
           }
         },
-        "description": "### Overview\nGrant access permissions for applications to another Store.\nTransfers are only permitted to Stores within the same Client Group.\n\nReasons to use this endpoint:\n- To ensure that the correct stores are being invoiced\n- Organise applications into it's respective store",
+        "description": "### Overview\nGrant access permissions for applications to another Store.\nTransfers are only permitted to Stores within the same Client Group.\n\nReasons to use this endpoint:\n- Provide access to an application via another Store.",
         "tags": [
           "General"
         ],
@@ -3972,7 +3690,7 @@
         "tags": [
           "Blacklist applicants"
         ],
-        "description": "### Overview\nAdd an applicant to your blacklist for use in Lead Market.\n\nWhen an application is provided to this endpoint, we'll identify the customer based on this and any related applications they've completed and blacklist them.\n\n**In order to use this API endpoint we need to create a blacklist for you and enable access to it for your environment. Please contact us to have this feature configured.**\n\nReasons to use this endpoint:\n- Ensure you don't buy the same lead again in Lead Market by blacklisting the 'BUI' (a unique token based on the customer's bank and username).",
+        "description": "### Overview\nAdd an applicant to your blacklist for use in Lead Market.\n\nWhen an application is provided to this endpoint, we'll identify the customer based on this and any related applications they've completed and blacklist them.\n\n**In order to use this API endpoint we need to create a blacklist for you and enable access to it for your environment. Please contact us to have this feature configured.**\n\nReasons to use this endpoint:\n- Avoid buying the same lead again in Lead Market by blacklisting the customer based on their Credit Sense report.",
         "parameters": [
           {
             "schema": {
@@ -4161,7 +3879,7 @@
         "tags": [
           "Blacklist applicants"
         ],
-        "description": "### Overview\nRemove an applicant from your blacklist.\n\nWhen an application is provided to this endpoint, we'll identify the customer based on this and any related applications they've completed and remove them all from your blacklist.\n\n**In order to use this API endpoint we need to create a blacklist for you and enable access to it for your environment. Please contact us to have this feature configured.**\n\nReasons to use this endpoint:\n- You previously didn't want to buy the same lead again in Lead Market and had blacklisted them, but at this time you'd like to remove them from the blacklist.",
+        "description": "### Overview\nRemove an applicant from your blacklist.\n\nWhen an application is provided to this endpoint, we'll identify the customer based on this and any related applications they've completed and remove them all from your blacklist.\n\n**In order to use this API endpoint we need to create a blacklist for you and enable access to it for your environment. Please contact us to have this feature configured.**\n\nReasons to use this endpoint:\n- Remove a customer from the blacklist so they may be bought as a lead in Lead Market.",
         "parameters": [
           {
             "schema": {
@@ -4338,7 +4056,7 @@
         "tags": [
           "Blacklist applicants"
         ],
-        "description": "### Overview\nView applicants on your blacklist.\n\n**In order to use this API endpoint we need to create a blacklist for you and enable access to it for your environment. Please contact us to have this feature configured.**\n\nReasons to use this endpoint:\n- View all applicants currently on your blacklist to assess which leads you're not purchasing on Lead Market.",
+        "description": "### Overview\nView applicants on your blacklist.\n\n**In order to use this API endpoint we need to create a blacklist for you and enable access to it for your environment. Please contact us to have this feature configured.**\n\nReasons to use this endpoint:\n- View all applicants currently on your blacklist to assess which leads you're excluding from being purchased on Lead Market.",
         "parameters": [
           {
             "schema": {
@@ -4744,7 +4462,7 @@
             }
           }
         },
-        "description": "### Overview\nRetrieve a list of quick links that match your search criteria.\n\nReasons to use this endpoint:\n- Determines whether an email or sms has been sent customer\n- Confirms te email and mobile number the quicklink was sent to\n- Check whether the quicklink has expired and was created\n- Check the status of whether the quicklink was clicked",
+        "description": "### Overview\nRetrieve a list of quick links that match your search criteria.\n\nReasons to use this endpoint:\n- Retrieve a list of quick links that match search parameters.",
         "parameters": [
           {
             "schema": {
@@ -5170,7 +4888,7 @@
             }
           }
         },
-        "description": "### Overview\nCreate a quick link.\n\nReasons to use this endpoint:\n- Create a quicklink token to send to customers to perform Credit Sense.\n- Used to integrate Quicklinks in a CRM or LMS",
+        "description": "### Overview\nCreate a quick link.\n\nReasons to use this endpoint:\n- Create a quick link token a customer can use to complete Credit Sense.",
         "parameters": [
           {
             "schema": {
@@ -5603,7 +5321,7 @@
             }
           }
         },
-        "description": "### Overview\nRequest the specified quick link be sent to the provided cell/mobile number.\n\nReasons to use this endpoint:\n- Send quicklink via SMS to customers\n- Typically integrated within a CRM or LMS\n- Provides sms functionality using the Credit Sense systems",
+        "description": "### Overview\nRequest the specified quick link be sent to the provided cell/mobile number.\n\nReasons to use this endpoint:\n- Send a quick link via SMS to a customer.",
         "parameters": [
           {
             "schema": {
@@ -6020,7 +5738,7 @@
             }
           }
         },
-        "description": "### Overview\nRequest the specified quick link be sent to the provided email address.\n\nReasons to use this endpoint:\n- Send quicklink via email to customers\n- Typically integrated within a CRM or LMS",
+        "description": "### Overview\nRequest the specified quick link be sent to the provided email address.\n\nReasons to use this endpoint:\n- Send a quick link via email to a customer.",
         "parameters": [
           {
             "schema": {
@@ -6437,7 +6155,7 @@
             }
           }
         },
-        "description": "### Overview\nExtend the expiration date of the specified quick link to the number of days from today specified in the environment configuration.\n\nReasons to use this endpoint:\n- Prevent expiration of quicklink to re-engage client\n- Extend the quicklink period for unused quicklinks",
+        "description": "### Overview\nExtend the expiration date of the specified quick link to the number of days from today specified in the environment configuration.\n\nReasons to use this endpoint:\n- Extend the expiration date of an unused quick link.",
         "parameters": [
           {
             "schema": {
@@ -6842,7 +6560,7 @@
             }
           }
         },
-        "description": "### Overview\nExpire the specified quick link by setting the expiry date as today's date.\n\nReasons to use this endpoint:\n- Prevent the customer from accessing Credit Sense using the quicklink",
+        "description": "### Overview\nExpire the specified quick link by setting the expiry date as today's date.\n\nReasons to use this endpoint:\n- Prevent a customer from completing Credit Sense using a quick link.",
         "parameters": [
           {
             "schema": {
@@ -7321,7 +7039,7 @@
             }
           }
         },
-        "description": "### Overview\nRetrieve details for a quick link that matches your search criteria.\n\nReasons to use this endpoint:\n- Determines whether an email or sms has been sent customer\n- Confirms te email and mobile number the quicklink was sent to\n- Check whether the quicklink has expired and was created\n- Check the status of whether the quicklink was clicked",
+        "description": "### Overview\nRetrieve details for a quick link that matches your search criteria.\n\nReasons to use this endpoint:\n- Determine whether a quick link has been sent via email or SMS to a customer.\n- Confirm the email or mobile/cell number a quick link was sent to.\n- Check when a quick link was created.\n- Check whether a quick link has expired.\n- Check whether a quick link was clicked.",
         "parameters": [
           {
             "schema": {
@@ -7478,7 +7196,7 @@
             "description": "Not Found"
           }
         },
-        "description": "### Overview\nCreate an application using data from a supported third-party.\n\nReasons to use this endpoint:\n- Submit a customer's bank data in one of our supported custom formats to create a Credit Sense application.",
+        "description": "### Overview\nCreate an application using data from a supported third-party.\n\nReasons to use this endpoint:\n- Submit a customer's bank data that you've received from an external source to create a Credit Sense application.",
         "tags": [
           "Credit Sense Analysis Service"
         ],
@@ -7486,7 +7204,6 @@
           {
             "schema": {
               "type": "string",
-              "example": "",
               "default": "application/json"
             },
             "in": "header",
@@ -7680,7 +7397,7 @@
             "description": "Invalid Post"
           }
         },
-        "description": "### Overview\nCreate an application using data from a supported third-party.\n\nReasons to use this endpoint:\n- Submit a customer's bank data in one of our supported custom formats to create a Credit Sense application.",
+        "description": "### Overview\nCreate an application using data from a supported third-party.\n\nReasons to use this endpoint:\n- Submit a customer's bank data that you've received from a different provider to create a Credit Sense application.",
         "tags": [
           "Credit Sense Analysis Service"
         ],
@@ -7688,7 +7405,6 @@
           {
             "schema": {
               "type": "string",
-              "example": "",
               "default": "application/json"
             },
             "in": "header",
@@ -7785,7 +7501,7 @@
   "tags": [
     {
       "name": "General",
-      "description": "Search for applications, download reports, get stats, and transfer ownership of an app."
+      "description": "Search for applications, download reports, get stats, and transfer ownership of an application."
     },
     {
       "name": "Quick links",
@@ -7805,7 +7521,7 @@
     },
     {
       "name": "Webhooks",
-      "description": "Automatically receive reports as soon as they're generated.\nPlease refer to our [Webhook help docs](https://docs.creditsense.com.au/display/CSI/Fully+integrated+webhook#space-menu-link-content)."
+      "description": "Automatically receive reports as soon as they're generated.\n\nPlease refer to our [webhook help docs](https://docs.creditsense.com.au/display/CSI/Fully+integrated+webhook#space-menu-link-content)."
     }
   ]
 }
