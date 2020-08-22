@@ -7495,11 +7495,7 @@
       "post": {
         "summary": "Get a report delivered",
         "operationId": "post-webhook",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
+        "responses": {},
         "callbacks": {
 					"orderInProgress": {
 						"{$request.body#/callbackUrl}?event={$request.body#/eventName}": {
