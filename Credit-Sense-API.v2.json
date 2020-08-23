@@ -7741,73 +7741,6 @@
 										"source": "$form = new \\PetStore\\Entities\\Pet();\n$form->setPetType(\"Dog\");\n$form->setName(\"Rex\");\n// set other fields\ntry {\n    $pet = $client->pets()->create($form);\n} catch (UnprocessableEntityException $e) {\n    var_dump($e->getErrors());\n}\n"
 									}
 								]
-							},
-							"put": {
-								"description": "Order in Progress (Only Description)",
-								"servers": [
-									{
-										"url": "//callback-url.operation-level/v1",
-										"description": "Operation level server 1 (Operation override)"
-									},
-									{
-										"url": "//callback-url.operation-level/v2",
-										"description": "Operation level server 2 (Operation override)"
-									}
-								],
-								"requestBody": {
-									"content": {
-										"application/json": {
-											"schema": {
-												"type": "object",
-												"properties": {
-													"orderId": {
-														"type": "string",
-														"example": "123"
-													},
-													"timestamp": {
-														"type": "string",
-														"format": "date-time",
-														"example": "2018-10-19T16:46:45Z"
-													},
-													"status": {
-														"type": "string",
-														"example": "inProgress"
-													}
-												}
-											}
-										},
-										"application/xml": {
-											"schema": {
-												"type": "object",
-												"properties": {
-													"orderId": {
-														"type": "string",
-														"example": "123"
-													}
-												}
-											},
-											"example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root>\n  <orderId>123</orderId>\n  <status>inProgress</status>\n  <timestamp>2018-10-19T16:46:45Z</timestamp>\n</root>\n"
-										}
-									}
-								},
-								"responses": {
-									"200": {
-										"description": "Callback successfully processed and no retries will be performed",
-										"content": {
-											"application/json": {
-												"schema": {
-													"type": "object",
-													"properties": {
-														"someProp": {
-															"type": "string",
-															"example": "123"
-														}
-													}
-												}
-											}
-										}
-									}
-								}
 							}
 						}
 					}
@@ -7815,7 +7748,7 @@
         "tags": [
           "Webhooks"
         ],
-        "description": "test description"
+        "description": "You'll need to set up a webhook endpoint and make it publicly available. Once it's ready, [provide us with the URL](mailto:support@creditsense.com.au) so we can update your environment configuration on our end."
       }
     }
   },
@@ -7849,7 +7782,7 @@
     },
     {
       "name": "Webhooks",
-      "description": "Automatically receive reports as soon as they're generated.\nYou'll need to set up a webhook endpoint and make it publicly available. Once it's ready, [provide us with the URL](mailto:support@creditsense.com.au) so we can update your environment configuration on our end."
+      "description": "Automatically receive reports as soon as they're generated."
     }
   ]
 }
