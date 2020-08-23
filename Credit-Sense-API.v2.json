@@ -7507,9 +7507,9 @@
 							],
 							"post": {
 								"summary": "Report delivery webhook",
-								"description": "A callback triggered every time a Credit Sense report is generated.",
+								"description": "A callback triggered every time a Credit Sense report is generated.\nYou'll need to set up a webhook endpoint and make it publicly available. Once it's ready, provide us with the URL so we can update your environment configuration on our end.",
 								"externalDocs": {
-									"description": "You'll need to set up a webhook endpoint and make it publicly available. Once it's ready, provide us with the URL so we can update your environment configuration on our end.",
+									"description": "Update webhook endpoint.",
 									"url": "mailto:support@creditsense.com.au"
 								},
 								"requestBody": {
