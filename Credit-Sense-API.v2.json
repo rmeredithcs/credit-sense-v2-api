@@ -7507,7 +7507,7 @@
             "https://your-webhook-endpoint.com": {
               "post": {
                 "summary": "Credit Sense report delivery webhook",
-                "description": "A callback triggered every time a Credit Sense report is generated.",
+                "description": "A callback is triggered every time a Credit Sense report is generated.",
                 "externalDocs": {
                   "description": "Check out our help docs.",
                   "url": "https://docs.creditsense.com.au/display/CSI/Fully+integrated+webhook"
@@ -7626,7 +7626,7 @@
             "https://your-webhook-endpoint.com": {
               "post": {
                 "summary": "Supporting docs delivery webhook",
-                "description": "A callback triggered every time supporting documents are retrieved.",
+                "description": "A callback is triggered every time supporting documents are retrieved.",
                 "externalDocs": {
                   "description": "Check out our help docs.",
                   "url": "https://docs.creditsense.com.au/display/CSI/Fully+integrated+webhook"
