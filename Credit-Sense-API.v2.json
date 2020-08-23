@@ -7526,7 +7526,7 @@
                           "appId": {
                             "type": "integer",
                             "example": 1234567,
-                            "description": "Our unique identifier for the retrieved application."
+                            "description": "Our unique identifier for the delivered application."
                           },
                           "appReference": {
                             "type": "string",
@@ -7541,12 +7541,12 @@
                           "clientName": {
                             "type": "string",
                             "example": "Pickle Finance",
-                            "description": "Denotes the Client object for the retrieved report."
+                            "description": "Denotes the Client object for the delivered report."
                           },
                           "storeName": {
                             "type": "string",
                             "example": "Dev",
-                            "description": "Denotes the Store object for the retrieved report."
+                            "description": "Denotes the Store object for the delivered report."
                           },
                           "attachments": {
                             "type": "array",
@@ -7561,7 +7561,7 @@
                                 "name": {
                                   "type": "string",
                                   "example": "Categorised",
-                                  "description": "Denotes the report or document name."
+                                  "description": "Denotes the report name."
                                 },
                                 "contentType": {
                                   "type": "string",
@@ -7571,11 +7571,11 @@
                                     "xml",
                                     "html"
                                   ],
-                                  "description": "Denotes the format of the retrieved report or document."
+                                  "description": "Denotes the format of the delivered report."
                                 },
                                 "content": {
                                   "type": "string",
-                                  "description": "The retrieved report or document as a base64-encoded string.",
+                                  "description": "The delivered report as a base64-encoded string.",
                                   "example": "eyJBcHBsaWNhdGlvbnMiOnsiQXBwbGljYXRpb24iOnsiQXBwSUQiOj...[truncated]"
                                 }
                               },
@@ -7632,7 +7632,7 @@
                           "appId": {
                             "type": "integer",
                             "example": 1234567,
-                            "description": "Our unique identifier for the retrieved application."
+                            "description": "Our unique identifier for the delivered application."
                           },
                           "appReference": {
                             "type": "string",
@@ -7647,12 +7647,12 @@
                           "clientName": {
                             "type": "string",
                             "example": "Pickle Finance",
-                            "description": "Denotes the Client object for the retrieved report."
+                            "description": "Denotes the Client object for the delivered document."
                           },
                           "storeName": {
                             "type": "string",
                             "example": "Dev",
-                            "description": "Denotes the Store object for the retrieved report."
+                            "description": "Denotes the Store object for the delivered document."
                           },
                           "attachments": {
                             "type": "array",
@@ -7661,27 +7661,25 @@
                               "properties": {
                                 "type": {
                                   "type": "string",
-                                  "example": "Credit Sense Report",
-                                  "description": "Denotes the type of content retrieved."
+                                  "example": "Supporting Document",
+                                  "description": "Denotes the type of content delivered."
                                 },
                                 "name": {
                                   "type": "string",
-                                  "example": "Categorised",
-                                  "description": "Denotes the report or document name."
+                                  "example": "Centrelink Income Statement",
+                                  "description": "Denotes the document name."
                                 },
                                 "contentType": {
                                   "type": "string",
                                   "enum": [
-                                    "json",
-                                    "pdf",
-                                    "xml",
-                                    "html"
+                                    "png",
+                                    "pdf"
                                   ],
-                                  "description": "Denotes the format of the retrieved report or document."
+                                  "description": "Denotes the format of the delivered document."
                                 },
                                 "content": {
                                   "type": "string",
-                                  "description": "The retrieved report or document as a base64-encoded string.",
+                                  "description": "The delivered document as a base64-encoded string.",
                                   "example": "eyJBcHBsaWNhdGlvbnMiOnsiQXBwbGljYXRpb24iOnsiQXBwSUQiOj...[truncated]"
                                 }
                               },
@@ -7719,7 +7717,7 @@
         "tags": [
           "Webhooks"
         ],
-        "description": "You'll need to set up a webhook endpoint and make it publicly available. Once it's ready, [provide us with the URL](mailto:support@creditsense.com.au) so we can update your environment configuration on our end.\n\n### Retry logic\nWhen we post the payload to your callback URL, we expect a `200` response indicating the webhook has been received successfully. If we do not receive a `200` response, we will retry your callback URL for up to two hours.\n\nThe delay between attempts is increased exponentially following every failed attempt until our five retries are exhausted.\n\n| Retry | Delay                       | Total time since first delivery attempt |\n|-------|-----------------------------|-----------------------------------------|\n| 1     | 10 seconds                  | 10 seconds                              |\n| 2     | 50 seconds                  | 1 minute (60s)                          |\n| 3     | ~4 minutes (250s)           | ~5 minutes (310s)                       |\n| 4     | ~21 minutes (1,250s)        | ~26 minutes (1,560s)                    |\n| 5     | ~1 hour 44 minutes (6,250s) | ~2 hours 10 minutes (7,810s)            |"
+        "description": "You'll need to set up a webhook endpoint and make it publicly available. Once it's ready, [provide us with the URL](mailto:support@creditsense.com.au) so we can update your environment configuration on our end.\n\n### Retry logic\nWhen we post the payload to your callback URL, we expect a `200` response indicating the webhook has been received successfully. If we do not receive a `200` response, we will retry your callback URL for up to two hours.\n\nThe delay between attempts is increased exponentially following every failed attempt until our five retries are exhausted.\n\n| Retry | Delay                       | Total time since first delivery attempt |\n|-------|-----------------------------|-----------------------------------------|\n| 1     | 10 seconds                  | 10 seconds                              |\n| 2     | 50 seconds                  | 1 minute (60s)                          |\n| 3     | ~4 minutes (250s)           | ~5 minutes (310s)                       |\n| 4     | ~21 minutes (1,250s)        | ~26 minutes (1,560s)                    |\n| 5     | ~1 hour 44 minutes (6,250s) | ~2 hours 10 minutes (7,810s)            |\n\n### Handling failures\nWe do not send a callback in the event of a failure. If we're unsuccessful in retrieving the necessary data in order to generate a report (e.g. the bank is down for maintenance), we'll hold the credentials and retry until we are able to achieve success. \nIf your application process is time-sensitive, you may wish to implement a timeout that can trigger polling of the `/app/search` API endpoint to get an update for any applications that you haven't received via webhook within your defined acceptable time period."
       }
     }
   },
