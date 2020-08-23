@@ -7512,7 +7512,7 @@
 								}
 							],
 							"post": {
-								"summary": "Report delivery webhook",
+								"summary": "Credit Sense report delivery webhook",
 								"description": "A callback triggered every time a Credit Sense report is generated.",
 								"externalDocs": {
 									"description": "Check out our help docs.",
@@ -7658,12 +7658,6 @@
 					},
           "Supporting documents webhook": {
 						"https://your-webhook-endpoint.com": {
-							"servers": [
-								{
-									"url": "https://your-webhook-endpoint.com",
-									"description": "Your webhook endpoint"
-								}
-							],
 							"post": {
 								"summary": "Supporting docs delivery webhook",
 								"description": "A callback triggered every time supporting documents are retrieved.",
