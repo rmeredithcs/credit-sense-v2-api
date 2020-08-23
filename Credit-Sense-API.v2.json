@@ -7497,279 +7497,255 @@
         "operationId": "post-webhook",
         "responses": {},
         "servers": [
-								{
-									"url": "https://your-webhook-endpoint.com",
-									"description": "Your webhook endpoint"
-								}
-							],
+          {
+            "url": "https://your-webhook-endpoint.com",
+            "description": "Your webhook endpoint"
+          }
+        ],
         "callbacks": {
-					"Credit Sense report webhook": {
-						"https://your-webhook-endpoint.com": {
-							"post": {
-								"summary": "Credit Sense report delivery webhook",
-								"description": "A callback triggered every time a Credit Sense report is generated.",
-								"externalDocs": {
-									"description": "Check out our help docs.",
-									"url": "https://docs.creditsense.com.au/display/CSI/Fully+integrated+webhook"
-								},
-								"requestBody": {
-									"content": {
-										"application/json": {
-											"schema": {
-                      "type": "object",
-                      "properties": {
-                        "postVersion": {
-                          "type": "number",
-                          "example": 2,
-                          "description": "Denotes the version of the response as configured on the Client object."
-                        },
-                        "appId": {
-                          "type": "integer",
-                          "example": 1234567,
-                          "description": "Our unique identifier for the retrieved application."
-                        },
-                        "appReference": {
-                          "type": "string",
-                          "example": "B123",
-                          "description": "Your reference assigned to the application."
-                        },
-                        "createDate": {
-                          "type": "string",
-                          "example": "2020-04-03 16:18:19.8466667",
-                          "description": "The date and time the application was created."
-                        },
-                        "clientName": {
-                          "type": "string",
-                          "example": "Pickle Finance",
-                          "description": "Denotes the Client object for the retrieved report."
-                        },
-                        "storeName": {
-                          "type": "string",
-                          "example": "Dev",
-                          "description": "Denotes the Store object for the retrieved report."
-                        },
-                        "attachments": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "type": {
-                                "type": "string",
-                                "example": "Credit Sense Report",
-                                "description": "Denotes the type of content retrieved."
+          "Credit Sense report webhook": {
+            "https://your-webhook-endpoint.com": {
+              "post": {
+                "summary": "Credit Sense report delivery webhook",
+                "description": "A callback triggered every time a Credit Sense report is generated.",
+                "externalDocs": {
+                  "description": "Check out our help docs.",
+                  "url": "https://docs.creditsense.com.au/display/CSI/Fully+integrated+webhook"
+                },
+                "requestBody": {
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "properties": {
+                          "postVersion": {
+                            "type": "number",
+                            "example": 2,
+                            "description": "Denotes the version of the response as configured on the Client object."
+                          },
+                          "appId": {
+                            "type": "integer",
+                            "example": 1234567,
+                            "description": "Our unique identifier for the retrieved application."
+                          },
+                          "appReference": {
+                            "type": "string",
+                            "example": "B123",
+                            "description": "Your reference assigned to the application."
+                          },
+                          "createDate": {
+                            "type": "string",
+                            "example": "2020-04-03 16:18:19.8466667",
+                            "description": "The date and time the application was created."
+                          },
+                          "clientName": {
+                            "type": "string",
+                            "example": "Pickle Finance",
+                            "description": "Denotes the Client object for the retrieved report."
+                          },
+                          "storeName": {
+                            "type": "string",
+                            "example": "Dev",
+                            "description": "Denotes the Store object for the retrieved report."
+                          },
+                          "attachments": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "Credit Sense Report",
+                                  "description": "Denotes the type of content retrieved."
+                                },
+                                "name": {
+                                  "type": "string",
+                                  "example": "Categorised",
+                                  "description": "Denotes the report or document name."
+                                },
+                                "contentType": {
+                                  "type": "string",
+                                  "enum": [
+                                    "json",
+                                    "pdf",
+                                    "xml",
+                                    "html"
+                                  ],
+                                  "description": "Denotes the format of the retrieved report or document."
+                                },
+                                "content": {
+                                  "type": "string",
+                                  "description": "The retrieved report or document as a base64-encoded string.",
+                                  "example": "eyJBcHBsaWNhdGlvbnMiOnsiQXBwbGljYXRpb24iOnsiQXBwSUQiOj...[truncated]"
+                                }
                               },
-                              "name": {
-                                "type": "string",
-                                "example": "Categorised",
-                                "description": "Denotes the report or document name."
-                              },
-                              "contentType": {
-                                "type": "string",
-                                "enum": [
-                                  "json",
-                                  "pdf",
-                                  "xml",
-                                  "html"
-                                ],
-                                "description": "Denotes the format of the retrieved report or document."
-                              },
-                              "content": {
-                                "type": "string",
-                                "description": "The retrieved report or document as a base64-encoded string.",
-                                "example": "eyJBcHBsaWNhdGlvbnMiOnsiQXBwbGljYXRpb24iOnsiQXBwSUQiOj...[truncated]"
-                              }
-                            },
-                            "required": [
-                              "type",
-                              "name",
-                              "contentType",
-                              "content"
-                            ]
+                              "required": [
+                                "type",
+                                "name",
+                                "contentType",
+                                "content"
+                              ]
+                            }
+                          }
+                        },
+                        "required": [
+                          "postVersion",
+                          "appId",
+                          "appReference",
+                          "createDate",
+                          "clientName",
+                          "storeName",
+                          "attachments"
+                        ]
+                      }
+                    }
+                  }
+                },
+                "responses": {
+                  "200": {
+                    "description": "Callback successfully processed and no retries will be performed",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "object",
+                          "properties": {
+                            "someProp": {
+                              "type": "string",
+                              "example": "123"
+                            }
                           }
                         }
-                      },
-                      "required": [
-                        "postVersion",
-                        "appId",
-                        "appReference",
-                        "createDate",
-                        "clientName",
-                        "storeName",
-                        "attachments"
-                      ]
+                      }
                     }
-										},
-										"application/xml": {
-											"schema": {
-												"type": "object",
-												"properties": {
-													"orderId": {
-														"type": "string",
-														"example": "123"
-													}
-												}
-											},
-											"example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root>\n  <orderId>123</orderId>\n  <status>inProgress</status>\n  <timestamp>2018-10-19T16:46:45Z</timestamp>\n</root>\n"
-										}
-									}
-								},
-								"responses": {
-									"200": {
-										"description": "Callback successfully processed and no retries will be performed",
-										"content": {
-											"application/json": {
-												"schema": {
-													"type": "object",
-													"properties": {
-														"someProp": {
-															"type": "string",
-															"example": "123"
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					},
+                  }
+                }
+              }
+            }
+          },
           "Supporting documents webhook": {
-						"https://your-webhook-endpoint.com": {
-							"post": {
-								"summary": "Supporting docs delivery webhook",
-								"description": "A callback triggered every time supporting documents are retrieved.",
-								"externalDocs": {
-									"description": "Check out our help docs.",
-									"url": "https://docs.creditsense.com.au/display/CSI/Fully+integrated+webhook"
-								},
-								"requestBody": {
-									"content": {
-										"application/json": {
-											"schema": {
-                      "type": "object",
-                      "properties": {
-                        "postVersion": {
-                          "type": "number",
-                          "example": 2,
-                          "description": "Denotes the version of the response as configured on the Client object."
-                        },
-                        "appId": {
-                          "type": "integer",
-                          "example": 1234567,
-                          "description": "Our unique identifier for the retrieved application."
-                        },
-                        "appReference": {
-                          "type": "string",
-                          "example": "B123",
-                          "description": "Your reference assigned to the application."
-                        },
-                        "createDate": {
-                          "type": "string",
-                          "example": "2020-04-03 16:18:19.8466667",
-                          "description": "The date and time the application was created."
-                        },
-                        "clientName": {
-                          "type": "string",
-                          "example": "Pickle Finance",
-                          "description": "Denotes the Client object for the retrieved report."
-                        },
-                        "storeName": {
-                          "type": "string",
-                          "example": "Dev",
-                          "description": "Denotes the Store object for the retrieved report."
-                        },
-                        "attachments": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "type": {
-                                "type": "string",
-                                "example": "Credit Sense Report",
-                                "description": "Denotes the type of content retrieved."
+            "https://your-webhook-endpoint.com": {
+              "post": {
+                "summary": "Supporting docs delivery webhook",
+                "description": "A callback triggered every time supporting documents are retrieved.",
+                "externalDocs": {
+                  "description": "Check out our help docs.",
+                  "url": "https://docs.creditsense.com.au/display/CSI/Fully+integrated+webhook"
+                },
+                "requestBody": {
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "properties": {
+                          "postVersion": {
+                            "type": "number",
+                            "example": 2,
+                            "description": "Denotes the version of the response as configured on the Client object."
+                          },
+                          "appId": {
+                            "type": "integer",
+                            "example": 1234567,
+                            "description": "Our unique identifier for the retrieved application."
+                          },
+                          "appReference": {
+                            "type": "string",
+                            "example": "B123",
+                            "description": "Your reference assigned to the application."
+                          },
+                          "createDate": {
+                            "type": "string",
+                            "example": "2020-04-03 16:18:19.8466667",
+                            "description": "The date and time the application was created."
+                          },
+                          "clientName": {
+                            "type": "string",
+                            "example": "Pickle Finance",
+                            "description": "Denotes the Client object for the retrieved report."
+                          },
+                          "storeName": {
+                            "type": "string",
+                            "example": "Dev",
+                            "description": "Denotes the Store object for the retrieved report."
+                          },
+                          "attachments": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "Credit Sense Report",
+                                  "description": "Denotes the type of content retrieved."
+                                },
+                                "name": {
+                                  "type": "string",
+                                  "example": "Categorised",
+                                  "description": "Denotes the report or document name."
+                                },
+                                "contentType": {
+                                  "type": "string",
+                                  "enum": [
+                                    "json",
+                                    "pdf",
+                                    "xml",
+                                    "html"
+                                  ],
+                                  "description": "Denotes the format of the retrieved report or document."
+                                },
+                                "content": {
+                                  "type": "string",
+                                  "description": "The retrieved report or document as a base64-encoded string.",
+                                  "example": "eyJBcHBsaWNhdGlvbnMiOnsiQXBwbGljYXRpb24iOnsiQXBwSUQiOj...[truncated]"
+                                }
                               },
-                              "name": {
-                                "type": "string",
-                                "example": "Categorised",
-                                "description": "Denotes the report or document name."
-                              },
-                              "contentType": {
-                                "type": "string",
-                                "enum": [
-                                  "json",
-                                  "pdf",
-                                  "xml",
-                                  "html"
-                                ],
-                                "description": "Denotes the format of the retrieved report or document."
-                              },
-                              "content": {
-                                "type": "string",
-                                "description": "The retrieved report or document as a base64-encoded string.",
-                                "example": "eyJBcHBsaWNhdGlvbnMiOnsiQXBwbGljYXRpb24iOnsiQXBwSUQiOj...[truncated]"
-                              }
-                            },
-                            "required": [
-                              "type",
-                              "name",
-                              "contentType",
-                              "content"
-                            ]
+                              "required": [
+                                "type",
+                                "name",
+                                "contentType",
+                                "content"
+                              ]
+                            }
+                          }
+                        },
+                        "required": [
+                          "postVersion",
+                          "appId",
+                          "appReference",
+                          "createDate",
+                          "clientName",
+                          "storeName",
+                          "attachments"
+                        ]
+                      }
+                    }
+                  }
+                },
+                "responses": {
+                  "200": {
+                    "description": "Callback successfully processed and no retries will be performed",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "object",
+                          "properties": {
+                            "someProp": {
+                              "type": "string",
+                              "example": "123"
+                            }
                           }
                         }
-                      },
-                      "required": [
-                        "postVersion",
-                        "appId",
-                        "appReference",
-                        "createDate",
-                        "clientName",
-                        "storeName",
-                        "attachments"
-                      ]
+                      }
                     }
-										},
-										"application/xml": {
-											"schema": {
-												"type": "object",
-												"properties": {
-													"orderId": {
-														"type": "string",
-														"example": "123"
-													}
-												}
-											},
-											"example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root>\n  <orderId>123</orderId>\n  <status>inProgress</status>\n  <timestamp>2018-10-19T16:46:45Z</timestamp>\n</root>\n"
-										}
-									}
-								},
-								"responses": {
-									"200": {
-										"description": "Callback successfully processed and no retries will be performed",
-										"content": {
-											"application/json": {
-												"schema": {
-													"type": "object",
-													"properties": {
-														"someProp": {
-															"type": "string",
-															"example": "123"
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				},
+                  }
+                }
+              }
+            }
+          }
+        },
         "tags": [
           "Webhooks"
         ],
-        "description": "You'll need to set up a webhook endpoint and make it publicly available. Once it's ready, [provide us with the URL](mailto:support@creditsense.com.au) so we can update your environment configuration on our end."
+        "description": "You'll need to set up a webhook endpoint and make it publicly available. Once it's ready, [provide us with the URL](mailto:support@creditsense.com.au) so we can update your environment configuration on our end.\n\n### Retry logic\nWhen we post the payload to your callback URL, we expect a `200` response indicating the webhook has been received successfully. If we do not receive a `200` response, we will retry your callback URL for up to two hours.\n\nThe delay between attempts is increased exponentially following every failed attempt until our five retries are exhausted.\n\n| Retry | Delay                       | Total time since first delivery attempt |\n|-------|-----------------------------|-----------------------------------------|\n| 1     | 10 seconds                  | 10 seconds                              |\n| 2     | 50 seconds                  | 1 minute (60s)                          |\n| 3     | ~4 minutes (250s)           | ~5 minutes (310s)                       |\n| 4     | ~21 minutes (1,250s)        | ~26 minutes (1,560s)                    |\n| 5     | ~1 hour 44 minutes (6,250s) | ~2 hours 10 minutes (7,810s)            |"
       }
     }
   },
