@@ -7505,12 +7505,6 @@
         "callbacks": {
 					"Credit Sense report webhook": {
 						"https://your-webhook-endpoint.com": {
-							"servers": [
-								{
-									"url": "https://your-webhook-endpoint.com",
-									"description": "Your webhook endpoint"
-								}
-							],
 							"post": {
 								"summary": "Credit Sense report delivery webhook",
 								"description": "A callback triggered every time a Credit Sense report is generated.",
@@ -7635,24 +7629,8 @@
 												}
 											}
 										}
-									},
-									"299": {
-										"description": "Response for cancelling subscription"
-									},
-									"500": {
-										"description": "Callback processing failed and retries will be performed"
 									}
-								},
-								"x-code-samples": [
-									{
-										"lang": "C#",
-										"source": "PetStore.v1.Pet pet = new PetStore.v1.Pet();\npet.setApiKey(\"your api key\");\npet.petType = PetStore.v1.Pet.TYPE_DOG;\npet.name = \"Rex\";\n// set other fields\nPetStoreResponse response = pet.create();\nif (response.statusCode == HttpStatusCode.Created)\n{\n  // Successfully created\n}\nelse\n{\n  // Something wrong -- check response for errors\n  Console.WriteLine(response.getRawResponse());\n}\n"
-									},
-									{
-										"lang": "PHP",
-										"source": "$form = new \\PetStore\\Entities\\Pet();\n$form->setPetType(\"Dog\");\n$form->setName(\"Rex\");\n// set other fields\ntry {\n    $pet = $client->pets()->create($form);\n} catch (UnprocessableEntityException $e) {\n    var_dump($e->getErrors());\n}\n"
-									}
-								]
+								}
 							}
 						}
 					},
@@ -7669,23 +7647,88 @@
 									"content": {
 										"application/json": {
 											"schema": {
-												"type": "object",
-												"properties": {
-													"orderId": {
-														"type": "string",
-														"example": "123"
-													},
-													"timestamp": {
-														"type": "string",
-														"format": "date-time",
-														"example": "2018-10-19T16:46:45Z"
-													},
-													"status": {
-														"type": "string",
-														"example": "inProgress"
-													}
-												}
-											}
+                      "type": "object",
+                      "properties": {
+                        "postVersion": {
+                          "type": "number",
+                          "example": 2,
+                          "description": "Denotes the version of the response as configured on the Client object."
+                        },
+                        "appId": {
+                          "type": "integer",
+                          "example": 1234567,
+                          "description": "Our unique identifier for the retrieved application."
+                        },
+                        "appReference": {
+                          "type": "string",
+                          "example": "B123",
+                          "description": "Your reference assigned to the application."
+                        },
+                        "createDate": {
+                          "type": "string",
+                          "example": "2020-04-03 16:18:19.8466667",
+                          "description": "The date and time the application was created."
+                        },
+                        "clientName": {
+                          "type": "string",
+                          "example": "Pickle Finance",
+                          "description": "Denotes the Client object for the retrieved report."
+                        },
+                        "storeName": {
+                          "type": "string",
+                          "example": "Dev",
+                          "description": "Denotes the Store object for the retrieved report."
+                        },
+                        "attachments": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "example": "Credit Sense Report",
+                                "description": "Denotes the type of content retrieved."
+                              },
+                              "name": {
+                                "type": "string",
+                                "example": "Categorised",
+                                "description": "Denotes the report or document name."
+                              },
+                              "contentType": {
+                                "type": "string",
+                                "enum": [
+                                  "json",
+                                  "pdf",
+                                  "xml",
+                                  "html"
+                                ],
+                                "description": "Denotes the format of the retrieved report or document."
+                              },
+                              "content": {
+                                "type": "string",
+                                "description": "The retrieved report or document as a base64-encoded string.",
+                                "example": "eyJBcHBsaWNhdGlvbnMiOnsiQXBwbGljYXRpb24iOnsiQXBwSUQiOj...[truncated]"
+                              }
+                            },
+                            "required": [
+                              "type",
+                              "name",
+                              "contentType",
+                              "content"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "postVersion",
+                        "appId",
+                        "appReference",
+                        "createDate",
+                        "clientName",
+                        "storeName",
+                        "attachments"
+                      ]
+                    }
 										},
 										"application/xml": {
 											"schema": {
@@ -7717,24 +7760,8 @@
 												}
 											}
 										}
-									},
-									"299": {
-										"description": "Response for cancelling subscription"
-									},
-									"500": {
-										"description": "Callback processing failed and retries will be performed"
 									}
-								},
-								"x-code-samples": [
-									{
-										"lang": "C#",
-										"source": "PetStore.v1.Pet pet = new PetStore.v1.Pet();\npet.setApiKey(\"your api key\");\npet.petType = PetStore.v1.Pet.TYPE_DOG;\npet.name = \"Rex\";\n// set other fields\nPetStoreResponse response = pet.create();\nif (response.statusCode == HttpStatusCode.Created)\n{\n  // Successfully created\n}\nelse\n{\n  // Something wrong -- check response for errors\n  Console.WriteLine(response.getRawResponse());\n}\n"
-									},
-									{
-										"lang": "PHP",
-										"source": "$form = new \\PetStore\\Entities\\Pet();\n$form->setPetType(\"Dog\");\n$form->setName(\"Rex\");\n// set other fields\ntry {\n    $pet = $client->pets()->create($form);\n} catch (UnprocessableEntityException $e) {\n    var_dump($e->getErrors());\n}\n"
-									}
-								]
+								}
 							}
 						}
 					}
