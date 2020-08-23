@@ -7672,8 +7672,8 @@
                                 "contentType": {
                                   "type": "string",
                                   "enum": [
-                                    "png",
-                                    "pdf"
+                                    "pdf",
+                                    "png"
                                   ],
                                   "description": "Denotes the format of the delivered document."
                                 },
