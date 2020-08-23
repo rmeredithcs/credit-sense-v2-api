@@ -7496,6 +7496,12 @@
         "summary": "Get a report delivered",
         "operationId": "post-webhook",
         "responses": {},
+        "servers": [
+								{
+									"url": "https://your-webhook-endpoint.com",
+									"description": "Your webhook endpoint"
+								}
+							],
         "callbacks": {
 					"Credit Sense report webhook": {
 						"https://your-webhook-endpoint.com": {
